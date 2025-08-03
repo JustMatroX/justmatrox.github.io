@@ -1,0 +1,231 @@
+img{
+    max-width: 100px;
+}
+body{
+    padding:0;
+    margin:0;
+    overflow: hidden;
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+/* BIG SCREEN */
+@media only screen and (min-width: 3000px) {
+    html{
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body{
+        background-color: #202020;
+        color: #bbbbbb;
+    }
+
+    #all{
+        display: grid;
+        visibility: hidden;  
+    }
+    .topbar{
+        display: grid;
+        grid-template-columns: 100px auto;
+        text-align: center; 
+        background-color: #220000;
+        font-size: 50px;
+    }
+    #header { 
+        font-size: 60px;
+        font-weight: 800;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #logo{
+        width:100px;
+    }
+    #titleBig{
+        padding-top: 25px;
+    }
+
+    .listedGame{
+        border: 1px solid black;
+        margin:5px;
+        text-align: center;
+        font-weight: 1000;
+    }
+    .listedGame:hover{
+        background-color: lightblue;
+    }
+    #gameChoice{
+    }
+}
+/* SMALL SCREEN */
+@media only screen and (max-width: 3000px) {
+    html{
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body{
+        background-color: #202020;
+        color: #fff;
+    }
+    input {
+        background-color: #090909;
+        color: white;
+    }
+    .topbar{
+        display: grid;
+        grid-template-columns: 20% auto;
+        text-align: center; 
+        background-color: #220000;
+    }
+    #header { 
+        font-size: 40px;
+        font-weight: 800;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: grab;
+    }
+    .topbar:hover{
+        animation: gradOO 5s alternate infinite;
+    }
+    #logo{
+        width:100px;
+        visibility: visible;
+    }
+    #bottomBar{
+        position: absolute;
+        bottom: 0;
+        height: 50px;
+        background-color: #220000;
+        width: 100%;
+        align-items: center;
+        padding: 0px;
+        font-size: 1em;
+        display: grid;
+        grid-template-columns: 25vw auto;
+    }
+    #bottomBar > div{
+        align-items: center;
+        text-align: center;
+    }
+    #back{
+        position: absolute;
+        bottom:50px;
+        margin: 10px;
+        visibility: visible;
+        padding: 20px;
+        border-radius: 20px;
+        background-color: #222;
+        color: grey;
+        font-weight: 1000;
+        visibility: hidden;
+        opacity: 0.9;
+        right: 0;
+    }
+
+    #poolMenu{
+        display: grid;
+        visibility: hidden;
+    }
+    #poolMenu > div {
+        align-items: center;
+        text-align: center;
+        background-color: black;;
+        display: flex;
+        height: 24vh;
+        margin: 10px;
+        font-size: 3em;
+        border: 5px solid black;
+        justify-content: center;
+    }
+    #poolMenu > div:hover {
+        background-color: #222;
+    }
+    #settings{
+        background-color: rgba(0,0,0,0.9);
+        padding: 25px 50px 50px;
+        border-radius: 10px;
+        position: absolute;
+        overflow-y: scroll;
+        top:125px;
+        font-size: 1em;
+        height: 70vh;
+        visibility: hidden;
+    }
+    #settingsButton{
+        position: absolute;
+        right:0;
+        bottom:50px;
+        background-color: #777777;
+        border-radius: 15px 0 0 0;
+    }
+    .listofGames{
+        text-align: center;
+        height: 40vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-blend-mode: color;
+    }
+    .listofGames:hover{
+        background-blend-mode: lighten;
+    }
+    #gameChoice{
+        font-size:60px;
+        font-weight: 100;
+        position: absolute;
+        top: 30vh;
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto auto;
+        
+    }
+    #pool{
+        background-image: url("pool.jpg");
+        background-color: rgba(0,0,0,0.6);
+        background-position: center;
+        background-repeat: no-repeat; 
+        background-size: cover;
+    }
+    #darts{
+        background-image: url("darts.jpg");
+        background-color: rgba(0,0,0,0.6);
+        background-position: center;
+        background-repeat: no-repeat; 
+        background-size: cover;
+    }
+    #game{
+        display: grid;
+        grid-template-columns: 50% 50%;
+        text-align: center;
+        font-size: 2em;
+    }
+    #game > div {
+        border: 1px solid black;
+        width:100%;
+        margin: 1px;
+        height:200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #timeleft{
+        position: absolute;
+        display: grid;
+        align-items: center;
+        grid-template-columns: 25% 25% 25% 25%;
+        text-align: center;
+        font-size: 2em;
+        width: 100vw;
+    }
+    #extension{
+        background-color: red;
+    }
+    #actualClock{
+        background-color: black;
+    }
+}
+/* ANIMATIONS */
+@keyframes gradOO {
+    from {background-color: #220000;}
+    to {background-color: #000000;}
+}

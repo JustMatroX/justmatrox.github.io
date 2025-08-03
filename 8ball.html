@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet"/>
+    <script>
+        function loading () {
+            let cookieValue = getCookie("jsonSettings");
+            if (cookieValue !== "") {
+                console.log("The cookie 'userCookie' exists. Its value is: " + cookieValue);
+                let boop = JSON.parse(cookieValue);
+                document.getElementById('player1name').innerHTML=boop.player1;
+                document.getElementById('player2name').innerHTML= boop.player2;
+                document.getElementById('actualClock').innerHTML= boop.gametime;
+                document.getElementById('player1score').innerHTML=boop.bestofgoto;
+            } else {
+                // The cookie does not exist.
+                console.log("The cookie 'userCookie' does not exist.");
+            }
+            if(getCookie('last')){
+                document.getElementById("lastGame").innerHTML= getCookie('last');
+                document.getElementById("lastGameType").innerHTML= getCookie('gametype');
+            }
+            else{
+                document.getElementById("lastGameType").visibility.hidden;
+                document.getElementById("lastGame").innerHTML= "Here will be your last match";
+            }
+
+
+        }
+        function hideGameChoice () {
+            document.getElementById('gameChoice').style.visibility= "hidden";
+            document.getElementById('back').style.visibility= "visible";
+        }
+        function poolMenu () {
+            document.getElementById("poolMenu").style.visibility= "visible"
+        }
+        function dartsMenu () {
+            document.getElementById("dartsMenu").style.visibility= "visible"
+        }
+        function backToMenu () {
+            saveGame();
+            if(true){
+                if (confirm("Are you sure you want to go back to menu? (progress will be saved)")){
+                    window.location.href = "index.html";
+                }  
+            }       
+        }
+        function saveGame(){
+            let name1 = document.getElementById("player1name").innerText;
+            let name2 = document.getElementById("player2name").innerText;
+            let score1 = document.getElementById("player1score").innerText;
+            let score2 = document.getElementById("player2score").innerText;
+            let scoreboard = name1+": "+score1+"<br/>"+name2+": "+score2;
+
+            setCookie('gametype','8 Ball',365);
+            setCookie('player1score',score1,365);
+            setCookie('player2score',score2,365);
+            setCookie('player1',name1,365);
+            setCookie('player2',name2,365);
+            setCookie('last',scoreboard,365);
+            document.getElementById("lastGameType").innerHTML= getCookie('gametype');
+            document.getElementById("lastGame").innerHTML= getCookie('last');
+            console.log(getCookie('player1'));
+        }
+        function settings () {
+            document.getElementById("settings").style.visibility="visible"
+            document.getElementById('player1').value="aa";
+
+        }
+        function savetojson () {
+           let p1name = document.getElementById('player1').value;
+           let p2name = document.getElementById('player2').value;
+           let gametime = document.getElementById('timer').value;
+           let clock = document.getElementById('gameclock').value;
+           let length = document.getElementById('bestof').value/2+0.5;
+           let p5name = document.getElementById('player2').value;
+           
+            document.getElementById("settings").style.visibility="hidden"
+            // 1. Create a JavaScript object with the current settings.
+            const settings = {
+                player1: p1name.trim(),
+                player2: p2name.trim(),
+                gametime: gametime.trim(),
+                istimed: clock.trim(),
+                bestofgoto: length
+            };
+            // 2. Convert the JavaScript object to a JSON string.
+            const jsonSettings = JSON.stringify(settings);
+            // 3. Save the JSON string in localStorage under a specific key.
+            localStorage.setItem('gameSettings', jsonSettings);
+            
+            document.getElementById('player1name').innerHTML=p1name;
+            document.getElementById('player2name').innerHTML=p2name;
+            document.getElementById('player2score').innerHTML=2;
+            document.getElementById('player1score').innerHTML=2;
+            setCookie('jsonSettings',jsonSettings,1000);
+            retrieveSave = JSON.parse(getCookie('jsonSettings'));
+        }
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            // Set the expiration date based on the number of days provided.
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            // Construct the cookie string.
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            let score = getCookie('last');
+            document.getElementById("lastGame").innerHTML= score;
+        }
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+    </script>
+</head>
+<body onload="loading()">
+    <button id="back" onclick="backToMenu()"> Return to menu ^</button>
+    <div class="topbar">
+        <div id="logo">
+            <img src="./logo.png">
+        </div>
+
+        <div id="header" onclick="backToMenu()">
+            Cue & Dart
+        </div>
+    </div>
+
+    <div id="game">
+        <div id="player1name">
+        </div>
+        <div id="player1score">
+        </div>
+        <div id="player2name">
+        </div>
+        <div id="player2score">
+        </div>
+    </div>
+    <div id="timeleft">
+        <div id="p1timer"></div>
+        <div id="extension">EX</div>
+        <div id="actualClock">00:00</div>
+        <div id="p2timer"></div>
+    </div>
+
+    <div id="settings">
+        <button id="newGame">NEW GAME</button><br/>
+        Player 1's name<br/><input type="text" id="player1" name="player1" value="imie1"><br/>
+        Player 2's name<br/><input type="text" id="player2" name="player2" value="imie2"><br/>
+        Gameclock<br/>
+        <select id="gameclock" name="gameclock">
+            <option value="gameclockYes">Enabled</option>
+            <option value="gameclockNo">Disabled</option>
+        </select><br/>
+        Time per game (minutes)<br/><input type="number" id="timer" name="time" value="9"><br/>
+        Best of #<br/><input type="number" name="bestof" id="bestof" value="9"><br/>
+        <button id="savesettings" onclick="savetojson()">SAVE</button>
+    </div>
+    <button id="settingsButton" onclick="settings()">
+        SETTINGS
+    </button>
+
+    <div id="bottomBar">
+        <div id="lastGameType">
+
+        </div>
+        <div id="lastGame">
+
+        </div>
+    </div>
+    
+</body>
