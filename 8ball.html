@@ -4,27 +4,34 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet"/>
     <script>
+        let setopen = false;
+        let clockrunning = false;
+        let savedtime = false;
+        let savedminutes = 0;
+        let savedseconds = 0;
+        let p1turn = true;
+        let minutes = 0;
+        let seconds = 0;
+        let timerID
         function loading () {
-            let cookieValue = getCookie("jsonSettings");
+            getLastGameFromCookie ();
+            let cookieValue = getCookie("savedata");
             if (cookieValue !== "") {
-                console.log("The cookie 'userCookie' exists. Its value is: " + cookieValue);
+                console.log(cookieValue);
                 let boop = JSON.parse(cookieValue);
-                document.getElementById('player1name').innerHTML=boop.player1;
-                document.getElementById('player2name').innerHTML= boop.player2;
-                document.getElementById('actualClock').innerHTML= boop.gametime;
-                document.getElementById('player1score').innerHTML=boop.bestofgoto;
+                console.log(boop);
+                document.getElementById('player1name').innerText = boop.player1;
+                document.getElementById('player2name').innerHTML = boop.player2;
+                document.getElementById('actualClock').innerHTML= 2;
+                document.getElementById('player1score').innerHTML=boop.score1;
+                document.getElementById('player2score').innerHTML=boop.score2;
+                document.getElementById('actualClock').innerHTML=boop.timersetting+":00";
             } else {
                 // The cookie does not exist.
                 console.log("The cookie 'userCookie' does not exist.");
+                document.getElementById('settings').style.visibility = "visible";
             }
-            if(getCookie('last')){
-                document.getElementById("lastGame").innerHTML= getCookie('last');
-                document.getElementById("lastGameType").innerHTML= getCookie('gametype');
-            }
-            else{
-                document.getElementById("lastGameType").visibility.hidden;
-                document.getElementById("lastGame").innerHTML= "Here will be your last match";
-            }
+            
 
 
         }
@@ -46,35 +53,61 @@
                 }  
             }       
         }
+        function getLastGameFromCookie () {
+            if(getCookie('savedata')){
+                let sgcookie = JSON.parse(getCookie('savedata'));
+                document.getElementById("lastGameType").innerHTML= sgcookie.gameType;
+                document.getElementById("lastGameType").innerHTML= sgcookie.gameType+" (First to "+sgcookie.bestofset+")";
+            }
+            else{
+                document.getElementById("lastGame").innerHTML= "Here will be your last match";
+            }
+        }
         function saveGame(){
+            //Get names, type of game and scores into variables
             let name1 = document.getElementById("player1name").innerText;
             let name2 = document.getElementById("player2name").innerText;
             let score1 = document.getElementById("player1score").innerText;
             let score2 = document.getElementById("player2score").innerText;
+            let bestofset = document.getElementById('bestof').value;
+            let gameType = "8 Ball";
             let scoreboard = name1+": "+score1+"<br/>"+name2+": "+score2;
+            let timersetting = document.getElementById("timer").value;
+            const savedata = {
+                player1: name1.trim(),
+                player2: name2.trim(),
+                score1: score1.trim(),
+                score2: score2. trim(),
+                gameType: gameType,
+                scoreboard: scoreboard,
+                bestofset: bestofset,
+                timersetting: timersetting
+            };
+            const jsonsavedata = JSON.stringify(savedata);
+            setCookie('savedata',jsonsavedata,365);
 
-            setCookie('gametype','8 Ball',365);
-            setCookie('player1score',score1,365);
-            setCookie('player2score',score2,365);
-            setCookie('player1',name1,365);
-            setCookie('player2',name2,365);
-            setCookie('last',scoreboard,365);
-            document.getElementById("lastGameType").innerHTML= getCookie('gametype');
-            document.getElementById("lastGame").innerHTML= getCookie('last');
+            document.getElementById("lastGameType").innerHTML= savedata.gameType;
+            document.getElementById("lastGame").innerHTML= savedata.scoreboard;
             console.log(getCookie('player1'));
-        }
+        }   
         function settings () {
-            document.getElementById("settings").style.visibility="visible"
-            document.getElementById('player1').value="aa";
-
+            if (setopen){
+                document.getElementById("settings").style.visibility="hidden";
+                setopen=false;
+            }
+            else{
+            document.getElementById("settings").style.visibility="visible";
+            setopen = true;
+            }
         }
-        function savetojson () {
+        function saveSettingsToJSON () {
            let p1name = document.getElementById('player1').value;
            let p2name = document.getElementById('player2').value;
            let gametime = document.getElementById('timer').value;
            let clock = document.getElementById('gameclock').value;
            let length = document.getElementById('bestof').value/2+0.5;
            let p5name = document.getElementById('player2').value;
+           let bestofset = document.getElementById('bestof').value;
            
             document.getElementById("settings").style.visibility="hidden"
             // 1. Create a JavaScript object with the current settings.
@@ -83,19 +116,51 @@
                 player2: p2name.trim(),
                 gametime: gametime.trim(),
                 istimed: clock.trim(),
-                bestofgoto: length
+                bestofgoto: length,
+                bestof: bestofset
             };
-            // 2. Convert the JavaScript object to a JSON string.
+            // make a json and save it to cookie
             const jsonSettings = JSON.stringify(settings);
-            // 3. Save the JSON string in localStorage under a specific key.
-            localStorage.setItem('gameSettings', jsonSettings);
-            
+            setCookie('jsonSettings',jsonSettings,1000);
+            //apply changes
             document.getElementById('player1name').innerHTML=p1name;
             document.getElementById('player2name').innerHTML=p2name;
-            document.getElementById('player2score').innerHTML=2;
-            document.getElementById('player1score').innerHTML=2;
-            setCookie('jsonSettings',jsonSettings,1000);
+            if(clock==1){
+                document.getElementById('actualClock').innerHTML=gametime+":00";
+            }
+            else{
+                document.getElementById('actualClock').innerHTML="Not timed";
+            }
+        }
+        function alterscore (typeop) {
+            //get current score
+            s1 = document.getElementById('player1score');
+            s2 = document.getElementById('player2score');
             retrieveSave = JSON.parse(getCookie('jsonSettings'));
+            max = retrieveSave.bestofgoto;
+            //how to edit the score
+            if (typeop==1){
+                s1.innerHTML++;
+                if(s1.innerHTML==max){
+                    alert("Player 1 won!");
+                    s1.innerHTML=0;
+                    s2.innerHTML=0;
+                }
+            }
+            else if (typeop==2){
+                if(s1.innerHTML>0)s1.innerHTML--;
+            }
+            else if (typeop==3){
+                s2.innerHTML++;
+                if(s2.innerHTML==max){
+                    alert("Player 2 won!");
+                    s1.innerHTML=0;
+                    s2.innerHTML=0;
+                }
+            }
+            else if (typeop==4){
+                if(s2.innerHTML>0)s2.innerHTML--;
+            }
         }
         function setCookie(cname, cvalue, exdays) {
             const d = new Date();
@@ -122,6 +187,51 @@
             }
             return "";
         }
+        function gameclockstart() {
+            // Set the duration of the countdown in seconds
+            let fetchsettings = JSON.parse(getCookie('jsonSettings'));
+            var timeInSeconds = fetchsettings.gametime*60; 
+            var display = document.getElementById("actualClock");
+            var button = document.getElementById("gameclockoperator");
+            if(!clockrunning){
+                timerID = setInterval(function() {
+                    button.textContent="STOP CLOCK";
+                    //checks if there was already a pause and gets time left from relevant source
+                    if(savedtime){
+                        timeInSeconds = savedminutes*60+savedseconds;
+                        savedtime = false; 
+                    }
+                    else{
+                    minutes = Math.floor(timeInSeconds / 60);
+                    seconds = timeInSeconds % 60;
+                    }
+
+                    clockrunning = true; // forces stopping the interval
+
+                    let secondzero = ""
+                    if(seconds<10)secondzero = "0";
+                    if(seconds>=10)secondzero = "";
+                    display.textContent = minutes + ":" + secondzero + seconds; //add zero if <10s
+                    
+                    // Decrease the time by one second
+                    timeInSeconds--;
+                    
+                    // When the countdown is finished, stop the timer
+                    if (timeInSeconds < 0) {
+                        clearInterval(timerID);
+                        display.textContent = "Time's Up!";
+                    }
+                }, 1000);
+            }
+            else {
+                button.textContent="RESUME";
+                clearInterval(timerID); //stop of interval
+                savedtime=true; // forces not using set time
+                savedminutes = minutes;
+                savedseconds = seconds;
+                clockrunning=false;
+            }
+        }
     </script>
 </head>
 <body onload="loading()">
@@ -139,11 +249,25 @@
     <div id="game">
         <div id="player1name">
         </div>
+        <div id="playeraddscore" onclick="alterscore(1)">
+            +
+        </div>
         <div id="player1score">
+            0
+        </div>
+        <div id="playerremovescore" onclick="alterscore(2)">
+            -
         </div>
         <div id="player2name">
         </div>
+        <div id="playeraddscore" onclick="alterscore(3)">
+            +
+        </div>
         <div id="player2score">
+            0
+        </div>
+        <div id="playerremovescore" onclick="alterscore(4)">
+            -
         </div>
     </div>
     <div id="timeleft">
@@ -151,20 +275,27 @@
         <div id="extension">EX</div>
         <div id="actualClock">00:00</div>
         <div id="p2timer"></div>
+        <div id="p1active"></div>
+        <div id="exttime">+30s</div>
+        <div id="howmanygames">Best of #</div>
+        <div id="p2active"></div>
+    </div>
+    <div id="gameclockoperator" class="timemachine" onclick="gameclockstart()">
+        START CLOCK
     </div>
 
     <div id="settings">
-        <button id="newGame">NEW GAME</button><br/>
+        <button id="newGame" onclick="reset8ballGame()">NEW GAME</button><br/>
         Player 1's name<br/><input type="text" id="player1" name="player1" value="imie1"><br/>
         Player 2's name<br/><input type="text" id="player2" name="player2" value="imie2"><br/>
         Gameclock<br/>
         <select id="gameclock" name="gameclock">
-            <option value="gameclockYes">Enabled</option>
-            <option value="gameclockNo">Disabled</option>
+            <option value="1">Enabled</option>
+            <option value="2">Disabled</option>
         </select><br/>
         Time per game (minutes)<br/><input type="number" id="timer" name="time" value="9"><br/>
         Best of #<br/><input type="number" name="bestof" id="bestof" value="9"><br/>
-        <button id="savesettings" onclick="savetojson()">SAVE</button>
+        <button id="savesettings" onclick="saveSettingsToJSON ();saveGame()">SAVE</button>
     </div>
     <button id="settingsButton" onclick="settings()">
         SETTINGS

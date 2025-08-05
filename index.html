@@ -5,9 +5,10 @@
     <link href="style.css" rel="stylesheet"/>
     <script>
         function loading () {
-            if(typeof getCookie('last')!=undefined){
-                document.getElementById("lastGame").innerHTML= getCookie('last');
-                document.getElementById("lastGameType").innerHTML= getCookie('gametype');
+            if(typeof getCookie('savedata')!=undefined){
+                cooks = JSON.parse(getCookie('savedata'));
+                document.getElementById("lastGame").innerHTML= cooks.scoreboard;
+                document.getElementById("lastGameType").innerHTML= cooks.gameType+" (First to "+cooks.bestofgoto+")";
             }
             else{
                 document.getElementById("lastGameType").visibility.hidden;
