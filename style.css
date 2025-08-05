@@ -145,10 +145,10 @@ a{
         padding: 25px 50px 50px;
         border-radius: 10px;
         position: absolute;
-        overflow-y: scroll;
         top:125px;
-        font-size: 1em;
+        font-size: 1.4em;
         height: 70vh;
+        width: 100%;
         visibility: hidden;
     }
     #settingsButton{
@@ -195,18 +195,48 @@ a{
     }
     #game{
         display: grid;
-        grid-template-columns: 50% 50%;
+        grid-template-columns: 50% 10% 30% 10%;
         text-align: center;
         font-size: 2em;
     }
     #game > div {
-        border: 1px solid black;
+        margin-bottom: 10px;
         width:100%;
         margin: 1px;
         height:200px;
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    #p1active{
+        color: red;
+        font-size: 20px;
+    }
+    #gameclockoperator{
+        visibility: visible;
+    }
+    .timemachine{
+        cursor: pointer;
+        position: absolute;
+        width: 50%;
+        left: 25%;
+        text-align: center;
+        background-color: black;
+        visibility: hidden;
+        line-height: 3em;
+        bottom:100px;
+    }
+    #playeraddscore{
+        background-color: #001600;
+    }
+    #playeraddscore:hover {
+        background-color: #003300;
+    }
+    #playerremovescore{
+        background-color: #160000;
+    }
+    #playerremovescore:hover {
+        background-color: #330000;
     }
     #timeleft{
         position: absolute;
