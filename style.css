@@ -3,6 +3,7 @@ img{
 }
 body{
     padding:0;
+    background-color: #080808;
     margin:0;
     overflow: hidden;
 }
@@ -55,26 +56,29 @@ a{
         background-color: lightblue;
     }
     #gameChoice{
+        opacity:1;
     }
 }
 /* SMALL SCREEN */
 @media only screen and (max-width: 3000px) {
+/* GENERAL */
     html{
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     body{
-        background-color: #202020;
         color: #fff;
     }
     input {
         background-color: #090909;
         color: white;
     }
+/* TOPBAR */
     .topbar{
         display: grid;
         grid-template-columns: 20% auto;
         text-align: center; 
-        background-color: #220000;
+        background-color: #000000;
+        animation: gradOO 5s linear normal infinite;
     }
     #header { 
         font-size: 40px;
@@ -84,13 +88,11 @@ a{
         align-items: center;
         cursor: grab;
     }
-    .topbar:hover{
-        animation: gradOO 5s alternate infinite;
-    }
     #logo{
         width:100px;
         visibility: visible;
     }
+/* BOTTOM BAR */
     #bottomBar{
         position: absolute;
         bottom: 0;
@@ -101,15 +103,19 @@ a{
         padding: 0px;
         font-size: 1em;
         display: grid;
-        grid-template-columns: 25vw auto;
+        grid-template-columns: 30vw auto;
     }
-    #bottomBar > div{
-        align-items: center;
+    #lastGameType{
         text-align: center;
     }
+    #lastGame{
+        font-weight: 500;
+        text-align: left;
+    }
+/* POOL AND DART MENU */
     #back{
         position: absolute;
-        bottom:50px;
+        bottom:60px;
         margin: 10px;
         visibility: visible;
         padding: 20px;
@@ -121,25 +127,43 @@ a{
         opacity: 0.9;
         right: 0;
     }
-
     #poolMenu{
         display: grid;
         visibility: hidden;
     }
-    #poolMenu > div {
+    #poolMenu > a:hover > div {
+        background-color: #002200;
+    }
+    #rules{
         align-items: center;
         text-align: center;
-        background-color: black;;
-        display: flex;
-        height: 24vh;
+        background-color: black;
         margin: 10px;
-        font-size: 3em;
+        font-size: 2em;
         border: 5px solid black;
         justify-content: center;
     }
-    #poolMenu > div:hover {
-        background-color: #222;
+    .listedGame {
+        align-items: center;
+        text-align: center;
+        background-color: black;
+        display: flex;
+        height: 20vh;
+        margin: 10px;
+        font-size: 2.5em;
+        justify-content: center;
     }
+    #dartsMenu{
+        position: absolute;
+        top: 100px;
+        width: 100%;
+        display: grid;
+        visibility: hidden;
+    }
+    #dartsMenu > a:hover > div {
+        background-color: red;
+    }
+
     #settings{
         background-color: rgba(0,0,0,0.9);
         padding: 25px 50px 50px;
@@ -256,6 +280,11 @@ a{
 }
 /* ANIMATIONS */
 @keyframes gradOO {
-    from {background-color: #220000;}
-    to {background-color: #000000;}
+    0% {background-color: #000000;color: white;letter-spacing: 0px}
+    40% {background-color: #000000;color: white;letter-spacing: 0px}
+    45% {background-color: #000000;color: white;letter-spacing: 5px}
+    70% {background-color: #000000;color: white;letter-spacing: 5px}
+    80% {background-color: #000000;color: #222;letter-spacing: 5px}
+    82% {background-color: #000000;color: #222;letter-spacing: 5px}
+    100% {background-color: #000000;color: white;letter-spacing: 0px}
 }

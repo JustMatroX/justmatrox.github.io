@@ -3,63 +3,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet"/>
-    <script>
-        function loading () {
-            if(typeof getCookie('savedata')!=undefined){
-                cooks = JSON.parse(getCookie('savedata'));
-                document.getElementById("lastGame").innerHTML= cooks.scoreboard;
-                document.getElementById("lastGameType").innerHTML= cooks.gameType+" (First to "+cooks.bestofgoto+")";
-            }
-            else{
-                document.getElementById("lastGameType").visibility.hidden;
-                document.getElementById("lastGame").innerHTML= "Here will be your last match";
-            }
-        }
-        function hideGameChoice () {
-            document.getElementById('gameChoice').style.visibility= "hidden";
-            document.getElementById('back').style.visibility= "visible";
-        }
-        function poolMenu () {
-            document.getElementById("poolMenu").style.visibility= "visible"
-        }
-        function dartsMenu () {
-            document.getElementById("dartsMenu").style.visibility= "visible"
-        }
-        function backToMenu () {
-            document.getElementById("gameChoice").style.visibility= "visible"
-            document.getElementById("poolMenu").style.visibility= "hidden"
-            document.getElementById("back").style.visibility= "hidden"
-            document.getElementById("gameChoice").style.visibility= "visible"
-        }
-        function setCookie(cname, cvalue, exdays) {
-            const d = new Date();
-            // Set the expiration date based on the number of days provided.
-            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-            let expires = "expires=" + d.toUTCString();
-            // Construct the cookie string.
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-            let score = getCookie('last');
-            document.getElementById("lastGame").innerHTML= score;
-        }
-        function getCookie(cname) {
-            let name = cname + "=";
-            let decodedCookie = decodeURIComponent(document.cookie);
-            let ca = decodedCookie.split(';');
-            for(let i = 0; i <ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-    </script>
+    <script src="script.js"></script>
 </head>
-<body onload="loading ()">
+<body onload="loadingMain()">
     <button id="back" onclick="backToMenu()"> Return to menu ^</button>
+
     <div class="topbar">
         <div id="logo">
             <img src="./logo.png">
@@ -80,26 +28,34 @@
     </div>
 
     <div id="gameChoice">
-        <div id="pool" class="listofGames" onclick="hideGameChoice();poolMenu()">
+        <div id="pool" class="listofGames" onclick="poolMenu()">
             pool
         </div>
 
-        <div id="darts" class="listofGames" onclick="hideGameChoice();dartsMenu()">
+        <div id="darts" class="listofGames" onclick="dartsMenu()">
             darts
         </div>
     </div>
 
     <div id="poolMenu">
-        <div id="button1" class="listedGame" >
-           <a href="./8ball.html"> 8-Ball</a><hr/><a href="https://wpapool.com/wp-content/uploads/2024/01/WPA_New_Rules_01MAR2016-fixed-spelling.pdf">WPA Rules</a>
+        <a id="rules" href="https://wpapool.com/wp-content/uploads/2024/01/WPA_New_Rules_01MAR2016-fixed-spelling.pdf" target="_blank">WPA INTERNATIONAL RULES</a>
+        
+        <a href="8ball.html"><div id="button1" class="listedGame">
+            8-Ball
         </div></a>
 
-        <div id="button2" class="listedGame">
-            9-Ball<br/>APA Rules
-        </div>
+        <a href="8ball.html"><div id="button2" class="listedGame">
+            9-Ball
+        </div></a>
 
-        <div id="button3" class="listedGame">
-            Snooker<br/>APA Rules
-        </div>
+        <a href="8ball.html"><div id="button3" class="listedGame">
+            Snooker
+        </div></a>
+    </div>
+
+    <div id="dartsMenu">
+        <a href="#"><div id="button2" class="listedGame">
+            1v1 (coming soon)
+        </div></a>
     </div>
 </body>
