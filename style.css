@@ -1,9 +1,11 @@
+
+/* GENERAL */
 img{
     max-width: 100px;
 }
 body{
     padding:0;
-    background-color: #080808;
+    background-color: #110000;
     margin:0;
     overflow: hidden;
 }
@@ -11,280 +13,259 @@ a{
     text-decoration: none;
     color: white;
 }
-/* BIG SCREEN */
-@media only screen and (min-width: 3000px) {
-    html{
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body{
-        background-color: #202020;
-        color: #bbbbbb;
-    }
-
-    #all{
-        display: grid;
-        visibility: hidden;  
-    }
-    .topbar{
-        display: grid;
-        grid-template-columns: 100px auto;
-        text-align: center; 
-        background-color: #220000;
-        font-size: 50px;
-    }
-    #header { 
-        font-size: 60px;
-        font-weight: 800;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    #logo{
-        width:100px;
-    }
-    #titleBig{
-        padding-top: 25px;
-    }
-
-    .listedGame{
-        border: 1px solid black;
-        margin:5px;
-        text-align: center;
-        font-weight: 1000;
-    }
-    .listedGame:hover{
-        background-color: lightblue;
-    }
-    #gameChoice{
-        opacity:1;
-    }
+html{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+body{
+    color: #fff;
+}
+input {
+    background-color: #090909;
+    color: white;
+}
+
+
+
+/* TOPBAR */
+.topbar{
+    display: grid;
+    grid-template-columns: 20% auto;
+    text-align: center; 
+    background-color: #000000;
+    animation: gradOO 5s linear normal infinite;
+}
+#header { 
+    font-size: 40px;
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+}
+#logo{
+    width:100px;
+    visibility: visible;
+}
+
+
+
+/* BOTTOM BAR */
+#bottomBar{
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    background-color: #001100;
+    width: 100%;
+    align-items: center;
+    padding: 0px;
+    font-size: 1em;
+    display: grid;
+    grid-template-columns: 30vw auto;
+}
+#lastGameType{
+    text-align: center;
+}
+#lastGame{
+    font-weight: 500;
+    text-align: left;
+}
+
+
+
+/* POOL AND DART MENU */
+#back{
+    position: absolute;
+    z-index: 10000;
+    bottom:0px;
+    margin: 5px;
+    visibility: visible;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #001100;
+    text-shadow: none;
+    color: white;
+    font-weight: 600;
+    visibility: hidden;
+    opacity: 1;
+    right: 0;
+}
+#poolMenu{
+    display: grid;
+    visibility: hidden;
+}
+#poolMenu > a:hover > div {
+    background-color: #002200;
+}
+#rules{
+    align-items: center;
+    text-align: center;
+    background-color: black;
+    margin: 10px;
+    font-size: 2em;
+    border: 5px solid black;
+    justify-content: center;
+}
+.listedGame {
+    align-items: center;
+    text-align: center;
+    background-color: black;
+    display: flex;
+    height: 20vh;
+    margin: 10px;
+    font-size: 2.5em;
+    justify-content: center;
+}
+.notReady {
+    opacity: 0.4;
+    z-index: 0;
+}
+#dartsMenu{
+    position: absolute;
+    top: 100px;
+    width: 100%;
+    display: grid;
+    visibility: hidden;
+}
+#dartsMenu > a:hover > div {
+    background-color: red;
+}
+.listofGames{
+text-align: center;
+height: 40vh;
+display: flex;
+justify-content: center;
+align-items: center;
+background-blend-mode: color;
+}
+.listofGames:hover{
+    background-blend-mode: lighten;
+}
+#gameChoice{
+    font-size:60px;
+    font-weight: 100;
+    position: absolute;
+    top: 30vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto;
+    
+}
+#pool{
+    background-image: url("pool.jpg");
+    background-color: rgba(0,0,0,0.6);
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-size: cover;
+}
+#darts{
+    background-image: url("darts.jpg");
+    background-color: rgba(0,0,0,0.6);
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-size: cover;
+}
+
+
+
+/* IN-GAME */
+#settings{
+    background-color: rgba(0,0,0,0.9);
+    padding: 25px 50px 50px;
+    border-radius: 10px;
+    position: absolute;
+    top:125px;
+    font-size: 1.4em;
+    height: 70vh;
+    width: 100%;
+    visibility: hidden;
+}
+#settingsButton{
+    position: absolute;
+    right:0;
+    bottom:50px;
+    background-color: #001100;
+    color: #ddd;
+    font-weight: 600;
+    border-radius: 15px 0 0 0;
+}
+#game{
+    display: grid;
+    grid-template-columns: 50% 5% 40% 5%;
+    text-align: center;
+    font-size: 2em;
+}
+#game > div {
+    margin-bottom: 10px;
+    width:100%;
+    margin: 2px;
+    height:150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#p1active{
+    color: red;
+    font-size: 15px;
+}
+#gameclockoperator{
+    visibility: visible;
+    background-color: #222200;
+}
+.timemachine{
+    cursor: pointer;
+    visibility: hidden;
+    grid-column:1 / 5;
+}
+#playeraddscore{
+    background-color: #005500;
+}
+#playeraddscore:hover {
+    background-color: #002200;
+}
+#playerremovescore{
+    background-color: #160000;
+}
+#playerremovescore:hover {
+    background-color: #330000;
+}
+#timeleft{
+    position: absolute;
+    display: grid;
+    align-items: center;
+    background-color: black;
+    grid-template-columns: 25% 25% 25% 25%;
+    text-align: center;
+    font-size: 2em;
+    width: 100vw;
+}
+#extension{
+    background-color: #660000;
+}
+#actualClock{
+    background-color: black;
+}
+
+
+
 /* SMALL SCREEN */
 @media only screen and (max-width: 3000px) {
-/* GENERAL */
-    html{
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body{
-        color: #fff;
-    }
-    input {
-        background-color: #090909;
-        color: white;
-    }
-/* TOPBAR */
-    .topbar{
-        display: grid;
-        grid-template-columns: 20% auto;
-        text-align: center; 
-        background-color: #000000;
-        animation: gradOO 5s linear normal infinite;
-    }
-    #header { 
-        font-size: 40px;
-        font-weight: 800;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: grab;
-    }
-    #logo{
-        width:100px;
-        visibility: visible;
-    }
-/* BOTTOM BAR */
-    #bottomBar{
-        position: absolute;
-        bottom: 0;
-        height: 50px;
-        background-color: #220000;
-        width: 100%;
-        align-items: center;
-        padding: 0px;
-        font-size: 1em;
-        display: grid;
-        grid-template-columns: 30vw auto;
-    }
-    #lastGameType{
-        text-align: center;
-    }
-    #lastGame{
-        font-weight: 500;
-        text-align: left;
-    }
-/* POOL AND DART MENU */
-    #back{
-        position: absolute;
-        bottom:60px;
-        margin: 10px;
-        visibility: visible;
-        padding: 20px;
-        border-radius: 20px;
-        background-color: #222;
-        color: grey;
-        font-weight: 1000;
-        visibility: hidden;
-        opacity: 0.9;
-        right: 0;
-    }
-    #poolMenu{
-        display: grid;
-        visibility: hidden;
-    }
-    #poolMenu > a:hover > div {
-        background-color: #002200;
-    }
-    #rules{
-        align-items: center;
-        text-align: center;
-        background-color: black;
-        margin: 10px;
-        font-size: 2em;
-        border: 5px solid black;
-        justify-content: center;
-    }
-    .listedGame {
-        align-items: center;
-        text-align: center;
-        background-color: black;
-        display: flex;
-        height: 20vh;
-        margin: 10px;
-        font-size: 2.5em;
-        justify-content: center;
-    }
-    #dartsMenu{
-        position: absolute;
-        top: 100px;
-        width: 100%;
-        display: grid;
-        visibility: hidden;
-    }
-    #dartsMenu > a:hover > div {
-        background-color: red;
-    }
-
-    #settings{
-        background-color: rgba(0,0,0,0.9);
-        padding: 25px 50px 50px;
-        border-radius: 10px;
-        position: absolute;
-        top:125px;
-        font-size: 1.4em;
-        height: 70vh;
-        width: 100%;
-        visibility: hidden;
-    }
-    #settingsButton{
-        position: absolute;
-        right:0;
-        bottom:50px;
-        background-color: #777777;
-        border-radius: 15px 0 0 0;
-    }
-    .listofGames{
-        text-align: center;
-        height: 40vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-blend-mode: color;
-    }
-    .listofGames:hover{
-        background-blend-mode: lighten;
-    }
-    #gameChoice{
-        font-size:60px;
-        font-weight: 100;
-        position: absolute;
-        top: 30vh;
-        width: 100%;
-        display: grid;
-        grid-template-columns: auto auto;
-        
-    }
-    #pool{
-        background-image: url("pool.jpg");
-        background-color: rgba(0,0,0,0.6);
-        background-position: center;
-        background-repeat: no-repeat; 
-        background-size: cover;
-    }
-    #darts{
-        background-image: url("darts.jpg");
-        background-color: rgba(0,0,0,0.6);
-        background-position: center;
-        background-repeat: no-repeat; 
-        background-size: cover;
-    }
-    #game{
-        display: grid;
-        grid-template-columns: 50% 10% 30% 10%;
-        text-align: center;
-        font-size: 2em;
-    }
-    #game > div {
-        margin-bottom: 10px;
-        width:100%;
-        margin: 1px;
-        height:200px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    #p1active{
-        color: red;
-        font-size: 20px;
-    }
-    #gameclockoperator{
-        visibility: visible;
-    }
-    .timemachine{
-        cursor: pointer;
-        position: absolute;
-        width: 50%;
-        left: 25%;
-        text-align: center;
-        background-color: black;
-        visibility: hidden;
-        line-height: 3em;
-        bottom:100px;
-    }
-    #playeraddscore{
-        background-color: #001600;
-    }
-    #playeraddscore:hover {
-        background-color: #003300;
-    }
-    #playerremovescore{
-        background-color: #160000;
-    }
-    #playerremovescore:hover {
-        background-color: #330000;
-    }
-    #timeleft{
-        position: absolute;
-        display: grid;
-        align-items: center;
-        grid-template-columns: 25% 25% 25% 25%;
-        text-align: center;
-        font-size: 2em;
-        width: 100vw;
-    }
-    #extension{
-        background-color: red;
-    }
-    #actualClock{
-        background-color: black;
-    }
 }
+
+
+
+/* BIG SCREEN */
+@media only screen and (min-width: 3000px) {
+}
+
+
+
 /* ANIMATIONS */
 @keyframes gradOO {
-    0% {background-color: #000000;color: white;letter-spacing: 0px}
-    40% {background-color: #000000;color: white;letter-spacing: 0px}
-    45% {background-color: #000000;color: white;letter-spacing: 5px}
-    70% {background-color: #000000;color: white;letter-spacing: 5px}
-    80% {background-color: #000000;color: #222;letter-spacing: 5px}
-    82% {background-color: #000000;color: #222;letter-spacing: 5px}
-    100% {background-color: #000000;color: white;letter-spacing: 0px}
+    0% {background-color: #001100;color: white;letter-spacing: 0px}
+    40% {background-color: #001100;color: white;letter-spacing: 0px}
+    45% {background-color: #001100;color: white;letter-spacing: 5px}
+    70% {background-color: #001100;color: white;letter-spacing: 5px}
+    80% {background-color: #001100;color: #232;letter-spacing: 5px}
+    82% {background-color: #001100;color: #232;letter-spacing: 5px}
+    100% {background-color: #001100;color: white;letter-spacing: 0px}
 }

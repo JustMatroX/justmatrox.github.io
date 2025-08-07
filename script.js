@@ -78,12 +78,14 @@ function loading8ball () {
     let cookieValue = getCookie("savedata");
     if (cookieValue != "") {
         let boop = JSON.parse(cookieValue);
+        console.log(boop);
         document.getElementById('player1name').innerText = boop.player1;
         document.getElementById('player2name').innerHTML = boop.player2;
         document.getElementById('actualClock').innerHTML= 2;
         document.getElementById('player1score').innerHTML=boop.score1;
         document.getElementById('player2score').innerHTML=boop.score2;
         document.getElementById('actualClock').innerHTML=boop.timersetting+":00";
+        document.getElementById('howmanygames').innerHTML="Best of "+boop.bestofset+" ("+Math.ceil(boop.bestofset/2)+")";
     } else {
         // The cookie does not exist.
         document.getElementById('settings').style.visibility = "visible";
@@ -160,6 +162,7 @@ function saveSettingsToJSON () {
     //apply changes
     document.getElementById('player1name').innerHTML=p1name;
     document.getElementById('player2name').innerHTML=p2name;
+    document.getElementById('howmanygames').innerHTML="Best of "+bestofset+" ("+Math.ceil(bestofset/2)+")";
     if(clock==1){
         document.getElementById('actualClock').innerHTML=gametime+":00";
         document.getElementById('gameclockoperator').style.visibility="visible";
