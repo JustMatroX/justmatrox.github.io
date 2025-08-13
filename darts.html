@@ -5,7 +5,7 @@
     <link href="style.css" rel="stylesheet"/>
     <script src="script.js"></script>
 </head>
-<body onload="">
+<body onload="loadingDarts ()">
     <button id="back" onclick="backToMenu()"> Return to menu ^</button>
     
     <div class="topbar">
@@ -20,27 +20,52 @@
 
     <div id="dartgame">
         <div id="multipliers">
-            <div id="x2multi">X2</div>
-            <div id="x3multi">X3</div>
+            <div id="x2multi" class="multiOFF" onclick="multiactive(2)">X2</div>
+            <div id="x3multi" class="multiOFF" onclick="multiactive(3)">X3</div>
         </div>
         <div id="points">
             <script>
-                document.getElementById("points").innerHTML += 
-                Array.from({length: 21}, (_, i) => 
-                    `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${i})">${dartNumbers[i]}</div>`
-                ).join('');
+                pointChange(1);
             </script>
         </div>
         <div id="scoreboard">
-            <div id="p1score">
-                0
+            <div>
+                <div id="p1" class="dartsPlayerName">
+                    P1
+                </div>
+                <div id="p1score">
+                    501
+                </div>
+                <div id="p2" class="dartsPlayerName">
+                    P2
+                </div>
+                <div id="p2score">
+                    501
+                </div>
             </div>
-            <div id="p2score">
-                0
+            <div>
+                <div id="p1throw">
+                    1
+                </div>
+                <div id="turn">
+                    SETS
+                </div>
+                <div id="p2throw">
+                    1
+                </div>
+                <div id="p1throw">
+                    OOO
+                </div>
+                <div id="turn">
+
+                </div>
+                <div id="p2throw">
+
+                </div>
             </div>
         </div>
     </div>
-    <button class="dark-round-btn" onclick="settings8ball()">
+    <button style="visibility: hidden" class="dark-round-btn" onclick="settingsDarts()">
         SETTINGS
     </button>
 

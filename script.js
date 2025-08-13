@@ -55,23 +55,36 @@ function loadingMain () {
     getLastGameFromCookie ();
 }
 function backToMenu () {
-    document.getElementById("gameChoice").style.visibility= "visible"
+    
     document.getElementById("poolMenu").style.visibility= "hidden"
     document.getElementById("dartsMenu").style.visibility= "hidden"
     document.getElementById("back").style.visibility= "hidden"
+    document.getElementById('gameChoice').style.animation = "mainMenuInTiles 0.4s reverse";
     document.getElementById("gameChoice").style.visibility= "visible"
+    setTimeout(() => {
+            document.getElementById('gameChoice').style.animation = "";
+        }, 400);
+    
 }
 function hideGameChoice () {
-    document.getElementById('gameChoice').style.visibility= "hidden";
-    document.getElementById('back').style.visibility= "visible";
+    document.getElementById('gameChoice').style.animation = "mainMenuOutTiles 0.4s normal";
+    setTimeout(() => {
+            document.getElementById('gameChoice').style.visibility= "hidden";
+            document.getElementById('back').style.visibility= "visible";
+            document.getElementById('gameChoice').style.animation = "";
+        }, 300);
 }
 function poolMenu () {
     hideGameChoice();
-    document.getElementById("poolMenu").style.visibility= "visible"
+    setTimeout(() => {
+            document.getElementById("poolMenu").style.visibility= "visible"
+        }, 300);
 }
 function dartsMenu () {
     hideGameChoice();
-    document.getElementById("dartsMenu").style.visibility= "visible"
+    setTimeout(() => {
+            document.getElementById("dartsMenu").style.visibility= "visible"
+        }, 300);
 }
 //8BALL FUNCTIONS
 function loading8ball () {
@@ -260,21 +273,101 @@ function gameClock8Ball() {
 let p1score = 0;
 let p2score = 0;
 let throworder = 0;
+let ismulti2active = false;
+let ismulti3active = false;
+let memoryp1 = 0;
+let memoryp2 = 0;
 const dartNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 50];
+function loadingDarts () {
+    getLastGameFromCookie ();
+}
 function pointadd (val) {
     p1 = document.getElementById("p1score");
     p2 = document.getElementById("p2score");
     if(throworder<3){
-        p1score = Math.floor(p1.innerText)+val;
-        p1.innerHTML= p1score;
+        if(throworder==0){memoryp1=Math.floor(p1.innerText)}
+        p1score = Math.floor(p1.innerText)-val;
+        if (p1score<0) {
+            p1.innerHTML= memoryp1;
+            throworder=2;
+        } else {
+            p1.innerHTML= p1score;
+        }   
         throworder++;
+        if(throworder==3){memoryp2=Math.floor(p2.innerText)}
     } else {
-        p2score = Math.floor(p2.innerText)+val;
-        p2.innerHTML= p2score;
+        p2score = Math.floor(p2.innerText)-val;
+        if (p2score<0) {
+            p2.innerHTML= memoryp2;
+            throworder=5;
+        } else {
+            p2.innerHTML= p2score;
+        }
         throworder++;
         if(throworder==6){
             throworder=0;
         }
     }
 
+}
+function settingsDarts () {
+
+}
+function pointChange (mult) {
+    if(mult<3){
+    document.getElementById("points").innerHTML = 
+                Array.from({length: 21}, (_, i) => 
+                    `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${dartNumbers[i]*mult})">${dartNumbers[i]*mult}</div>`
+                ).join('');
+            }
+            else{
+                document.getElementById("points").innerHTML = 
+                Array.from({length: 20}, (_, i) => 
+                    `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${i*mult})">${dartNumbers[i]*mult}</div>`
+                ).join('');
+            }
+}
+function multiactive (multiplier) {
+    let x2=document.getElementById("x2multi");
+    let x3=document.getElementById("x3multi");
+    if(ismulti2active==false&ismulti3active==false){
+        if(multiplier==2){
+            x2.classList.replace("multiOFF","multiON");
+            pointChange(2);
+            ismulti2active=true;
+        } else if (multiplier==3){
+            x3.classList.replace("multiOFF","multiON");
+            pointChange(3);
+            ismulti3active=true;
+        }
+        
+    }
+    else if(ismulti2active==true){
+        if(multiplier==2){
+            x2.classList.replace("multiON","multiOFF");
+            pointChange(1);
+            ismulti2active=false;
+        } else if (multiplier==3){
+            x2.classList.replace("multiON","multiOFF");
+            setTimeout(() => {
+                x3.classList.replace("multiOFF","multiON");
+            }, 10);
+            pointChange(3);
+            ismulti2active=false;
+            ismulti3active=true;
+        }
+    }
+    else if(ismulti3active==true){
+        if(multiplier==3){
+            x3.classList.replace("multiON","multiOFF");
+            pointChange(1);
+            ismulti3active=false;
+        } else if (multiplier==2){
+            x3.classList.replace("multiON","multiOFF");
+            pointChange(2);
+            ismulti3active=false;
+            x2.classList.replace("multiOFF","multiON");
+            ismulti2active=true;
+        }
+    }
 }

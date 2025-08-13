@@ -1,13 +1,21 @@
 
 /* GENERAL */
+:root {
+    --main-color-dark: #330000;
+    --second-color-dark: rgba(0,20,20,1);
+    --bigger-text-size: 3rem;
+    --small-text-size: 1.2rem;
+}
 img{
     max-width: 100px;
 }
 body{
     padding:0;
-    background-color: #110000;
+    background-color: var(--main-color-dark);
     margin:0;
     overflow: hidden;
+    font-size: 2rem;
+    color: #fff;
 }
 a{
     text-decoration: none;
@@ -16,31 +24,26 @@ a{
 html{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-body{
-    color: #fff;
-}
 input {
-    background-color: #090909;
+    background-color: #111;
     color: white;
 }
-
-
 
 /* TOPBAR */
 .topbar{
     display: grid;
     grid-template-columns: 20% auto;
     text-align: center; 
-    background-color: #000000;
-    animation: gradOO 5s linear normal infinite;
+    background-color: var(--second-color-dark);
+    animation: gradOO 4s linear normal infinite;
+    z-index: 9999;
 }
 #header { 
-    font-size: 40px;
     font-weight: 800;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: grab;
+    cursor: pointer;
 }
 #logo{
     width:100px;
@@ -53,20 +56,21 @@ input {
 #bottomBar{
     position: absolute;
     bottom: 0;
-    height: 50px;
-    background-color: #001100;
+    height: 60px;
+    background-color: var(--second-color-dark);
     width: 100%;
     align-items: center;
     padding: 0px;
-    font-size: 1em;
     display: grid;
-    grid-template-columns: 30vw auto;
+    grid-template-columns: 50vw auto;
+    z-index: 9999;
+    font-size: var(--small-text-size);
 }
 #lastGameType{
     text-align: center;
+    color: yellowgreen
 }
 #lastGame{
-    font-weight: 500;
     text-align: left;
 }
 
@@ -75,35 +79,34 @@ input {
 /* POOL AND DART MENU */
 #back{
     position: absolute;
-    z-index: 10000;
-    bottom:0px;
-    margin: 5px;
+    z-index: 99999;
+    bottom: 0px;
     visibility: visible;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #001100;
-    text-shadow: none;
+    padding: 13px;
+    background-color: #000000;
     color: white;
     font-weight: 600;
     visibility: hidden;
+    box-shadow: none;
     opacity: 1;
     right: 0;
+    font-size: var(--small-text-size);
 }
 #poolMenu{
     display: grid;
     visibility: hidden;
 }
 #poolMenu > a:hover > div {
-    background-color: #002200;
+    background-color: var(--second-color-dark);
 }
 #rules{
     align-items: center;
     text-align: center;
     background-color: black;
-    margin: 10px;
-    font-size: 2em;
-    border: 5px solid black;
     justify-content: center;
+}
+#rules:hover {
+    background-color: var(--second-color-dark);;
 }
 .listedGame {
     align-items: center;
@@ -112,7 +115,6 @@ input {
     display: flex;
     height: 20vh;
     margin: 10px;
-    font-size: 2.5em;
     justify-content: center;
 }
 .notReady {
@@ -127,7 +129,7 @@ input {
     visibility: hidden;
 }
 #dartsMenu > a:hover > div {
-    background-color: red;
+    background-color: var(--second-color-dark);
 }
 .listofGames{
 text-align: center;
@@ -141,14 +143,13 @@ background-blend-mode: color;
     background-blend-mode: lighten;
 }
 #gameChoice{
-    font-size:60px;
     font-weight: 100;
     position: absolute;
     top: 30vh;
     width: 100%;
     display: grid;
-    grid-template-columns: auto auto;
-    
+    grid-template-columns: auto auto; 
+    font-size: var(--bigger-text-size);
 }
 #pool{
     background-image: url("pool.jpg");
@@ -176,16 +177,14 @@ background-blend-mode: color;
     border-radius: 10px;
     position: absolute;
     top:125px;
-    font-size: 1.4em;
     height: 70vh;
     width: 100%;
     visibility: hidden;
 }
 #game{
     display: grid;
-    grid-template-columns: 50% 8% 34% 8%;
+    grid-template-columns: 50% 10% 30% 10%;
     text-align: center;
-    font-size: 2em;
 }
 #game > div {
     margin-bottom: 10px;
@@ -198,7 +197,6 @@ background-blend-mode: color;
 }
 #p1active{
     color: red;
-    font-size: 15px;
 }
 #gameclockoperator{
     visibility: visible;
@@ -216,10 +214,10 @@ background-blend-mode: color;
     background-color: #002200;
 }
 #playerremovescore{
-    background-color: #160000;
+    background-color: #880000;
 }
 #playerremovescore:hover {
-    background-color: #330000;
+    background-color: #200;
 }
 #timeleft{
     position: absolute;
@@ -228,14 +226,22 @@ background-blend-mode: color;
     background-color: black;
     grid-template-columns: 25% 25% 25% 25%;
     text-align: center;
-    font-size: 1.6em;
     width: 100vw;
+    font-size: var(--small-text-size);
+}
+#timeleft > div {
+    display: flex;   
+    justify-content: center;
+    align-items: center;
+    min-height: 50px;
+    height: 100%;
 }
 #extension{
     background-color: #660000;
 }
 #actualClock{
     background-color: black;
+    font-size: var(--bigger-text-size);
 }
 /* IN-GAME DARTS */
 #dartgame {
@@ -244,7 +250,6 @@ background-blend-mode: color;
     text-align: center;
     align-items: center;
     justify-content: center;
-    font-size: 1.8em;
     font-family: Rubik, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     margin-left: 1vw;
 }
@@ -252,16 +257,13 @@ background-blend-mode: color;
     width: 100%;
     display: grid;
     grid-template-columns: 49vw 49vw;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
     height: 100px;
 }
 #points {
-    background-color: black;
     display: grid;
     bottom: 50px;
-    width: 100%;
+    width: 98vw;
+    background-color: var(--main-color-dark);
     grid-template-columns: repeat(7, 14vw); /* 7 equal columns */
 }
 .dartnumber{
@@ -270,55 +272,88 @@ background-blend-mode: color;
     text-align: center;
     align-items: center;
     justify-content: center;
-    border: 1px solid #222;
+    background-color: #000;
+    border: 1px solid #222;  
+    transition: all 0.2s ease;
+    cursor: pointer;
 }
 .dartnumber:hover{
     background-color: #500000;
 }
-#scoreboard{
+#scoreboard > div:first-child{
     display: grid;
-    grid-template-columns: 50vw 50vw;
-    font-size: 3em;
+    grid-template-columns: 30vw 20vw 30vw 20vw;
+}
+#scoreboard > div:first-child > div{
+    display: flex;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+}
+#scoreboard > div:last-child{
+    display: grid;
+    grid-template-columns: 40vw 20vw 40vw;
+}
+.dartsPlayerName{
+    background-color: #002;
+}
+.multiON{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: red;
+    border: 1px solid #222;
+    cursor: pointer;
+    color: white;
+    animation: weirdGrad 2s infinite;
+}
+.multiOFF{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: #000;
+    border: 1px solid #222;  
+    cursor: pointer;
+    color: red;
+    animation: none;
 }
 
 .dark-round-btn {
     position: absolute;
     bottom: 60px;
+    z-index: 99999;
     right: 0;
-    background: linear-gradient(145deg, #0f0f0f, #2a2a2a);
+    background: black;
     color: #fff;
     border: none;
     border-radius: 10px;
-    padding: 0.5em 0.5em; /* makes it grow with text */
-    min-width: 3em;       /* keeps it from collapsing */
-    min-height: 3em;      /* ensures height matches width */
+    padding: 0.2em 0.2em; /* makes it grow with text */
+    min-width: 2em;       /* keeps it from collapsing */
+    min-height: 60px;      /* ensures height matches width */
     display: inline-flex; /* centers text horizontally & vertically */
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
     cursor: pointer;
-    box-shadow: 
-    4px 4px 8px rgba(0, 0, 0, 0.6),
-    -4px -4px 8px rgba(255, 255, 255, 0.05);
-    transition: all 0.2s ease;
+    transition: all 0.5s ease;
 }
 
 .dark-round-btn:hover {
-  background: linear-gradient(145deg, #2a2a2a, #0f0f0f);
+    background: var(--main-color-dark);
   box-shadow: 
-    2px 2px 6px rgba(0, 0, 0, 0.7),
+    5px 5px 10px rgba(0, 0, 0, 0.7),
     -2px -2px 6px rgba(255, 255, 255, 0.07);
-}
-
-.dark-round-btn:active {
-  background: linear-gradient(145deg, #181818, #202020);
-  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.7),
-              inset -2px -2px 4px rgba(255, 255, 255, 0.05);
 }
 
 
 /* SMALL SCREEN */
-@media only screen and (max-width: 3000px) {
+@media only screen and (max-width: 500px) {
+    body{
+        color: white;
+    }
 }
 
 
@@ -331,11 +366,24 @@ background-blend-mode: color;
 
 /* ANIMATIONS */
 @keyframes gradOO {
-    0% {background-color: #001100;color: white;letter-spacing: 0px}
-    40% {background-color: #001100;color: white;letter-spacing: 0px}
-    45% {background-color: #001100;color: white;letter-spacing: 5px}
-    70% {background-color: #001100;color: white;letter-spacing: 5px}
-    80% {background-color: #001100;color: #232;letter-spacing: 5px}
-    82% {background-color: #001100;color: #232;letter-spacing: 5px}
-    100% {background-color: #001100;color: white;letter-spacing: 0px}
+    0% {color: white;letter-spacing: 0px}
+    40% {color: white;letter-spacing: 0px}
+    45% {color: white;letter-spacing: 5px}
+    70% {color: white;letter-spacing: 5px}
+    80% {color: #232;letter-spacing: 5px}
+    82% {color: #232;letter-spacing: 5px}
+    100% {color: white;letter-spacing: 0px}
+}
+@keyframes mainMenuOutTiles {
+    0% {opacity: 1; margin-left: 0vw; font-size: 2rem;}
+    100% {opacity: 0; margin-left: 80vw; font-size: 4rem;}
+}
+@keyframes mainMenuInTiles {
+    0% {opacity: 1; margin-top: 0vh; font-size: 2rem;}
+    100% {opacity: 0; margin-top: 80vh; font-size: 4rem;}
+}
+@keyframes weirdGrad {
+    0% {background-color: rgba(255,0,0,1);}
+    50% {background-color: rgba(99,0,0,1);}
+    100% {background-color: rgba(255,0,0,1);}
 }
