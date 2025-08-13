@@ -156,6 +156,7 @@ background-blend-mode: color;
     background-position: center;
     background-repeat: no-repeat; 
     background-size: cover;
+    cursor: pointer;
 }
 #darts{
     background-image: url("darts.jpg");
@@ -163,11 +164,12 @@ background-blend-mode: color;
     background-position: center;
     background-repeat: no-repeat; 
     background-size: cover;
+    cursor: pointer;
 }
 
 
 
-/* IN-GAME */
+/* IN-GAME POOL */
 #settings{
     background-color: rgba(0,0,0,0.9);
     padding: 25px 50px 50px;
@@ -179,18 +181,9 @@ background-blend-mode: color;
     width: 100%;
     visibility: hidden;
 }
-#settingsButton{
-    position: absolute;
-    right:0;
-    bottom:50px;
-    background-color: #001100;
-    color: #ddd;
-    font-weight: 600;
-    border-radius: 15px 0 0 0;
-}
 #game{
     display: grid;
-    grid-template-columns: 50% 5% 40% 5%;
+    grid-template-columns: 50% 8% 34% 8%;
     text-align: center;
     font-size: 2em;
 }
@@ -235,7 +228,7 @@ background-blend-mode: color;
     background-color: black;
     grid-template-columns: 25% 25% 25% 25%;
     text-align: center;
-    font-size: 2em;
+    font-size: 1.6em;
     width: 100vw;
 }
 #extension{
@@ -244,7 +237,84 @@ background-blend-mode: color;
 #actualClock{
     background-color: black;
 }
+/* IN-GAME DARTS */
+#dartgame {
+    bottom: 50px;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8em;
+    font-family: Rubik, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-left: 1vw;
+}
+#multipliers{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 49vw 49vw;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+}
+#points {
+    background-color: black;
+    display: grid;
+    bottom: 50px;
+    width: 100%;
+    grid-template-columns: repeat(7, 14vw); /* 7 equal columns */
+}
+.dartnumber{
+    height: 80px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #222;
+}
+.dartnumber:hover{
+    background-color: #500000;
+}
+#scoreboard{
+    display: grid;
+    grid-template-columns: 50vw 50vw;
+    font-size: 3em;
+}
 
+.dark-round-btn {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    background: linear-gradient(145deg, #0f0f0f, #2a2a2a);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 0.5em 0.5em; /* makes it grow with text */
+    min-width: 3em;       /* keeps it from collapsing */
+    min-height: 3em;      /* ensures height matches width */
+    display: inline-flex; /* centers text horizontally & vertically */
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    -4px -4px 8px rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+}
+
+.dark-round-btn:hover {
+  background: linear-gradient(145deg, #2a2a2a, #0f0f0f);
+  box-shadow: 
+    2px 2px 6px rgba(0, 0, 0, 0.7),
+    -2px -2px 6px rgba(255, 255, 255, 0.07);
+}
+
+.dark-round-btn:active {
+  background: linear-gradient(145deg, #181818, #202020);
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.7),
+              inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+}
 
 
 /* SMALL SCREEN */

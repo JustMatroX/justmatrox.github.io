@@ -92,8 +92,15 @@ function loading8ball () {
     }
     getLastGameFromCookie ();
 }
-function backToMenuFromGame () {
+function backToMenuFromPoolGame () {
     saveGame();
+    if(true){
+        if (confirm("Are you sure you want to go back to menu? (progress will be saved)")){
+            window.location.href = "index.html";
+        }  
+    }       
+}
+function backToMenuFromDartsGame () {
     if(true){
         if (confirm("Are you sure you want to go back to menu? (progress will be saved)")){
             window.location.href = "index.html";
@@ -248,4 +255,26 @@ function gameClock8Ball() {
         savedseconds = seconds;
         clockrunning=false;
     }
+}
+//DARTS FUNCTIONS
+let p1score = 0;
+let p2score = 0;
+let throworder = 0;
+const dartNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 50];
+function pointadd (val) {
+    p1 = document.getElementById("p1score");
+    p2 = document.getElementById("p2score");
+    if(throworder<3){
+        p1score = Math.floor(p1.innerText)+val;
+        p1.innerHTML= p1score;
+        throworder++;
+    } else {
+        p2score = Math.floor(p2.innerText)+val;
+        p2.innerHTML= p2score;
+        throworder++;
+        if(throworder==6){
+            throworder=0;
+        }
+    }
+
 }

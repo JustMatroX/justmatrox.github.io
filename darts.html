@@ -5,7 +5,7 @@
     <link href="style.css" rel="stylesheet"/>
     <script src="script.js"></script>
 </head>
-<body onload="loading8ball()">
+<body onload="">
     <button id="back" onclick="backToMenu()"> Return to menu ^</button>
     
     <div class="topbar">
@@ -13,35 +13,36 @@
             <img src="./logo.png">
         </div>
 
-        <div id="header" onclick="backToMenuFromGame()">
+        <div id="header" onclick="backToMenuFromDartsGame()">
             Cue & Dart
         </div>
     </div>
 
-    <div id="game">
-        <div id="player1name">
+    <div id="dartgame">
+        <div id="multipliers">
+            <div id="x2multi">X2</div>
+            <div id="x3multi">X3</div>
         </div>
-        <div id="playeraddscore" onclick="alterscore(1)">
-            +
+        <div id="points">
+            <script>
+                document.getElementById("points").innerHTML += 
+                Array.from({length: 21}, (_, i) => 
+                    `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${i})">${dartNumbers[i]}</div>`
+                ).join('');
+            </script>
         </div>
-        <div id="player1score">
-            0
-        </div>
-        <div id="playerremovescore" onclick="alterscore(2)">
-            -
-        </div>
-        <div id="player2name">
-        </div>
-        <div id="playeraddscore" onclick="alterscore(3)">
-            +
-        </div>
-        <div id="player2score">
-            0
-        </div>
-        <div id="playerremovescore" onclick="alterscore(4)">
-            -
+        <div id="scoreboard">
+            <div id="p1score">
+                0
+            </div>
+            <div id="p2score">
+                0
+            </div>
         </div>
     </div>
+    <button class="dark-round-btn" onclick="settings8ball()">
+        SETTINGS
+    </button>
 
     <div id="bottomBar">
         <div id="lastGameType">
