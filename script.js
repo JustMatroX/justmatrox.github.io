@@ -7,6 +7,11 @@ let p1turn = true;
 let minutes = 0;
 let seconds = 0;
 let timerID;
+let turnofwho = 0;
+let didswitchturnoccur = false;
+let wasextused = false;
+const timeForShot = 30;
+let timePlayer = timeForShot;
 //COOKIE FUNCTIONS
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
@@ -91,19 +96,39 @@ function loading8ball () {
     let cookieValue = getCookie("savedata");
     if (cookieValue != "") {
         let boop = JSON.parse(cookieValue);
-        console.log(boop);
+        //GAME ITEMS
         document.getElementById('player1name').innerText = boop.player1;
         document.getElementById('player2name').innerHTML = boop.player2;
         document.getElementById('actualClock').innerHTML= 2;
         document.getElementById('player1score').innerHTML=boop.score1;
         document.getElementById('player2score').innerHTML=boop.score2;
-        document.getElementById('actualClock').innerHTML=boop.timersetting+":00";
+        if(boop.timerOn==0){
+            document.getElementById('actualClock').innerHTML=boop.timersetting+":00";
+            document.getElementById('gameclockoperator').style.visibility="visible";
+            document.getElementById('controllers').style.visibility="visible";
+        } 
+        else {
+            document.getElementById('actualClock').innerHTML="--:--";
+            document.getElementById('gameclockoperator').style.visibility="hidden";
+            document.getElementById('controllers').style.visibility="hidden";
+            document.getElementById('p1active').classList.remove("playingRN");
+            document.getElementById('p2active').classList.remove("playingRN");
+        }
         document.getElementById('howmanygames').innerHTML="Best of "+boop.bestofset+" ("+Math.ceil(boop.bestofset/2)+")";
+        //SETTINGS
+        document.getElementById('player1').value=boop.player1;
+        document.getElementById('player2').value=boop.player2;
+        document.getElementById('timer').value=boop.timersetting;
+        document.getElementById('gameclock').selectedIndex=boop.timerOn;
+        document.getElementById('bestof').value=boop.bestofset;
+        document.getElementById('player2').value;
+        
     } else {
         // The cookie does not exist.
         document.getElementById('settings').style.visibility = "visible";
     }
     getLastGameFromCookie ();
+    switchplayer(1);
 }
 function backToMenuFromPoolGame () {
     saveGame();
@@ -130,31 +155,35 @@ function saveGame(){
     let gameType = "8 Ball";
     let scoreboard = name1+": "+score1+"<br/>"+name2+": "+score2;
     let timersetting = document.getElementById("timer").value;
+    let timerOn = document.getElementById("gameclock").selectedIndex;
     const savedata = {
         player1: name1.trim(),
         player2: name2.trim(),
         score1: score1.trim(),
-        score2: score2. trim(),
+        score2: score2.trim(),
         gameType: gameType,
         scoreboard: scoreboard,
         bestofset: bestofset,
-        timersetting: timersetting
+        timersetting: timersetting,
+        timerOn: timerOn
     };
     const jsonsavedata = JSON.stringify(savedata);
     setCookie('savedata',jsonsavedata,365);
 
     document.getElementById("lastGameType").innerHTML= savedata.gameType;
     document.getElementById("lastGame").innerHTML= savedata.scoreboard;
-    console.log(getCookie('player1'));
+    console.log(savedata);
 } 
 function settings8ball () {
     if (setopen){
         document.getElementById("settings").style.visibility="hidden";
+        document.getElementById("timechoicevis").style.visibility="hidden";
         setopen=false;
     }
     else{
     document.getElementById("settings").style.visibility="visible";
     setopen = true;
+    poolCheckIfTimeSetting();
     }
 }
 function saveSettingsToJSON () {
@@ -188,11 +217,13 @@ function saveSettingsToJSON () {
         document.getElementById('gameclockoperator').style.visibility="visible";
     } 
     else {
-        document.getElementById('actualClock').innerHTML="Not timed";
+        document.getElementById('actualClock').innerHTML="--:--";
         document.getElementById('gameclockoperator').style.visibility="hidden";
     }
-    saveGame()
-    getLastGameFromCookie ()
+    saveGame();
+    settings8ball ();
+    loading8ball ();
+    getLastGameFromCookie ();
 }
 function alterscore (typeOfOperation) {
     //get current score
@@ -203,7 +234,8 @@ function alterscore (typeOfOperation) {
     //how to edit the score
     if (typeOfOperation==1){
         s1.innerHTML++;
-        if(s1.innerHTML==max){
+        if(clockrunning){gameClock8Ball()};
+        if(s1.innerHTML>=max){
             alert("Player 1 won!");
             s1.innerHTML=0;
             s2.innerHTML=0;
@@ -213,8 +245,9 @@ function alterscore (typeOfOperation) {
         if(s1.innerHTML>0)s1.innerHTML--;
     }
     else if (typeOfOperation==3){
+        if(clockrunning){gameClock8Ball()};
         s2.innerHTML++;
-        if(s2.innerHTML==max){
+        if(s2.innerHTML>=max){
             alert("Player 2 won!");
             s1.innerHTML=0;
             s2.innerHTML=0;
@@ -223,6 +256,8 @@ function alterscore (typeOfOperation) {
     else if (typeOfOperation==4){
         if(s2.innerHTML>0)s2.innerHTML--;
     }
+    //save game
+    saveGame();
 }
 function gameClock8Ball() {
     // Set the duration of the countdown in seconds
@@ -230,7 +265,10 @@ function gameClock8Ball() {
     var timeInSeconds = fetchsettings.gametime*60; 
     var display = document.getElementById("actualClock");
     var button = document.getElementById("gameclockoperator");
+    var timer1 = document.getElementById("p1timer");
+    var timer2 = document.getElementById("p2timer");
     if(!clockrunning){
+        button.textContent="STOP CLOCK";
         timerID = setInterval(function() {
             button.textContent="STOP CLOCK";
             //checks if there was already a pause and gets time left from relevant source
@@ -241,6 +279,31 @@ function gameClock8Ball() {
             else{
             minutes = Math.floor(timeInSeconds / 60);
             seconds = timeInSeconds % 60;
+            if(turnofwho==1){
+                if(didswitchturnoccur){
+                    timePlayer=timeForShot;
+                    didswitchturnoccur=false;
+                }
+                else{
+                    timePlayer--;
+                    if(timePlayer==0){switchplayer(3);}
+                }
+                timer1.innerHTML=timePlayer;
+                timer2.innerHTML="";
+            }
+            else{
+                
+                if(didswitchturnoccur){
+                    timePlayer=timeForShot;
+                    didswitchturnoccur=false;
+                }
+                else{
+                    timePlayer--;
+                    if(timePlayer==0){switchplayer(3);}
+                }
+                timer2.innerHTML=timePlayer;
+                timer1.innerHTML="";
+            }
             }
 
             clockrunning = true; // forces stopping the interval
@@ -256,6 +319,7 @@ function gameClock8Ball() {
             // When the countdown is finished, stop the timer
             if (timeInSeconds < 0) {
                 clearInterval(timerID);
+                savedtime=false;
                 display.textContent = "Time's Up!";
             }
         }, 1000);
@@ -267,6 +331,87 @@ function gameClock8Ball() {
         savedminutes = minutes;
         savedseconds = seconds;
         clockrunning=false;
+    }
+}
+function reset8ballGame() {
+    clearInterval(timerID);
+    savedtime=false;
+    document.getElementById('player1score').innerText=0;
+    document.getElementById('player2score').innerText=0;
+    saveSettingsToJSON();
+    switchplayer(4);
+}
+function poolCheckIfTimeSetting() {
+    if(document.getElementById("gameclock").value==1){
+        document.getElementById("timechoicevis").style.visibility="visible";
+    } else {
+        document.getElementById("timechoicevis").style.visibility="hidden";
+    }
+}
+function switchplayer(param) {
+    let insp1s = document.getElementById('player1score').innerText;
+    let insp2s = document.getElementById('player2score').innerText;
+    let bothps = Math.floor(insp1s)+Math.floor(insp2s);
+    let p1a = document.getElementById('p1active');
+    let p2a = document.getElementById('p2active');
+    let timerek = document.getElementById('gameclock').selectedIndex;
+    var timer1 = document.getElementById("p1timer");
+    var timer2 = document.getElementById("p2timer");
+    if(param==1&timerek==0){
+        if(bothps%2==0){
+            p2a.classList.remove("playingRN");
+            p1a.classList.add("playingRN");
+            turnofwho = 1;
+            didswitchturnoccur = true;
+        } else {
+            p1a.classList.remove("playingRN");
+            p2a.classList.add("playingRN");
+            turnofwho = 2;
+            didswitchturnoccur = true;
+        }
+    }
+    else if(param==2){
+        timePlayer=timeForShot+1;
+    }
+    else if(param==3){
+        if(turnofwho==1){
+            turnofwho=2;
+            didswitchturnoccur = true;
+            p1a.classList.remove("playingRN");
+            p2a.classList.add("playingRN"); 
+            if(clockrunning == false){gameClock8Ball()}
+        }
+        else {
+            p2a.classList.remove("playingRN");
+            p1a.classList.add("playingRN");
+            turnofwho=1;
+            didswitchturnoccur = true;
+        }
+        wasextused=false;
+    }
+    else if(param==4){
+        timer1.innerHTML="";
+        timer2.innerHTML="";
+        if(bothps%2==0){
+            p2a.classList.remove("playingRN");
+            p1a.classList.add("playingRN");
+            turnofwho = 1;
+            didswitchturnoccur = true;
+        } else {
+            p1a.classList.remove("playingRN");
+            p2a.classList.add("playingRN");
+            turnofwho = 2;
+            didswitchturnoccur = true;
+        }
+
+    }
+}
+function extension () {
+    if(wasextused){
+
+    }else{
+        wasextused=true;
+        timePlayer+=30;
     }
 }
 //DARTS FUNCTIONS
@@ -317,13 +462,13 @@ function pointChange (mult) {
     if(mult<3){
     document.getElementById("points").innerHTML = 
                 Array.from({length: 21}, (_, i) => 
-                    `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${dartNumbers[i]*mult})">${dartNumbers[i]*mult}</div>`
+                    `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${dartNumbers[i]*mult})">${dartNumbers[i]}</div>`
                 ).join('');
             }
             else{
                 document.getElementById("points").innerHTML = 
                 Array.from({length: 20}, (_, i) => 
-                    `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${i*mult})">${dartNumbers[i]*mult}</div>`
+                    `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${i*mult})">${dartNumbers[i]}</div>`
                 ).join('');
             }
 }

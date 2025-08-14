@@ -1,10 +1,10 @@
 
 /* GENERAL */
 :root {
-    --main-color-dark: #330000;
+    --main-color-dark: #150000;
     --second-color-dark: rgba(0,20,20,1);
     --bigger-text-size: 3rem;
-    --small-text-size: 1.2rem;
+    --small-text-size: 1.3rem;
 }
 img{
     max-width: 100px;
@@ -24,9 +24,15 @@ a{
 html{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-input {
+input , select{
     background-color: #111;
     color: white;
+    border: #555 solid 1px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    font-family: Rubik;
 }
 
 /* TOPBAR */
@@ -35,7 +41,7 @@ input {
     grid-template-columns: 20% auto;
     text-align: center; 
     background-color: var(--second-color-dark);
-    animation: gradOO 4s linear normal infinite;
+    animation: gradOO 30s linear normal infinite;
     z-index: 9999;
 }
 #header { 
@@ -172,14 +178,32 @@ background-blend-mode: color;
 
 /* IN-GAME POOL */
 #settings{
-    background-color: rgba(0,0,0,0.9);
-    padding: 25px 50px 50px;
+    background-color: rgba(0,0,0,0.8);
+    padding: 20%;
     border-radius: 10px;
     position: absolute;
-    top:125px;
-    height: 70vh;
+    bottom: 60px;
+    
+    padding-top: 160px;
     width: 100%;
+    height: 100%;
+    text-align: center;
+    align-items: flex-end;
     visibility: hidden;
+}
+#settings > *{
+    margin: 5px;
+}
+.settingsbutton {
+    font-family: Rubik;
+    width: 100%;
+    background-color: #010;
+    color: white;
+    border: none;
+}
+.settingsbutton:hover {
+    background-color: #020;
+    color: white;
 }
 #game{
     display: grid;
@@ -200,7 +224,7 @@ background-blend-mode: color;
 }
 #gameclockoperator{
     visibility: visible;
-    background-color: #222200;
+    background-color: #080808;
 }
 .timemachine{
     cursor: pointer;
@@ -219,12 +243,14 @@ background-blend-mode: color;
 #playerremovescore:hover {
     background-color: #200;
 }
+.playertimer{
+    font-size: var(--bigger-text-size);
+    background-color: #333;
+}
 #timeleft{
-    position: absolute;
     display: grid;
     align-items: center;
-    background-color: black;
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-columns: 20% 20% 40% 20%;
     text-align: center;
     width: 100vw;
     font-size: var(--small-text-size);
@@ -233,7 +259,8 @@ background-blend-mode: color;
     display: flex;   
     justify-content: center;
     align-items: center;
-    min-height: 50px;
+    margin:1px;
+    min-height: 49px;
     height: 100%;
 }
 #extension{
@@ -242,6 +269,44 @@ background-blend-mode: color;
 #actualClock{
     background-color: black;
     font-size: var(--bigger-text-size);
+}
+#controllers{
+    display:grid;
+    height: 200px;
+    grid-template-columns: 30% 40% 30%;
+    text-align: center;
+
+}
+#controllers > div {
+    display: flex;
+    justify-content: center;
+}
+.next{
+    background-color: #121;
+}
+.next:hover{
+    background-color: #131;
+    animation: nextshotAnim 0.5s normal 1;
+}
+.miss{
+    background-color: #211;
+    transition: all 0.5s ease-in;
+}
+.miss:hover{
+    background-color: #500;
+}
+.indiLabel{
+    background-color: #111;
+    height: 2rem;
+    color: white;
+    border-bottom: 2px solid #333;
+    border-radius: 0 0 25px 25px;
+}
+.playingRN{
+    background-color: yellowgreen;
+}
+.indiLabel{
+    font-size: var(--small-text-size);
 }
 /* IN-GAME DARTS */
 #dartgame {
@@ -321,8 +386,7 @@ background-blend-mode: color;
     color: red;
     animation: none;
 }
-
-.dark-round-btn {
+.dark-round-btn, .dark-round-btn:active {
     position: absolute;
     bottom: 60px;
     z-index: 99999;
@@ -340,7 +404,6 @@ background-blend-mode: color;
     cursor: pointer;
     transition: all 0.5s ease;
 }
-
 .dark-round-btn:hover {
     background: var(--main-color-dark);
   box-shadow: 
@@ -367,11 +430,11 @@ background-blend-mode: color;
 /* ANIMATIONS */
 @keyframes gradOO {
     0% {color: white;letter-spacing: 0px}
-    40% {color: white;letter-spacing: 0px}
-    45% {color: white;letter-spacing: 5px}
-    70% {color: white;letter-spacing: 5px}
-    80% {color: #232;letter-spacing: 5px}
-    82% {color: #232;letter-spacing: 5px}
+    88% {color: white;letter-spacing: 0px}
+    90% {color: white;letter-spacing: 5px}
+    96% {color: white;letter-spacing: 5px}
+    98% {color: #232;letter-spacing: 5px}
+    99% {color: #232;letter-spacing: 5px}
     100% {color: white;letter-spacing: 0px}
 }
 @keyframes mainMenuOutTiles {
@@ -386,4 +449,8 @@ background-blend-mode: color;
     0% {background-color: rgba(255,0,0,1);}
     50% {background-color: rgba(99,0,0,1);}
     100% {background-color: rgba(255,0,0,1);}
+}
+@keyframes nextshotAnim {
+    0% {background-color: #040;}
+    100% {background-color: #060;}
 }
