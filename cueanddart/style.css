@@ -1,8 +1,8 @@
 
 /* GENERAL */
 :root {
-    --main-color-dark: #200000;
-    --second-color-dark: rgba(0,20,20,1);
+    --main-color-dark: rgba(24,0,0,1);
+    --second-color-dark: rgba(0,24,24,1);
     --bigger-text-size: 2.2rem;
     --small-text-size: 1.2rem;
 }
@@ -11,7 +11,7 @@ img{
 }
 body{
     padding:0;
-    background-color: var(--main-color-dark);
+    background-color: black;
     margin:0;
     overflow: hidden;
     font-size: 2rem;
@@ -46,7 +46,7 @@ input , select{
     z-index: 9999;
 }
 #header { 
-    font-weight: 800;
+    font-weight: 600;
     display: flex;
     animation: gradOO 20s linear normal infinite;
     justify-content: center;
@@ -90,6 +90,8 @@ input , select{
     display: grid;
     grid-template-columns: 50vw auto;
     z-index: 9999;
+    font-weight: 400;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: var(--small-text-size);
 }
 #lastGameType{
@@ -137,7 +139,7 @@ input , select{
 .listedGame {
     align-items: center;
     text-align: center;
-    background-color: black;
+    background-color: #121;
     display: flex;
     height: 20vh;
     margin: 10px;
@@ -159,19 +161,21 @@ input , select{
 }
 .listofGames{
 text-align: center;
-height: 40vh;
+height: 50vh;
 display: flex;
 justify-content: center;
 align-items: center;
 background-blend-mode: color;
 }
 .listofGames:hover{
-    background-blend-mode: lighten;
+    background-blend-mode:luminosity;
+    color: red;
+    scale: 1.2;
 }
 #gameChoice{
-    font-weight: 100;
+    font-weight: 500;
     position: absolute;
-    top: 30vh;
+    top: 25vh;
     width: 100%;
     display: grid;
     grid-template-columns: auto auto; 
@@ -179,7 +183,7 @@ background-blend-mode: color;
 }
 #pool{
     background-image: url("pool.jpg");
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0,0,0,0.8);
     background-position: center;
     background-repeat: no-repeat; 
     background-size: cover;
@@ -187,7 +191,7 @@ background-blend-mode: color;
 }
 #darts{
     background-image: url("darts.jpg");
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0,0,0,0.8);
     background-position: center;
     background-repeat: no-repeat; 
     background-size: cover;
@@ -223,20 +227,26 @@ background-blend-mode: color;
     color: white;
 }
 .game{
-    border-radius: 50px 50px 0 0;
+    background-color: var(--main-color-dark);
+    margin-top: 5vh;
     display: grid;
     text-align: center;
     grid-template-rows: auto auto;
 }
 .gamerow1{
     display: grid;
-    grid-template-columns: 38% 10% 4% 10% 38%;
-    height:100px;
+    border-top: 2px solid #888888;
+    border-radius: 20px 20px 0 0;
+    grid-template-columns: 42% 8% 8% 42%;
+    min-height: 80px;
+    height: 15vh;
 }
 .gamerow2{
     display: grid;
-    grid-template-columns: 24% 24% 4% 24% 24%;
-    height:50px;
+    grid-template-columns: 21% 21% 16% 21% 21%;
+    font-size: 1.2rem;
+    min-height:40px;
+    height: 4vw;
     
 }
 .ingamediv {
@@ -246,12 +256,16 @@ background-blend-mode: color;
     align-items: center;
 }
 #player1name, #player2name{
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0);
 }
 #player1score, #player2score{
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0,0,0,1);
 }
 #nothingness {
+    background-color: #000;
+}
+#howmanygames {
+    grid-column: 2/4;
     background-color: #000;
 }
 #playeraddscore{
@@ -268,13 +282,14 @@ background-blend-mode: color;
 }
 .playertimer{
     font-size: var(--bigger-text-size);
-    background-color: #000;
+    background-color: black;
+    border-radius: 0 0 20px 0;
     color: #bbbbbb;
 }
 #timeleft{
     display: grid;
     align-items: center;
-    grid-template-columns: 20% 20% 40% 20%;
+    grid-template-columns: 21% 21% 37% 21%;
     text-align: center;
     width: 100vw;
     font-size: var(--small-text-size);
@@ -284,13 +299,15 @@ background-blend-mode: color;
     justify-content: center;
     align-items: center;
     min-height: 49px;
-    height: 100%;
+    max-height: 200px;
+    height: 6vw;
 }
 #extension{
-    background-color: #660000;
+    background-color: #550000;
+    border-radius: 20px;
 }
 #actualClock{
-    background-color: black;
+    background-color: #000;
     font-size: var(--bigger-text-size);
 }
 #controllers{
@@ -306,12 +323,11 @@ background-blend-mode: color;
     justify-content: center;
 }
 .timemachine{
-    background-color: #000000;
+    background-color: #001100;
     visibility: hidden;
     height: 60px;
     border-bottom: 2px solid #888888;
-    border-right: 2px solid #444444;
-    border-radius: 0 0 100px 100px;
+    border-radius: 0 0 20px 20px;
     line-height: 60px;
     cursor: pointer;
     grid-column:1 / 3;
@@ -437,7 +453,7 @@ background-blend-mode: color;
 .dark-round-btn, .dark-round-btn:active {
     position: absolute;
     bottom: 60px;
-    z-index: 9999999;
+    z-index: 99999;
     right: 0;
     background: black;
     color: #fff;
@@ -464,6 +480,9 @@ background-blend-mode: color;
 @media only screen and (max-width: 500px) {
     body{
         color: white;
+    }
+    #timeleft{
+        margin-top: 5vh;
     }
 }
 

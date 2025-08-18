@@ -45,7 +45,7 @@ function getLastGameFromCookie () {
         let Tt = JSON.parse(getCookie('savedata'));
         if(Tt.score1>0||Tt.score2>0){
             document.getElementById("lastGameType").innerHTML= "LAST GAME: "+Tt.gameType+" (First to "+Tt.bestofset+")";
-            document.getElementById("lastGame").innerHTML= Tt.player1+": "+Tt.score1+"<br/>"+Tt.player2+": "+Tt.score2;
+            document.getElementById("lastGame").innerHTML= Tt.player1+": "+Tt.score1+"&nbsp;|&nbsp;"+Tt.player2+": "+Tt.score2;
         }
         else{
             document.getElementById("lastGame").innerHTML= "No last game found";
@@ -263,11 +263,13 @@ function gameClock8Ball() {
     var button = document.getElementById("gameclockoperator");
     var timer1 = document.getElementById("p1timer");
     var timer2 = document.getElementById("p2timer");
-    timerID = 222;
     if(!clockrunning){
         button.innerHTML="<i class='fa-solid fa-pause fa-1x'>&nbsp;</i>STOP CLOCK";
+        button.style.backgroundColor="#110000";
+        
         timerID = setInterval(function() {
             button.innerHTML="<i class='fa-solid fa-pause fa-1x'>&nbsp;</i>STOP CLOCK";
+            button.style.backgroundColor="#110000";
             //checks if there was already a pause and gets time left from relevant source
             if(savedtime){
                 timeInSeconds = savedminutes*60+savedseconds;
@@ -323,6 +325,7 @@ function gameClock8Ball() {
     }
     else {
         button.innerHTML="<i class='fa-solid fa-play fa-1x'>&nbsp;</i>RESUME";
+        button.style.backgroundColor="#222200";
         clearInterval(timerID); //stop of interval
         savedtime=true; // forces not using set time
         savedminutes = minutes;
