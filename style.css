@@ -1,13 +1,13 @@
 
 /* GENERAL */
 :root {
-    --main-color-dark: #150000;
+    --main-color-dark: #200000;
     --second-color-dark: rgba(0,20,20,1);
-    --bigger-text-size: 3rem;
-    --small-text-size: 1.3rem;
+    --bigger-text-size: 2.2rem;
+    --small-text-size: 1.2rem;
 }
 img{
-    max-width: 100px;
+    max-width: 80px;
 }
 body{
     padding:0;
@@ -37,23 +37,43 @@ input , select{
 
 /* TOPBAR */
 .topbar{
+    height: 80px;
+    width: 100%;
     display: grid;
-    grid-template-columns: 20% auto;
+    grid-template-columns: 80px auto auto;
     text-align: center; 
     background-color: var(--second-color-dark);
-    animation: gradOO 30s linear normal infinite;
     z-index: 9999;
 }
 #header { 
     font-weight: 800;
     display: flex;
+    animation: gradOO 20s linear normal infinite;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
 }
-#logo{
-    width:100px;
-    visibility: visible;
+#headerback { 
+    font-weight: 800;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+.headerback {
+    cursor: pointer;
+    font-weight: 100;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: #000000;
+    padding: 0rem 1rem;
+    cursor: pointer;
+    border-radius: 20px;
+    border: 2px solid;
+    border-color: #000 #888 #888 #444;
+    box-shadow: #000;
+}
+.headerback:hover {
+    font-weight: 100;
+    background-color: #181818;
+    border-color: #222 #bbb #bbb #888;
 }
 
 
@@ -86,7 +106,7 @@ input , select{
 #back{
     position: absolute;
     z-index: 99999;
-    bottom: 0px;
+    bottom: 60px;
     visibility: visible;
     padding: 13px;
     background-color: #000000;
@@ -178,26 +198,23 @@ background-blend-mode: color;
 
 /* IN-GAME POOL */
 #settings{
+    z-index: 999999;
     background-color: rgba(0,0,0,0.8);
-    padding: 20%;
-    border-radius: 10px;
+    padding: 10px;
     position: absolute;
-    bottom: 60px;
-    
-    padding-top: 160px;
+    top: 0;
+    padding: 25px 25px 0;
     width: 100%;
     height: 100%;
     text-align: center;
     align-items: flex-end;
     visibility: hidden;
 }
-#settings > *{
-    margin: 5px;
-}
 .settingsbutton {
+    margin-top: 5px;
     font-family: Rubik;
     width: 100%;
-    background-color: #010;
+    background-color: #020;
     color: white;
     border: none;
 }
@@ -205,47 +222,54 @@ background-blend-mode: color;
     background-color: #020;
     color: white;
 }
-#game{
+.game{
+    border-radius: 50px 50px 0 0;
     display: grid;
-    grid-template-columns: 50% 10% 30% 10%;
     text-align: center;
+    grid-template-rows: auto auto;
 }
-#game > div {
-    margin-bottom: 10px;
+.gamerow1{
+    display: grid;
+    grid-template-columns: 38% 10% 4% 10% 38%;
+    height:100px;
+}
+.gamerow2{
+    display: grid;
+    grid-template-columns: 24% 24% 4% 24% 24%;
+    height:50px;
+    
+}
+.ingamediv {
     width:100%;
-    margin: 2px;
-    height:150px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-#p1active{
-    color: red;
+#player1name, #player2name{
+    background-color: rgba(0,0,0,0.4);
 }
-#gameclockoperator{
-    visibility: visible;
-    background-color: #080808;
+#player1score, #player2score{
+    background-color: rgba(0,0,0,0.7);
 }
-.timemachine{
-    cursor: pointer;
-    visibility: hidden;
-    grid-column:1 / 5;
+#nothingness {
+    background-color: #000;
 }
 #playeraddscore{
-    background-color: #005500;
+    background-color: #001100;
 }
 #playeraddscore:hover {
-    background-color: #002200;
+    background-color: #005500;
 }
 #playerremovescore{
-    background-color: #880000;
+    background-color: #110000;
 }
 #playerremovescore:hover {
-    background-color: #200;
+    background-color: #550000;
 }
 .playertimer{
     font-size: var(--bigger-text-size);
-    background-color: #333;
+    background-color: #000;
+    color: #bbbbbb;
 }
 #timeleft{
     display: grid;
@@ -259,7 +283,6 @@ background-blend-mode: color;
     display: flex;   
     justify-content: center;
     align-items: center;
-    margin:1px;
     min-height: 49px;
     height: 100%;
 }
@@ -272,41 +295,67 @@ background-blend-mode: color;
 }
 #controllers{
     display:grid;
-    height: 200px;
-    grid-template-columns: 30% 40% 30%;
+    grid-template-columns: 50% 50%;
     text-align: center;
-
+    visibility: hidden;
 }
 #controllers > div {
     display: flex;
+    align-content: center;
+    text-align: center;
     justify-content: center;
 }
+.timemachine{
+    background-color: #000000;
+    visibility: hidden;
+    height: 60px;
+    border-bottom: 2px solid #888888;
+    border-right: 2px solid #444444;
+    border-radius: 0 0 100px 100px;
+    line-height: 60px;
+    cursor: pointer;
+    grid-column:1 / 3;
+}
+.timemachine > i {
+    align-content: center;
+    text-align: center;
+    height: 100%;
+    justify-content: center; 
+}
 .next{
-    background-color: #121;
+    background-color: #001100;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease-in;
+    height: 60px;
+    line-height: 60px;
 }
 .next:hover{
-    background-color: #131;
-    animation: nextshotAnim 0.5s normal 1;
+    background-color: #151;
 }
 .miss{
-    background-color: #211;
+    height: 60px;
+    line-height: 60px;
+    background-color: #110000;
     transition: all 0.5s ease-in;
+    justify-content: center;
+    align-items: center;
 }
 .miss:hover{
     background-color: #500;
 }
 .indiLabel{
-    background-color: #111;
+    background-color: #000000;
     height: 2rem;
     color: white;
     border-bottom: 2px solid #333;
-    border-radius: 0 0 25px 25px;
+    border-left: 2px solid #333;
+    border-right: 2px solid #333;
+    border-radius: 0 0 11px 11px;
+    font-size: var(--small-text-size);
 }
 .playingRN{
-    background-color: yellowgreen;
-}
-.indiLabel{
-    font-size: var(--small-text-size);
+    background-color: rgba(255,255,0,0.5);
 }
 /* IN-GAME DARTS */
 #dartgame {
@@ -322,17 +371,16 @@ background-blend-mode: color;
     width: 100%;
     display: grid;
     grid-template-columns: 49vw 49vw;
-    height: 100px;
+    height: 70px;
 }
 #points {
     display: grid;
-    bottom: 50px;
-    width: 98vw;
+    width: 99vw;
     background-color: var(--main-color-dark);
     grid-template-columns: repeat(7, 14vw); /* 7 equal columns */
 }
 .dartnumber{
-    height: 80px;
+    height: 70px;
     display: flex;
     text-align: center;
     align-items: center;
@@ -351,7 +399,7 @@ background-blend-mode: color;
 }
 #scoreboard > div:first-child > div{
     display: flex;
-    height: 100px;
+    height: 50px;
     justify-content: center;
     align-items: center;
 }
@@ -389,7 +437,7 @@ background-blend-mode: color;
 .dark-round-btn, .dark-round-btn:active {
     position: absolute;
     bottom: 60px;
-    z-index: 99999;
+    z-index: 9999999;
     right: 0;
     background: black;
     color: #fff;

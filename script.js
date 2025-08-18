@@ -10,7 +10,7 @@ let timerID;
 let turnofwho = 0;
 let didswitchturnoccur = false;
 let wasextused = false;
-const timeForShot = 30;
+let timeForShot = 30;
 let timePlayer = timeForShot;
 //COOKIE FUNCTIONS
 function setCookie(cname, cvalue, exdays) {
@@ -48,11 +48,11 @@ function getLastGameFromCookie () {
             document.getElementById("lastGame").innerHTML= Tt.player1+": "+Tt.score1+"<br/>"+Tt.player2+": "+Tt.score2;
         }
         else{
-            document.getElementById("lastGame").innerHTML= "Here will be your last match";
+            document.getElementById("lastGame").innerHTML= "No last game found";
         }
     }
     else{
-        document.getElementById("lastGame").innerHTML= "Here will be your last match";
+        document.getElementById("lastGame").innerHTML= "No last game found";
     }
 }
 //MENU FUNCTIONS
@@ -92,14 +92,16 @@ function dartsMenu () {
         }, 300);
 }
 //8BALL FUNCTIONS
-function loading8ball () {
+function loading8ball () {    
+    getLastGameFromCookie ();
+    switchplayer(1);
     let cookieValue = getCookie("savedata");
     if (cookieValue != "") {
         let boop = JSON.parse(cookieValue);
         //GAME ITEMS
+        timeForShot = boop.timepershot;
         document.getElementById('player1name').innerText = boop.player1;
         document.getElementById('player2name').innerHTML = boop.player2;
-        document.getElementById('actualClock').innerHTML= 2;
         document.getElementById('player1score').innerHTML=boop.score1;
         document.getElementById('player2score').innerHTML=boop.score2;
         if(boop.timerOn==0){
@@ -121,29 +123,19 @@ function loading8ball () {
         document.getElementById('timer').value=boop.timersetting;
         document.getElementById('gameclock').selectedIndex=boop.timerOn;
         document.getElementById('bestof').value=boop.bestofset;
-        document.getElementById('player2').value;
+        document.getElementById('timeshot').value=boop.timepershot;
         
     } else {
         // The cookie does not exist.
         document.getElementById('settings').style.visibility = "visible";
     }
-    getLastGameFromCookie ();
-    switchplayer(1);
 }
 function backToMenuFromPoolGame () {
     saveGame();
-    if(true){
-        if (confirm("Are you sure you want to go back to menu? (progress will be saved)")){
-            window.location.href = "index.html";
-        }  
-    }       
+    window.location.href = "index.html";  
 }
 function backToMenuFromDartsGame () {
-    if(true){
-        if (confirm("Are you sure you want to go back to menu? (progress will be saved)")){
-            window.location.href = "index.html";
-        }  
-    }       
+    window.location.href = "index.html";       
 }
 function saveGame(){
     //Get names, type of game and scores into variables
@@ -156,6 +148,7 @@ function saveGame(){
     let scoreboard = name1+": "+score1+"<br/>"+name2+": "+score2;
     let timersetting = document.getElementById("timer").value;
     let timerOn = document.getElementById("gameclock").selectedIndex;
+    let timepershot = document.getElementById('timeshot').value;
     const savedata = {
         player1: name1.trim(),
         player2: name2.trim(),
@@ -165,7 +158,8 @@ function saveGame(){
         scoreboard: scoreboard,
         bestofset: bestofset,
         timersetting: timersetting,
-        timerOn: timerOn
+        timerOn: timerOn,
+        timepershot: timepershot
     };
     const jsonsavedata = JSON.stringify(savedata);
     setCookie('savedata',jsonsavedata,365);
@@ -194,6 +188,7 @@ function saveSettingsToJSON () {
     let length = document.getElementById('bestof').value/2+0.5;
     let p5name = document.getElementById('player2').value;
     let bestofset = document.getElementById('bestof').value;
+    let timepershot = document.getElementById('timeshot').value;
     
     document.getElementById("settings").style.visibility="hidden"
     // 1. Create a JavaScript object with the current settings.
@@ -203,7 +198,8 @@ function saveSettingsToJSON () {
         gametime: gametime.trim(),
         istimed: clock.trim(),
         bestofgoto: length,
-        bestof: bestofset
+        bestof: bestofset.trim(),
+        timepershot: timepershot.trim()
     };
     // make a json and save it to cookie
     const jsonSettings = JSON.stringify(settings);
@@ -267,10 +263,11 @@ function gameClock8Ball() {
     var button = document.getElementById("gameclockoperator");
     var timer1 = document.getElementById("p1timer");
     var timer2 = document.getElementById("p2timer");
+    timerID = 222;
     if(!clockrunning){
-        button.textContent="STOP CLOCK";
+        button.innerHTML="<i class='fa-solid fa-pause fa-1x'>&nbsp;</i>STOP CLOCK";
         timerID = setInterval(function() {
-            button.textContent="STOP CLOCK";
+            button.innerHTML="<i class='fa-solid fa-pause fa-1x'>&nbsp;</i>STOP CLOCK";
             //checks if there was already a pause and gets time left from relevant source
             if(savedtime){
                 timeInSeconds = savedminutes*60+savedseconds;
@@ -325,7 +322,7 @@ function gameClock8Ball() {
         }, 1000);
     }
     else {
-        button.textContent="RESUME";
+        button.innerHTML="<i class='fa-solid fa-play fa-1x'>&nbsp;</i>RESUME";
         clearInterval(timerID); //stop of interval
         savedtime=true; // forces not using set time
         savedminutes = minutes;
@@ -371,7 +368,7 @@ function switchplayer(param) {
         }
     }
     else if(param==2){
-        timePlayer=timeForShot+1;
+        timePlayer=Math.ceil(timeForShot)+1;
     }
     else if(param==3){
         if(turnofwho==1){
@@ -388,6 +385,7 @@ function switchplayer(param) {
             didswitchturnoccur = true;
         }
         wasextused=false;
+        document.getElementById('extension').style.opacity= "1";
     }
     else if(param==4){
         timer1.innerHTML="";
@@ -410,6 +408,7 @@ function extension () {
     if(wasextused){
 
     }else{
+        document.getElementById('extension').style.opacity= "0.1";
         wasextused=true;
         timePlayer+=30;
     }
@@ -459,18 +458,24 @@ function settingsDarts () {
 
 }
 function pointChange (mult) {
-    if(mult<3){
+    if(mult==1){
     document.getElementById("points").innerHTML = 
-                Array.from({length: 21}, (_, i) => 
-                    `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${dartNumbers[i]*mult})">${dartNumbers[i]}</div>`
-                ).join('');
-            }
-            else{
-                document.getElementById("points").innerHTML = 
-                Array.from({length: 20}, (_, i) => 
-                    `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${i*mult})">${dartNumbers[i]}</div>`
-                ).join('');
-            }
+        Array.from({length: 21}, (_, i) => 
+            `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${dartNumbers[i]*mult})">${dartNumbers[i]}</div>`
+        ).join('');
+    }
+    else if(mult==2){
+    document.getElementById("points").innerHTML = 
+        Array.from({length: 21}, (_, i) => 
+            `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${dartNumbers[i]*mult})">${dartNumbers[i]}<h5 class="text-info">${dartNumbers[i]*mult}</h5></div>`
+        ).join('');
+    }
+    else if(mult==3){
+        document.getElementById("points").innerHTML = 
+        Array.from({length: 20}, (_, i) => 
+            `<div id="dart${i+1}" class="dartnumber multiplier-1" onclick="pointadd(${dartNumbers[i]*mult})">${dartNumbers[i]}<h5 class="text-info">${dartNumbers[i]*mult}</h5></div>`
+        ).join('');
+    }
 }
 function multiactive (multiplier) {
     let x2=document.getElementById("x2multi");

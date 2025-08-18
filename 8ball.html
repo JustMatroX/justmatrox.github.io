@@ -3,6 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="script.js"></script>
 </head>
 <body onload="loading8ball()">
@@ -13,55 +14,14 @@
             <img src="./logo.png">
         </div>
 
-        <div id="header" onclick="backToMenuFromPoolGame()">
+        <div id="header">
             Cue & Dart
         </div>
-    </div>
-
-    <div id="game">
-        <div id="player1name">
-        </div>
-        <div id="playeraddscore" onclick="alterscore(1);switchplayer(1)">
-            +
-        </div>
-        <div id="player1score">
-            0
-        </div>
-        <div id="playerremovescore" onclick="alterscore(2);switchplayer(1)">
-            -
-        </div>
-        <div id="player2name">
-        </div>
-        <div id="playeraddscore" onclick="alterscore(3);switchplayer(1)">
-            +
-        </div>
-        <div id="player2score">
-            0
-        </div>
-        <div id="playerremovescore" onclick="alterscore(4);switchplayer(1)">
-            -
+        <div id="headerback" >
+            <span class="headerback" onclick="backToMenuFromPoolGame()"> <i class="fa-solid fa-arrow-left fa-1x"></i></span>
         </div>
     </div>
 
-    <div id="timeleft"> 
-        <div id="p1timer" class="playertimer"></div>
-        <div id="extension" onclick="extension()">EX</div>
-        <div id="actualClock">00:00</div>
-        <div id="p2timer" class="playertimer"></div>
-        <div id="p1active"></div>
-        <div id="exttime">+30s</div>
-        <div id="howmanygames">Best of #</div>
-        <div id="p2active"></div>
-        <div id="gameclockoperator" class="timemachine" onclick="gameClock8Ball()">START CLOCK</div>
-    </div>
-    <div id="controllers">
-        <div id="poolIndicator1" onclick="switchplayer(2)" class="next">&nbsp;</div>
-        <div id="poolIndicator2" onclick="switchplayer(3)" class="miss"></div>
-        <div id="poolIndicator1" onclick="switchplayer(2)" class="next">&nbsp;</div>
-        <div class="indiLabel">Next</div>
-        <div class="indiLabel">Miss</div>
-        <div class="indiLabel">Next</div>
-    </div>  
     <div id="settings">
         <button id="newGame" class="settingsbutton" onclick="reset8ballGame()">NEW GAME</button><br/>
         Player 1's name<br/><input type="text" id="player1" name="player1" value="P1"><br/>
@@ -73,9 +33,66 @@
             <option value="2">Disabled</option>
         </select><br/>
         <span id="timechoicevis">Time (minutes)<br/><input type="number" id="timer" name="time" value="20"><br/></span>
+        <span id="timechoicevis2">Time per shot (s)<br/><input type="number" id="timeshot" name="timeshot" value="30"><br/></span>
         <button id="savesettings" class="settingsbutton" onclick="saveSettingsToJSON ();">SAVE</button>
     </div>
+    <div class="game">
+        <div class="gamerow1">
+            <div class="ingamediv" id="player1name">
+            </div>
+            <div class="ingamediv" id="player1score">
+                0
+            </div>
+            <div class="ingamediv" id="nothingness">
+            </div>
+            <div class="ingamediv" id="player2score">
+                0
+            </div>
+            <div class="ingamediv" id="player2name">
+            </div>
+        </div>
+        <div class="gamerow2">
+            <div class="ingamediv" id="playeraddscore" onclick="alterscore(1);switchplayer(1)">
+                +
+            </div>
+            <div class="ingamediv" id="playerremovescore" onclick="alterscore(2);switchplayer(1)">
+                -
+            </div>
+            <div class="ingamediv" id="nothingness">
+            </div>
+            <div class="ingamediv" id="playeraddscore" onclick="alterscore(3);switchplayer(1)">
+                +
+            </div>
+            <div class="ingamediv" id="playerremovescore" onclick="alterscore(4);switchplayer(1)">
+                -
+            </div>
+        </div>
+    </div>
+    
+    <div id="timeleft"> 
+        <div id="p1active"></div>
+        <div id="exttime">+30s</div>
+        <div id="howmanygames">Best of #</div>
+        <div id="p2active"></div>
+        <div id="p1timer" class="playertimer"></div>
+        <div id="extension" onclick="extension()">EX</div>
+        <div id="actualClock" onclick="gameClock8Ball()">00:00</div>
+        <div id="p2timer" class="playertimer"></div>
+    </div>
 
+    <div id="controllers">
+        <div id="gameclockoperator" class="timemachine" onclick="gameClock8Ball()">
+            <i class="fa-solid fa-clock fa-1x">&nbsp;</i>START CLOCK
+        </div>
+        <div id="poolIndicator1" onclick="switchplayer(2)" class="next">
+            <i class="fa-solid fa-chevron-left fa-1x"></i>
+            <i class="fa-solid fa-chevron-right fa-1x"></i>
+        </div>
+        <div id="poolIndicator2" onclick="switchplayer(3)" class="miss"><i class="fa-solid fa-x fa-1x"></i></div>
+        <div class="indiLabel">Next shot</div>
+        <div class="indiLabel">Miss</div>
+    </div>  
+    
     <button class="dark-round-btn" onclick="settings8ball()">
         SETTINGS
     </button>
