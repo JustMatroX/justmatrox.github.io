@@ -17,4 +17,7 @@ function openProject(sitenumber) {
     else if(sitenumber==2){
         window.open("https://www.google.pl", "_blank");
     }
+    else if(sitenumber==3){
+        window.location.href = "cueanddartAI/";
+    }
 }

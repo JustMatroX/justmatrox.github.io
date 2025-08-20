@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Darts Scoreboard</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- React & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body data-bs-theme="light" class="min-vh-100">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    // ---- Helpers ----
+    function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+    function nextStarter(startingIndex, legNumber) {
+      return (startingIndex + (legNumber - 1)) % 2;
+    }
+    const DEFAULTS = {
+      mode: "duo",
+      p1: "Player 1",
+      p2: "Player 2",
+      legsToWin: 3,
+      startScore: 501,
+      doubleOut: false,
+      startingPlayerIndex: 0,
+    };
+
+    // ---- Bootstrap Components ----
+    function Button({ children, onClick, variant="primary", disabled, className="" }) {
+      return (
+        <button
+          className={`btn btn-${variant} me-2 mb-2 ${className}`}
+          onClick={onClick}
+          disabled={disabled}
+        >
+          {children}
+        </button>
+      );
+    }
+
+    function TextField({ label, value, onChange, placeholder, id }) {
+      return (
+        <div className="mb-3">
+          <label htmlFor={id} className="form-label">{label}</label>
+          <input
+            id={id}
+            type="text"
+            className="form-control"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder={placeholder}
+          />
+        </div>
+      );
+    }
+
+    function NumberField({ label, value, onChange, min=0, max=9999, id }) {
+      return (
+        <div className="mb-3">
+          <label htmlFor={id} className="form-label">{label}</label>
+          <input
+            id={id}
+            type="number"
+            className="form-control"
+            min={min}
+            max={max}
+            value={value}
+            onChange={(e) => onChange(Number(e.target.value))}
+          />
+        </div>
+      );
+    }
+
+    function Card({ children, className="" }) {
+      return (
+        <div className={`card mb-3 ${className}`}>
+          <div className="card-body">{children}</div>
+        </div>
+      );
+    }
+
+    // ---- Game Logic ----
+    function makeVisit({ playerIndex, scored, prevRemaining, bust=false }) {
+      return { t: Date.now(), playerIndex, scored, prevRemaining, bust };
+    }
+
+    function App() {
+      // Theme
+      const [dark, setDark] = React.useState(false);
+      React.useEffect(() => {
+        document.body.setAttribute("data-bs-theme", dark ? "dark" : "light");
+      }, [dark]);
+
+      // Settings
+      const [settings, setSettings] = React.useState(DEFAULTS);
+
+      // Match state
+      const [inProgress, setInProgress] = React.useState(false);
+      const [currentLeg, setCurrentLeg] = React.useState(1);
+      const [legsWon, setLegsWon] = React.useState([0,0]);
+      const [remaining, setRemaining] = React.useState([settings.startScore, settings.startScore]);
+      const [turnIndex, setTurnIndex] = React.useState(0);
+      const [history, setHistory] = React.useState([]);
+      const [winner, setWinner] = React.useState(null);
+      const [checkoutPrompt, setCheckoutPrompt] = React.useState(null);
+      const [scoreValue, setScoreValue] = React.useState(60);
+
+      const players = [settings.p1 || "Player 1", settings.p2 || "Player 2"];
+
+      const startMatch = () => {
+        setInProgress(true);
+        setWinner(null);
+        setCurrentLeg(1);
+        setLegsWon([0,0]);
+        setRemaining([settings.startScore, settings.startScore]);
+        setHistory([]);
+        setTurnIndex(nextStarter(settings.startingPlayerIndex,1));
+      };
+
+      const endLeg = (legWinner) => {
+        const newLegs = [...legsWon];
+        newLegs[legWinner] += 1;
+        setLegsWon(newLegs);
+
+        if (newLegs[legWinner] >= settings.legsToWin) {
+          setWinner(legWinner);
+          setInProgress(false);
+        } else {
+          const nextLeg = currentLeg+1;
+          setCurrentLeg(nextLeg);
+          setRemaining([settings.startScore, settings.startScore]);
+          setHistory([]);
+          setTurnIndex(nextStarter(settings.startingPlayerIndex, nextLeg));
+        }
+      };
+
+      const submitScore = (raw) => {
+        if (!inProgress || winner !== null) return;
+        let scored = Number(raw);
+        if (!Number.isFinite(scored)) return;
+        scored = clamp(Math.floor(scored), 0, 180);
+        const p = turnIndex, opp = 1-p;
+        const prev = remaining[p];
+        const tentative = prev - scored;
+
+        if (tentative < 0 || (tentative===1 && settings.doubleOut)) {
+          setHistory((h) => [...h, makeVisit({playerIndex:p, scored, prevRemaining:prev, bust:true})]);
+          setTurnIndex(opp);
+          return;
+        }
+        if (tentative===0) {
+          if (settings.doubleOut) {
+            setCheckoutPrompt({playerIndex:p, scored, newRemaining:0, prev});
+            return;
+          } else {
+            setRemaining((r) => {const nr=[...r]; nr[p]=0; return nr;});
+            setHistory((h) => [...h, makeVisit({playerIndex:p, scored, prevRemaining:prev})]);
+            endLeg(p);
+            return;
+          }
+        }
+        setRemaining((r)=>{const nr=[...r]; nr[p]=tentative; return nr;});
+        setHistory((h) => [...h, makeVisit({playerIndex:p, scored, prevRemaining:prev})]);
+        setTurnIndex(opp);
+      };
+
+      const confirmCheckout = (onDouble) => {
+        const { playerIndex:p, scored, prev } = checkoutPrompt || {};
+        setCheckoutPrompt(null);
+        if (!inProgress || p==null) return;
+        if (onDouble) {
+          setRemaining((r)=>{const nr=[...r]; nr[p]=0; return nr;});
+          setHistory((h) => [...h, makeVisit({playerIndex:p, scored, prevRemaining:prev})]);
+          endLeg(p);
+        } else {
+          setHistory((h) => [...h, makeVisit({playerIndex:p, scored, prevRemaining:prev, bust:true})]);
+          setTurnIndex(1-p);
+        }
+      };
+
+      const undo = () => {
+        if (history.length===0 || checkoutPrompt) return;
+        const last = history[history.length-1];
+        const before = last.prevRemaining;
+        const p = last.playerIndex;
+        setHistory((h)=>h.slice(0,-1));
+        setRemaining((r)=>{const nr=[...r]; nr[p]=before; return nr;});
+        setTurnIndex(p);
+      };
+
+      const stats = React.useMemo(()=>{
+        const base=[{visits:0,total:0,busts:0},{visits:0,total:0,busts:0}];
+        for(const v of history){
+          const s=base[v.playerIndex];
+          s.visits++;
+          if(v.bust) s.busts++; else s.total+=v.scored;
+        }
+        const avg=base.map(s=>s.visits-s.busts>0?(s.total/(s.visits-s.busts)):0);
+        return {base,avg};
+      },[history]);
+
+      // ---- UI ----
+      return (
+        <div className="container py-4">
+          {/* Header */}
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <a href="../" className="btn btn-outline-secondary">← Back</a>
+            <h1 className="h4 mb-0">🎯 Darts Scoreboard</h1>
+            <Button variant={dark?"light":"dark"} onClick={()=>setDark(!dark)}>
+              {dark?"Light Mode":"Dark Mode"}
+            </Button>
+          </div>
+
+          {/* Settings */}
+          <Card>
+            <h5 className="card-title">Match Settings</h5>
+            <div className="row">
+              <div className="col-md-4">
+                <NumberField id="legs" label="Legs to Win" value={settings.legsToWin}
+                  onChange={(v)=>setSettings(s=>({...s,legsToWin:clamp(v||1,1,99)}))}/>
+              </div>
+              <div className="col-md-4">
+                <NumberField id="startscore" label="Starting Score" value={settings.startScore}
+                  onChange={(v)=>setSettings(s=>({...s,startScore:clamp(v||101,101,1001)}))}/>
+              </div>
+              <div className="col-md-4 d-flex align-items-end">
+                <div className="form-check">
+                  <input className="form-check-input" type="checkbox"
+                    id="doubleOut" checked={settings.doubleOut}
+                    onChange={(e)=>setSettings(s=>({...s,doubleOut:e.target.checked}))}/>
+                  <label className="form-check-label" htmlFor="doubleOut">Double Out</label>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">
+                <TextField id="player1" label="Player 1" value={settings.p1}
+                  onChange={(v)=>setSettings(s=>({...s,p1:v}))}/>
+              </div>
+              <div className="col-md-6">
+                <TextField id="player2" label="Player 2" value={settings.p2}
+                  onChange={(v)=>setSettings(s=>({...s,p2:v}))}/>
+              </div>
+            </div>
+            <Button onClick={startMatch}>New Match</Button>
+            <Button variant="secondary" onClick={()=>setSettings(DEFAULTS)}>Reset Settings</Button>
+          </Card>
+
+          {/* Players */}
+          <div className="row">
+            {[0,1].map((idx)=>(
+              <div className="col-md-6" key={idx}>
+                <Card>
+                  <h5>{players[idx]}</h5>
+                  <p className="display-5">{remaining[idx]}</p>
+                  <p><strong>Legs:</strong> {legsWon[idx]} | <strong>Visits:</strong> {stats.base[idx].visits} | <strong>Avg:</strong> {stats.avg[idx].toFixed(1)}</p>
+                </Card>
+              </div>
+            ))}
+          </div>
+
+          {/* Score Input */}
+          <Card>
+            <h5>Enter Visit Score ({players[turnIndex]})</h5>
+            <div className="input-group mb-3">
+              <input type="number" className="form-control"
+                value={scoreValue} min={0} max={180}
+                onChange={(e)=>setScoreValue(Number(e.target.value))}/>
+              <Button onClick={()=>submitScore(scoreValue)} disabled={!inProgress||winner!=null}>Submit</Button>
+              <Button variant="secondary" onClick={undo} disabled={!inProgress||history.length===0}>Undo</Button>
+            </div>
+            <div className="d-flex flex-wrap">
+              {[180,140,100,60,57,45,41,26,20,5,1,0].map((n)=>(
+                <Button key={n} variant="outline-secondary" onClick={()=>setScoreValue(n)}>{n}</Button>
+              ))}
+            </div>
+          </Card>
+
+          {/* History */}
+          <Card>
+            <h5>Current Leg History</h5>
+            <table className="table table-sm">
+              <thead>
+                <tr><th>#</th><th>Player</th><th>Scored</th><th>Remaining</th><th>Note</th></tr>
+              </thead>
+              <tbody>
+                {history.length===0 && <tr><td colSpan="5" className="text-center">No throws yet.</td></tr>}
+                {history.map((v,i)=>(
+                  <tr key={v.t} className={v.bust?"table-danger":""}>
+                    <td>{i+1}</td>
+                    <td>{players[v.playerIndex]}</td>
+                    <td>{v.scored}</td>
+                    <td>{v.bust?v.prevRemaining:v.prevRemaining-v.scored}</td>
+                    <td>{v.bust?"Bust":""}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Card>
+
+          {/* Controls */}
+          <Card>
+            <h5>Controls</h5>
+            <Button onClick={startMatch}>Start / Restart Match</Button>
+            <Button variant="secondary" onClick={()=>setInProgress(false)}>Pause</Button>
+            <Button variant="danger" onClick={()=>{
+              setInProgress(false);
+              setWinner(null);
+              setCurrentLeg(1);
+              setLegsWon([0,0]);
+              setRemaining([settings.startScore, settings.startScore]);
+              setHistory([]);
+              setTurnIndex(nextStarter(settings.startingPlayerIndex,1));
+            }}>Reset All</Button>
+          </Card>
+
+          {/* Winner Toast */}
+          {winner!=null && (
+            <div className="alert alert-success text-center fixed-bottom mb-4 mx-auto w-50">
+              <strong>{players[winner]}</strong> wins the match {legsWon[winner]}–{legsWon[1-winner]}! 🎉
+            </div>
+          )}
+
+          {/* Checkout Prompt */}
+          {checkoutPrompt && (
+            <div className="modal d-block" tabIndex="-1" style={{backgroundColor:"rgba(0,0,0,0.5)"}}>
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Double-Out Confirmation</h5>
+                  </div>
+                  <div className="modal-body">
+                    <p>{players[checkoutPrompt.playerIndex]} would finish by scoring <strong>{checkoutPrompt.scored}</strong>. Confirm final dart was a double?</p>
+                  </div>
+                  <div className="modal-footer">
+                    <Button variant="secondary" onClick={()=>confirmCheckout(false)}>Not a Double (Bust)</Button>
+                    <Button onClick={()=>confirmCheckout(true)}>Finished on a Double</Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
