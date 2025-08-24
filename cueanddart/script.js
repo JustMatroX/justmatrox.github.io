@@ -39,17 +39,21 @@ function getCookie(cname) {
     return "";
 }
 //WHOLE SITE FUNCTIONS
-function getLastGameFromCookie () {
+function getLastGameFromCookie (restriction) {
+
     let cookey = getCookie('savedata');
-    if(cookey != ""){
+    if(cookey != ""&restriction!=2){
         let Tt = JSON.parse(getCookie('savedata'));
         if(Tt.score1>0||Tt.score2>0){
-            document.getElementById("lastGameType").innerHTML= "LAST GAME: "+Tt.gameType+" (First to "+Tt.bestofset+")";
-            document.getElementById("lastGame").innerHTML= Tt.player1+": "+Tt.score1+"&nbsp;|&nbsp;"+Tt.player2+": "+Tt.score2;
+            document.getElementById("lastGameType").innerHTML= `<a href="${Tt.gameTypeLink}">LAST GAME: ${Tt.gameType} (First to ${Tt.bestofset})</a>`;
+            document.getElementById("lastGame").innerHTML= `<a href="${Tt.gameTypeLink}">${Tt.player1}: ${Tt.score1}&nbsp;|&nbsp;${Tt.player2}: ${Tt.score2}</a>`;
         }
         else{
             document.getElementById("lastGame").innerHTML= "No last game found";
         }
+    }
+    else if(restriction==2){
+        document.getElementById("lastGame").innerHTML= "Save will appear here after you quit";
     }
     else{
         document.getElementById("lastGame").innerHTML= "No last game found";
@@ -91,9 +95,20 @@ function dartsMenu () {
             document.getElementById("dartsMenu").style.visibility= "visible"
         }, 300);
 }
+function openinfo ()  {
+    let temp = document.getElementById("infoMenu");
+    console.log (temp.style.display);
+    if(temp.style.display=="none"||temp.style.display==""){
+        console.log (temp.style.display);
+        temp.style.display="block";
+    }
+    else {
+        temp.style.display="none";
+    }
+}
 //8BALL FUNCTIONS
 function loading8ball () {    
-    getLastGameFromCookie ();
+    getLastGameFromCookie (2);
     switchplayer(1);
     let cookieValue = getCookie("savedata");
     if (cookieValue != "") {
@@ -134,6 +149,9 @@ function backToMenuFromPoolGame () {
     saveGame();
     window.location.href = "index.html";  
 }
+function backToMenuFromSnooker () {
+    window.location.href = "index.html"; 
+}
 function backToMenuFromDartsGame () {
     window.location.href = "index.html";       
 }
@@ -145,6 +163,7 @@ function saveGame(){
     let score2 = document.getElementById("player2score").innerText;
     let bestofset = document.getElementById('bestof').value;
     let gameType = "8 Ball";
+    let gameTypeLink = "8ball.html";
     let scoreboard = name1+": "+score1+"<br/>"+name2+": "+score2;
     let timersetting = document.getElementById("timer").value;
     let timerOn = document.getElementById("gameclock").selectedIndex;
@@ -155,6 +174,7 @@ function saveGame(){
         score1: score1.trim(),
         score2: score2.trim(),
         gameType: gameType,
+        gameTypeLink: gameTypeLink,
         scoreboard: scoreboard,
         bestofset: bestofset,
         timersetting: timersetting,
@@ -163,10 +183,8 @@ function saveGame(){
     };
     const jsonsavedata = JSON.stringify(savedata);
     setCookie('savedata',jsonsavedata,365);
-
     document.getElementById("lastGameType").innerHTML= savedata.gameType;
     document.getElementById("lastGame").innerHTML= savedata.scoreboard;
-    console.log(savedata);
 } 
 function settings8ball () {
     if (setopen){
@@ -219,7 +237,7 @@ function saveSettingsToJSON () {
     saveGame();
     settings8ball ();
     loading8ball ();
-    getLastGameFromCookie ();
+    getLastGameFromCookie (2);
 }
 function alterscore (typeOfOperation) {
     //get current score
@@ -415,6 +433,63 @@ function extension () {
         wasextused=true;
         timePlayer+=30;
     }
+}
+//SNOOKER FUNCTIONS
+let activeplayer = 2;
+let redNum = 15;
+let fouled = false;
+function loadingsnooker() {
+    getLastGameFromCookie (2);
+    addsnookerpoints(0);
+}
+function addsnookerpoints(points) {
+    let p1 = document.getElementById('snp1score');
+    let p2 = document.getElementById('snp2score');
+    if(points==1){
+        if(redNum==0){redNum=15;}
+        redNum--;
+        document.getElementById("red").innerHTML="1 ("+redNum+")";
+    }
+    if(points!=0){
+        if(fouled==true){
+            if(activeplayer==1){
+                let temp = Math.ceil(p1.innerHTML);
+                temp+=points;
+                p1.innerHTML=temp;
+            }
+            else if(activeplayer==2) {
+                let temp = Math.ceil(p2.innerHTML);
+                temp+=points;
+                p2.innerHTML=temp;
+            }
+        }
+        else {
+            if(activeplayer==1){
+                let temp = Math.ceil(p1.innerHTML);
+                temp+=points;
+                p1.innerHTML=temp;
+            }
+            else if(activeplayer==2) {
+                let temp = Math.ceil(p2.innerHTML);
+                temp+=points;
+                p2.innerHTML=temp;
+            }
+        }
+    }
+    else {
+        playerswitchsnooker();
+    }
+}
+function playerswitchsnooker() {
+    if (activeplayer==1) {
+            activeplayer=2;
+            document.getElementById('snp2name').style.borderBottom="10px solid white";
+            document.getElementById('snp1name').style.borderBottom="10px solid var(--second-color-dark)";
+        } else {
+            activeplayer=1;
+            document.getElementById('snp1name').style.borderBottom="10px solid white";
+            document.getElementById('snp2name').style.borderBottom="10px solid var(--second-color-dark)";
+        }
 }
 //DARTS FUNCTIONS
 let p1score = 0;

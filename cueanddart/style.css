@@ -1,8 +1,8 @@
 
 /* GENERAL */
 :root {
-    --main-color-dark: rgba(24,0,0,1);
-    --second-color-dark: rgba(0,24,24,1);
+    --main-color-dark: rgba(36,0,0,1);
+    --second-color-dark: rgba(0,36,36,1);
     --bigger-text-size: 2.2rem;
     --small-text-size: 1.2rem;
 }
@@ -14,12 +14,12 @@ body{
     background-color: black;
     margin:0;
     overflow: hidden;
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: #fff;
 }
 a{
     text-decoration: none;
-    color: white;
+    color: inherit;
 }
 html{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -40,7 +40,7 @@ input , select{
     height: 80px;
     width: 100%;
     display: grid;
-    grid-template-columns: 80px auto auto;
+    grid-template-columns: 80px auto 15vw 15vw;
     text-align: center; 
     background-color: var(--second-color-dark);
     z-index: 9999;
@@ -48,7 +48,7 @@ input , select{
 #header { 
     font-weight: 600;
     display: flex;
-    animation: gradOO 20s linear normal infinite;
+    animation: gradOO 5s linear normal infinite;
     justify-content: center;
     align-items: center;
 }
@@ -74,6 +74,35 @@ input , select{
     font-weight: 100;
     background-color: #181818;
     border-color: #222 #bbb #bbb #888;
+}
+.topbarItem {
+    margin: 0.2rem;
+    font-size: 1rem;
+    border: 1px solid grey;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.topbarItem:hover {
+    margin: 0.25rem;
+    background-color: rgba(0,255,0,0.05);
+    font-size: 1rem;
+    border: 1px solid grey;
+    border-radius: 10px;
+}
+.infopanel {
+    z-index: 9;
+    background-color: rgba(0, 0, 0, 0.98);
+    position: absolute;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding: 0 10%;
+}
+#infoMenu{
+display: none;
 }
 
 
@@ -170,7 +199,7 @@ background-blend-mode: color;
 .listofGames:hover{
     background-blend-mode:luminosity;
     color: red;
-    scale: 1.2;
+    scale: 1.1;
 }
 #gameChoice{
     font-weight: 500;
@@ -230,13 +259,12 @@ background-blend-mode: color;
     background-color: var(--main-color-dark);
     margin-top: 5vh;
     display: grid;
+    border-radius: 20px;
     text-align: center;
     grid-template-rows: auto auto;
 }
 .gamerow1{
     display: grid;
-    border-top: 2px solid #888888;
-    border-radius: 20px 20px 0 0;
     grid-template-columns: 42% 8% 8% 42%;
     min-height: 80px;
     height: 15vh;
@@ -304,7 +332,7 @@ background-blend-mode: color;
 }
 #extension{
     background-color: #550000;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 #actualClock{
     background-color: #000;
@@ -326,8 +354,6 @@ background-blend-mode: color;
     background-color: #001100;
     visibility: hidden;
     height: 60px;
-    border-bottom: 2px solid #888888;
-    border-radius: 0 0 20px 20px;
     line-height: 60px;
     cursor: pointer;
     grid-column:1 / 3;
@@ -372,6 +398,86 @@ background-blend-mode: color;
 }
 .playingRN{
     background-color: rgba(255,255,0,0.5);
+}
+/* IN-GAME SNOOKER */
+.snookergame {
+    margin-top: 25px;
+    background-color: var(--second-color-dark);
+}
+.scoreboardsnooker {
+    display: grid;
+    grid-template-columns: 40% 10% 10% 40%;
+}
+.snscoreboarditem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+}
+.snscoreboardnumber {
+    background-color: rgba(0,0,0,0.4);
+}
+.snpointsystem {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(4, 14%) auto;
+}
+.colorball {
+    display: flex;
+    margin: 10px;
+    height: 100%;
+    border-radius: 50%;
+    height: 12vw;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    box-shadow: 5px 0px 10px rgba(255,255,255,0.1),
+    -5px 0px 10px rgba(255,255,255,0.1);
+    color: #333;
+}
+#foul {
+    grid-area: 1 / 5 / span 2 / span 1;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    display: grid;
+    width: 100;
+    background-color: #ff000010;
+    border-radius: 50px;
+    grid-template-rows: auto auto auto;
+}
+#foulpointsbutton {
+    background-color: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+}
+#foulpointsbutton:active{
+    background-color: rgba(155,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.8);
+}
+#red {
+    background-color: red;
+}
+#yellow {
+    background-color: rgba(255, 255, 0, 0.603);
+}
+#green {
+    background-color: rgba(0, 128, 0, 0.818);
+}
+#brown {
+    background-color: #2c1c00;
+}
+#blue {
+    background-color: rgb(0, 119, 255);
+}
+#pink {
+    background-color: hotpink;
+}
+#black {
+    background-color: #111;
+}
+#changeplayer {
+    background-color: white;
 }
 /* IN-GAME DARTS */
 #dartgame {
@@ -477,19 +583,43 @@ background-blend-mode: color;
 
 
 /* SMALL SCREEN */
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
+    .snpointsystem {
+    grid-template-columns: repeat(4, 25%);
+    }
+    .colorball {
+        height: 25vw;
+    }
+    #foul {
+        grid-area: 3 / 1 / span 1 / span 4;
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 800px) {
     body{
         color: white;
     }
     #timeleft{
         margin-top: 5vh;
     }
+    .snpointsystem {
+    grid-template-columns: repeat(5, 20%);
+    }
+    .colorball {
+        height: 20vw;
+    }
+    #foul {
+        grid-area: 2 / 4 / span 1 / span 2;
+    }
 }
 
 
 
+
 /* BIG SCREEN */
-@media only screen and (min-width: 3000px) {
+@media only screen and (min-width: 800px) {
+    body{
+    font-size: 2.2rem;
+    }
 }
 
 
@@ -498,10 +628,10 @@ background-blend-mode: color;
 @keyframes gradOO {
     0% {color: white;letter-spacing: 0px}
     88% {color: white;letter-spacing: 0px}
-    90% {color: white;letter-spacing: 5px}
-    96% {color: white;letter-spacing: 5px}
-    98% {color: #232;letter-spacing: 5px}
-    99% {color: #232;letter-spacing: 5px}
+    90% {color: white;letter-spacing: 3px}
+    96% {color: white;letter-spacing: 3px}
+    98% {color: #232;letter-spacing: 3px}
+    99% {color: #232;letter-spacing: 3px}
     100% {color: white;letter-spacing: 0px}
 }
 @keyframes mainMenuOutTiles {

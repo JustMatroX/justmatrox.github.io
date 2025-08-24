@@ -1,6 +1,6 @@
 * { box-sizing: border-box; }
 html, body{
-    background-color: #222;
+    background-color: #444;
     color: black;
     margin: 0;
     padding: 0;
@@ -18,7 +18,7 @@ a {
     min-width: 300px;
     width: 300px;
     height: 100%;
-    background-color: #101010;
+    background-color: #555555;
     box-shadow: 5px 0px 5px rgba(0,0,0,0.3);
     visibility: visible;
 }
@@ -36,7 +36,7 @@ a {
 .sites{
     width:calc(100% - 50px);
     height: 100vh;
-    border-radius: 5vh;
+    border-radius: 3vh;
     background-color: #292929;
     margin-top: 0vw;
     padding-top: 5vh;
@@ -56,6 +56,8 @@ a {
     box-shadow: 5px 0px 5px rgba(0,0,0,0.3);
     background-color: rgba(10,10,10,1);
     border: 5px solid rgba(10,10,10,1);
+    height: 20vh;
+    min-height: fit-content;
     text-decoration: none;
     color: white;
     font-size: 1.6rem;
@@ -77,7 +79,7 @@ a {
 .subsite-listed:hover .subitemdesc {
     /* keyboard friendly */
     transform: translateY(2%);
-    opacity: 1;
+    opacity: 0.8;
 }
 .cueanddart {
     background-color: rgba(00,77,100,1);
@@ -85,7 +87,7 @@ a {
 }
 .subitemdesc {
     position: absolute;
-    height: 5vw;
+    height: 40%;
     left: 0; right: 0; bottom: 0;
     margin: 0;
     background: rgb(255, 255, 255, 0.2);
@@ -109,4 +111,16 @@ a {
     transition: all 0.2s ease;             /* avoids hover flicker */
     will-change: transform, opacity;
     text-align: center;
+}
+@media only screen and (max-width: 800px) {
+    .subitemdesc{
+        transform: translateY(2%);
+        opacity: 0.8;
+    }
+}
+
+@keyframes leftMenuOutAnim {
+    0% {left:calc(-250px)}
+    70% {left: -40px}
+    100% {left: 0px}
 }
