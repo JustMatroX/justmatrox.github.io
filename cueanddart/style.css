@@ -48,7 +48,7 @@ input , select{
 #header { 
     font-weight: 600;
     display: flex;
-    animation: gradOO 5s linear normal infinite;
+    animation: gradOO 20s linear normal infinite;
     justify-content: center;
     align-items: center;
 }
@@ -402,7 +402,6 @@ background-blend-mode: color;
 /* IN-GAME SNOOKER */
 .snookergame {
     margin-top: 25px;
-    background-color: var(--second-color-dark);
 }
 .scoreboardsnooker {
     display: grid;
@@ -412,10 +411,52 @@ background-blend-mode: color;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--second-color-dark);
+    height: 10vh;
+}
+#snp1score, #snp2score {
+    height: 12vh;
+}
+#snp1sets, #snp2sets {
+    height: 8vh;
+}
+#snp1sets, #snp1score {
+    border-right: 2px solid black;
+}
+#snp1name{
     height: 20vh;
+    grid-area: 1 / 1 / span 2 / span 1;
+}
+#snp2name{
+    height: 20vh;
+    grid-area: 1 / 4 / span 2 / span 1;
+}
+#endframe {
+    grid-area: 3 / 2 / span 1 / span 2;
+    height: 5vh;
+    font-size: 1.5rem;
+    border-radius: 0 0 20px 20px;
+    cursor: pointer;
+    opacity: 0.66;
+}
+#snbestofinfo, #snfirsttoinfo {   
+    font-size: 1.5rem;
+    color: #aaa;
+    height: 4vh;
+}
+#snookersettings {
+    position: absolute;
+    padding: 10px;
+    left: 0;
+    border-radius: 0 25px 0 0;
+    background-color: var(--second-color-dark);
+    bottom: 60px;
+    width: 50%;
+    min-width: 400px;
+    visibility: hidden;
 }
 .snscoreboardnumber {
-    background-color: rgba(0,0,0,0.4);
+    opacity: 0.75;
 }
 .snpointsystem {
     margin-top: 50px;
@@ -426,6 +467,7 @@ background-blend-mode: color;
     display: flex;
     margin: 10px;
     height: 100%;
+    cursor: pointer;
     border-radius: 50%;
     height: 12vw;
     justify-content: center;
@@ -435,6 +477,9 @@ background-blend-mode: color;
     -5px 0px 10px rgba(255,255,255,0.1);
     color: #333;
 }
+.unpottable{
+    opacity: 0.2;
+}
 #foul {
     grid-area: 1 / 5 / span 2 / span 1;
     justify-content: center;
@@ -442,17 +487,33 @@ background-blend-mode: color;
     align-items: center;
     display: grid;
     width: 100;
-    background-color: #ff000010;
-    border-radius: 50px;
+    background-color: rgba(0,40,40,0.4);
+    border-radius: 2vw;
     grid-template-rows: auto auto auto;
 }
+.foul-options input[type="radio"] {
+display: none;
+}
+.foul-options label {
+padding: 10px 20px;
+border: 1px solid rgba(255,255,255,0.2);
+background-color: rgba(0,0,0,0.2);
+border-radius: 20px;
+cursor: pointer;
+}
+.foul-options input[type="radio"]:checked + label {
+background-color: var(--second-color-dark);
+color: white;
+border-color: #050;
+}
 #foulpointsbutton {
-    background-color: rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,255,255,0.3);
+    background-color: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.2);
     color: white;
+    border-radius: 10px;
 }
 #foulpointsbutton:active{
-    background-color: rgba(155,0,0,0.4);
+    background-color: rgba(0,155,0,0.4);
     border: 1px solid rgba(255,255,255,0.8);
 }
 #red {
@@ -588,7 +649,7 @@ background-blend-mode: color;
     grid-template-columns: repeat(4, 25%);
     }
     .colorball {
-        height: 25vw;
+        height: 23vw;
     }
     #foul {
         grid-area: 3 / 1 / span 1 / span 4;
@@ -605,7 +666,7 @@ background-blend-mode: color;
     grid-template-columns: repeat(5, 20%);
     }
     .colorball {
-        height: 20vw;
+        height: 18vw;
     }
     #foul {
         grid-area: 2 / 4 / span 1 / span 2;

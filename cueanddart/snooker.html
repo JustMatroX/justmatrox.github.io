@@ -26,31 +26,51 @@
             <div id="snp1name" class="snscoreboarditem">R. O'Sullivan </div>
             <div id="snp1score" class="snscoreboarditem snscoreboardnumber">0</div>
             <div id="snp2score" class="snscoreboarditem snscoreboardnumber">0</div>
+            <div id="snp1sets" class="snscoreboarditem snscoreboardset">0</div>
+            <div id="snp2sets" class="snscoreboarditem snscoreboardset">0</div>
             <div id="snp2name" class="snscoreboarditem">S. Murphy</div>
+            <div id="endframe" class="snscoreboarditem" onclick="snResetScore(2)">END FRAME</div>
+            <div id="snbestofinfo" class="snscoreboarditem">Unlimited game</div>
         </div>
         
     </div>
     <div id="snpointsystem" class="snpointsystem">
-            <div id="red" class="colorball" onclick="addsnookerpoints(1)">1 (15)</div>
-            <div id="yellow" class="colorball" onclick="addsnookerpoints(2)">2</div>
-            <div id="green" class="colorball" onclick="addsnookerpoints(3)">3</div>
-            <div id="brown" class="colorball" onclick="addsnookerpoints(4)">4</div>
-            <div id="blue" class="colorball" onclick="addsnookerpoints(5)">5</div>
-            <div id="pink" class="colorball" onclick="addsnookerpoints(6)">6</div>
-            <div id="black" class="colorball" onclick="addsnookerpoints(7)">7</div>
-            <div id="changeplayer" class="colorball" onclick="addsnookerpoints(0)"><i class="fa-solid fa-refresh fa-1x"></i></div>
-            <div id="foul">
-                <div id="foultitle">FOUL AMOUNT</div>
-                <select name="foulpointamount" id="foulselect">
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                    </select>
-                <button id="foulpointsbutton">ADD</button>
-                
+        <div id="red" class="colorball" onclick="addsnookerpoints(1)">1</div>
+        <div id="yellow" class="colorball" onclick="addsnookerpoints(2)">2</div>
+        <div id="green" class="colorball" onclick="addsnookerpoints(3)">3</div>
+        <div id="brown" class="colorball" onclick="addsnookerpoints(4)">4</div>
+        <div id="blue" class="colorball" onclick="addsnookerpoints(5)">5</div>
+        <div id="pink" class="colorball" onclick="addsnookerpoints(6)">6</div>
+        <div id="black" class="colorball" onclick="addsnookerpoints(7)">7</div>
+        <div id="changeplayer" class="colorball" onclick="addsnookerpoints(0)"><i class="fa-solid fa-refresh fa-1x"></i></div>
+        <div id="foul">
+            <div id="foultitle">FOUL AMOUNT</div>
+            <div class="foul-options">
+                <input type="radio" id="foul4" name="foul" value="4" checked>
+                <label for="foul4">4</label>
+
+                <input type="radio" id="foul5" name="foul" value="5">
+                <label for="foul5">5</label>
+
+                <input type="radio" id="foul6" name="foul" value="6">
+                <label for="foul6">6</label>
+
+                <input type="radio" id="foul7" name="foul" value="7">
+                <label for="foul7">7</label>
             </div>
+            <button id="foulpointsbutton" onclick="addsnookerpoints(2,true)">ADD</button>
         </div>
+    </div>
+    <button class="dark-round-btn" onclick="settingssnooker()">
+        SETTINGS
+    </button>
+    <div id="snookersettings">
+        <button id="newGame" class="settingsbutton" onclick="snResetScore(1)">Reset Score</button><br/>
+        Player 1's name<br/><input type="text" id="snsetplayer1" name="player1" value="p1" placeholder="osullivan"><br/>
+        Player 2's name<br/><input type="text" id="snsetplayer2" name="player2" value="p2" placeholder="murphy"><br/>
+        Best of #<br/><input type="number" name="bestof" id="snsetBestFirst" value="2" placeholder="2"><br/>
+        <button id="savesettings" class="settingsbutton" onclick="snApplySettings(false)">SAVE</button>
+    </div>
     <div id="bottomBar">
         <div id="lastGameType">
 

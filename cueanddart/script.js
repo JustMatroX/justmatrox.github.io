@@ -436,34 +436,87 @@ function extension () {
 }
 //SNOOKER FUNCTIONS
 let activeplayer = 2;
-let redNum = 15;
-let fouled = false;
+let numberofred = 3;
+let redNum = numberofred;
+let balldelcheck = false;
+let lastBalls = 1;
+let ommitTwo = false;
+let matchHistory = [];
+let allowColor = false;
 function loadingsnooker() {
     getLastGameFromCookie (2);
+    snApplySettings(true);
     addsnookerpoints(0);
 }
-function addsnookerpoints(points) {
+function addsnookerpoints(points, foul) {
     let p1 = document.getElementById('snp1score');
     let p2 = document.getElementById('snp2score');
     if(points==1){
-        if(redNum==0){redNum=15;}
+        if(redNum>0){
+        document.getElementById("red").innerHTML="1 ("+(redNum-1)+")";
+        allowColor = true;
         redNum--;
-        document.getElementById("red").innerHTML="1 ("+redNum+")";
+        }
+        if(redNum==0){ 
+            document.getElementById("red").classList.add('unpottable');
+            balldelcheck = true;
+            redNum--;
+        }
+        else if(redNum<0){
+            return;
+        }
     }
-    if(points!=0){
-        if(fouled==true){
+    if(points>0){
+        if(balldelcheck==false&points>1&allowColor==false)return;
+        if(points>1)allowColor=false;
+        if(foul==true){
+            let foulvalue=Math.ceil(document.querySelector('input[name="foul"]:checked').value);
+            console.log(foulvalue);
             if(activeplayer==1){
-                let temp = Math.ceil(p1.innerHTML);
-                temp+=points;
-                p1.innerHTML=temp;
+                let temp = Math.ceil(p2.innerHTML);
+                temp+=foulvalue;
+                p2.innerHTML=temp;
             }
             else if(activeplayer==2) {
-                let temp = Math.ceil(p2.innerHTML);
-                temp+=points;
-                p2.innerHTML=temp;
+                let temp = Math.ceil(p1.innerHTML);
+                temp+=foulvalue;
+                p1.innerHTML=temp;
             }
         }
         else {
+        //If points value higher than 0
+            //if color has been played after last red, make 2 highlighted
+            if(balldelcheck==true&lastBalls==1){ommitTwo=true;console.log('ommited');}
+            if(lastBalls>1){
+                if(ommitTwo==true&points>lastBalls){ 
+                    //blur all balls
+                    document.querySelectorAll('.colorball').forEach(el => {
+                        el.classList.add('unpottable');
+                    });
+                    //unblur target ball
+                    document.getElementsByClassName('colorball')[lastBalls-1].classList.remove('unpottable');
+                    console.log('if1');
+                    ommitTwo=false;
+                }
+                else if(ommitTwo==false&points!=lastBalls){
+                    return;
+                }
+                else if(points==lastBalls){
+                    console.log('if2');
+                    if(!ommitTwo){
+                        lastBalls++;
+                    }
+                    ommitTwo=false;
+                    //blur all balls
+                    document.querySelectorAll('.colorball').forEach(el => {
+                        el.classList.add('unpottable');
+                    });
+                    //unblur target ball
+                    if(lastBalls<8){
+                        document.getElementsByClassName('colorball')[lastBalls-1].classList.remove('unpottable');
+                    }
+                }
+            }
             if(activeplayer==1){
                 let temp = Math.ceil(p1.innerHTML);
                 temp+=points;
@@ -474,9 +527,16 @@ function addsnookerpoints(points) {
                 temp+=points;
                 p2.innerHTML=temp;
             }
+            if(balldelcheck==true&lastBalls==1){lastBalls=2;}
         }
+        matchHistory.push([p1.innerText,p2.innerText,points]);
+        document.getElementById('history').innerHTML="";
+        if(false)matchHistory.forEach(element => { 
+            document.getElementById('history').innerHTML+=element[0]+":"+element[1]+" ("+element[2]+") ";
+        });
     }
     else {
+        document.getElementById('red').innerText=`1 (${numberofred})`
         playerswitchsnooker();
     }
 }
@@ -491,6 +551,119 @@ function playerswitchsnooker() {
             document.getElementById('snp2name').style.borderBottom="10px solid var(--second-color-dark)";
         }
 }
+function settingssnooker () {
+    let snsettings = document.getElementById("snookersettings")
+    if (setopen){
+        snsettings.style.visibility="hidden";
+        setopen=false;
+    }
+    else{
+        snsettings.style.visibility="visible";
+        setopen = true;
+    }
+}
+function endframesnooker () {
+    let p1 = document.getElementById('snp1score');
+    let p2 = document.getElementById('snp2score');
+    if(p1.innerText>p2.innerText){
+        document.getElementById('snp1sets').innerText++;
+        p1.innerText=0;
+        p2.innerText=0;
+        redNum = numberofred;
+    }
+    else if(p1.innerText<p2.innerText){
+        document.getElementById('snp2sets').innerText++;
+        p1.innerText=0;
+        p2.innerText=0;
+        redNum = numberofred;
+    }
+}
+function snResetScore (typeOfOperation) {
+    let p1 = document.getElementById('snp1score');
+    let p2 = document.getElementById('snp2score');
+    if(typeOfOperation==1){
+        p1.innerText=0;
+        document.getElementById('snp1sets').innerText=0;
+        p2.innerText=0;
+        document.getElementById('snp2sets').innerText=0;
+        redNum = numberofred;
+        document.getElementById("red").innerHTML=`1 (${redNum})`;
+        document.getElementById("red").classList.remove('unpottable');
+        balldelcheck = false;
+        lastBalls = 1;
+    }
+    else{
+        if(p1.innerText>p2.innerText){
+            document.getElementById('snp1sets').innerText++;
+            p1.innerText=0;
+            p2.innerText=0;
+            redNum = numberofred;
+            document.getElementById("red").innerHTML=`1 (${redNum})`;
+            document.getElementById("red").classList.remove('unpottable');
+            balldelcheck = false;
+            lastBalls = 1;
+            document.querySelectorAll('.colorball').forEach(el => {
+                    el.classList.remove('unpottable');
+                });
+        }
+        else if(p1.innerText<p2.innerText){
+            document.getElementById('snp2sets').innerText++;
+            p1.innerText=0;
+            p2.innerText=0;
+            redNum = numberofred;
+            document.getElementById("red").innerHTML=`1 (${redNum})`;
+            document.getElementById("red").classList.remove('unpottable');
+            balldelcheck = false;
+            lastBalls = 1;
+            document.querySelectorAll('.colorball').forEach(el => {
+                    el.classList.remove('unpottable');
+                });
+        } 
+    }
+}
+function snApplySettings(isFromCookie) {
+    // info from game page
+    let snp1name = document.getElementById('snp1name');
+    let snp2name = document.getElementById('snp2name');
+    let snbestofinfo = document.getElementById('snbestofinfo');
+    // info from settings
+    let setsnp1name = document.getElementById('snsetplayer1');
+    let setsnp2name = document.getElementById('snsetplayer2');
+    let setsnBestFirst = document.getElementById('snsetBestFirst');
+    let setsnfirsttoinfo = Math.ceil(setsnBestFirst.value/2);
+    //get cookie
+    let cookieValue = getCookie("snJsonSettings");
+
+    if(isFromCookie == true & cookieValue != ""){
+        let fetchedSettings = JSON.parse(cookieValue);
+        //p1name
+        setsnp1name.value=fetchedSettings.player1;
+        //p2name
+        setsnp2name.value=fetchedSettings.player2;
+        //bestofs
+        setsnfirsttoinfo=Math.ceil(fetchedSettings.bestofgoto/2);
+        setsnBestFirst.value = fetchedSettings.bestofgoto;
+        //snbestofinfo.innerText=`Best of ${fetchedSettings.bestofgoto} / First to ${setsnfirsttoinfo}`;
+    }
+    else {
+        settingssnooker ();
+    }
+    snp1name.innerText=setsnp1name.value;
+    snp2name.innerText=setsnp2name.value;
+    snbestofinfo.innerText=`Best of ${setsnBestFirst.value} / First to ${setsnfirsttoinfo}`;
+
+    //make object with savedata
+    const settings = {
+        player1: snp1name.innerText.trim(),
+        player2: snp2name.innerText.trim(),
+        bestofgoto: setsnBestFirst.value
+    };
+    // make a json out of savedata
+    const jsonSettings = JSON.stringify(settings);
+    //save to cookie
+    setCookie('snJsonSettings',jsonSettings,1000);
+}
+
 //DARTS FUNCTIONS
 let p1score = 0;
 let p2score = 0;
