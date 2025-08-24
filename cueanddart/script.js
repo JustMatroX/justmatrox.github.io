@@ -467,8 +467,8 @@ function addsnookerpoints(points, foul) {
         }
     }
     if(points>0){
-        if(balldelcheck==false&points>1&allowColor==false)return;
-        if(points>1&foul!=true)allowColor=false;
+        if(balldelcheck==false&points>1&foul!=true&allowColor==false)return;
+        if(points>1)allowColor=false;
         if(foul==true){
             let foulvalue=Math.ceil(document.querySelector('input[name="foul"]:checked').value);
             console.log(foulvalue);
