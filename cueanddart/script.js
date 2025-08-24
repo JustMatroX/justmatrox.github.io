@@ -436,7 +436,7 @@ function extension () {
 }
 //SNOOKER FUNCTIONS
 let activeplayer = 2;
-let numberofred = 3;
+let numberofred = 15;
 let redNum = numberofred;
 let balldelcheck = false;
 let lastBalls = 1;
@@ -468,7 +468,7 @@ function addsnookerpoints(points, foul) {
     }
     if(points>0){
         if(balldelcheck==false&points>1&allowColor==false)return;
-        if(points>1)allowColor=false;
+        if(points>1&foul!=true)allowColor=false;
         if(foul==true){
             let foulvalue=Math.ceil(document.querySelector('input[name="foul"]:checked').value);
             console.log(foulvalue);
@@ -771,4 +771,5 @@ function multiactive (multiplier) {
             ismulti2active=true;
         }
     }
+
 }
