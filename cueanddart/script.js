@@ -771,5 +771,4 @@ function multiactive (multiplier) {
             ismulti2active=true;
         }
     }
-
 }
