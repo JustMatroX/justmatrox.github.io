@@ -597,6 +597,7 @@ function snookerColorBallsInactive(how) {
             el.classList.remove('unpottable');
         });
     }
+    document.getElementsByClassName('colorball')[7].classList.remove('unpottable');
 }
 function playerswitchsnooker() {
     if (activeplayer==1) {
@@ -715,7 +716,7 @@ function snApplySettings(isFromCookie) {
         setsnfirsttoinfo=Math.ceil(fetchedSettings.bestofgoto/2);
         setsnBestFirst.value = fetchedSettings.bestofgoto;
         //rednum
-        setsnnumRed.value = fetchedSettings.numred;
+        if(fetchedSettings.numred>0)setsnnumRed.value = fetchedSettings.numred;
         //snbestofinfo.innerText=`Best of ${fetchedSettings.bestofgoto} / First to ${setsnfirsttoinfo}`;
     }
     else {

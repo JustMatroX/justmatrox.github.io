@@ -662,8 +662,8 @@ border-color: #050;
 
 /* SMALL SCREEN */
 @media only screen and (max-width: 600px) {
-    * {
-    font-size: 0.8rem;
+    #snbestofinfo, #snundo, #endframe{
+    font-size:0.9rem;
     }
     .snpointsystem {
     grid-template-columns: repeat(4, 25%);
