@@ -16,6 +16,7 @@ body{
     overflow: hidden;
     font-size: 1.8rem;
     color: #fff;
+    user-select: none;
 }
 a{
     text-decoration: none;
@@ -439,10 +440,24 @@ background-blend-mode: color;
     cursor: pointer;
     opacity: 0.66;
 }
-#snbestofinfo, #snfirsttoinfo {   
+#snbestofinfo{   
     font-size: 1.5rem;
     color: #aaa;
     height: 4vh;
+}
+#snundo {   
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #aaa;
+    height: 5vh;
+    background-color: rgba(0, 30, 30, 0.5);
+    border-radius: 0 0 0 20px;
+    transition: all 0.15s ease-in-out;
+}
+#snundo:hover,#snundo:active {
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 1px;
 }
 #snookersettings {
     position: absolute;
@@ -460,6 +475,7 @@ background-blend-mode: color;
 }
 .snpointsystem {
     margin-top: 50px;
+    max-width: 1600px;
     display: grid;
     grid-template-columns: repeat(4, 14%) auto;
 }
@@ -470,6 +486,7 @@ background-blend-mode: color;
     cursor: pointer;
     border-radius: 50%;
     height: 12vw;
+    max-height: 200px;
     justify-content: center;
     text-align: center;
     align-items: center;
@@ -645,6 +662,9 @@ border-color: #050;
 
 /* SMALL SCREEN */
 @media only screen and (max-width: 600px) {
+    * {
+    font-size: 0.8rem;
+    }
     .snpointsystem {
     grid-template-columns: repeat(4, 25%);
     }
@@ -682,6 +702,11 @@ border-color: #050;
     font-size: 2.2rem;
     }
 }
+@media only screen and (min-width: 1600px) {
+    body{
+    font-size: 3rem;
+    }
+}
 
 
 
@@ -711,4 +736,9 @@ border-color: #050;
 @keyframes nextshotAnim {
     0% {background-color: #040;}
     100% {background-color: #060;}
+}
+@keyframes bordersnookerpulse {
+    0% {border-color: #ccc;}
+    50% {border-color: #ccc;}
+    100% {border-color: #888;}
 }

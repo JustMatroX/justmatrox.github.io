@@ -444,23 +444,27 @@ let ommitTwo = false;
 let matchHistory = [];
 let allowColor = false;
 function loadingsnooker() {
-    getLastGameFromCookie (2);
     snApplySettings(true);
+    getLastGameFromCookie (2);
     addsnookerpoints(0);
+}
+function snChangeRedNum () {
+    document.getElementById("red").innerHTML="1 ("+(redNum)+")";
+    if(redNum<0)document.getElementById("red").innerHTML="1 (0)";
 }
 function addsnookerpoints(points, foul) {
     let p1 = document.getElementById('snp1score');
     let p2 = document.getElementById('snp2score');
     if(points==1){
         if(redNum>0){
-        document.getElementById("red").innerHTML="1 ("+(redNum-1)+")";
         allowColor = true;
         redNum--;
+        snChangeRedNum ();
         }
         if(redNum==0){ 
             document.getElementById("red").classList.add('unpottable');
             balldelcheck = true;
-            redNum--;
+            redNum--
         }
         else if(redNum<0){
             return;
@@ -489,12 +493,7 @@ function addsnookerpoints(points, foul) {
             if(balldelcheck==true&lastBalls==1){ommitTwo=true;console.log('ommited');}
             if(lastBalls>1){
                 if(ommitTwo==true&points>lastBalls){ 
-                    //blur all balls
-                    document.querySelectorAll('.colorball').forEach(el => {
-                        el.classList.add('unpottable');
-                    });
-                    //unblur target ball
-                    document.getElementsByClassName('colorball')[lastBalls-1].classList.remove('unpottable');
+                    snookerColorBallsInactive(1);
                     console.log('if1');
                     ommitTwo=false;
                 }
@@ -507,14 +506,7 @@ function addsnookerpoints(points, foul) {
                         lastBalls++;
                     }
                     ommitTwo=false;
-                    //blur all balls
-                    document.querySelectorAll('.colorball').forEach(el => {
-                        el.classList.add('unpottable');
-                    });
-                    //unblur target ball
-                    if(lastBalls<8){
-                        document.getElementsByClassName('colorball')[lastBalls-1].classList.remove('unpottable');
-                    }
+                    snookerColorBallsInactive(1);
                 }
             }
             if(activeplayer==1){
@@ -529,26 +521,97 @@ function addsnookerpoints(points, foul) {
             }
             if(balldelcheck==true&lastBalls==1){lastBalls=2;}
         }
-        matchHistory.push([p1.innerText,p2.innerText,points]);
-        document.getElementById('history').innerHTML="";
-        if(false)matchHistory.forEach(element => { 
-            document.getElementById('history').innerHTML+=element[0]+":"+element[1]+" ("+element[2]+") ";
-        });
+        matchHistory.push([p1.innerText,p2.innerText,allowColor,lastBalls,redNum,ommitTwo,balldelcheck,activeplayer]);
     }
     else {
-        document.getElementById('red').innerText=`1 (${numberofred})`
+        if(allowColor){
+            allowColor=false;
+            if(ommitTwo){
+                snookerColorBallsInactive(1);
+                ommitTwo=false;
+            }
+        }
+        if(p1.innerText==0&p2.innerText==0){
+            matchHistory.push([p1.innerText,p2.innerText,allowColor,lastBalls,redNum,ommitTwo,balldelcheck,activeplayer]);
+        }
+        snChangeRedNum ();
         playerswitchsnooker();
+    }
+    snookerUndoTextFunc();
+}
+function snookerUndoTextFunc() {
+    let porno = matchHistory.length;
+    if(porno>1)document.getElementById('snundo').innerHTML=`Undo (${matchHistory[porno-2][0]} : ${matchHistory[porno-2][1]})`;
+    if(porno<2)document.getElementById('snundo').innerHTML=`Nothing to undo`;
+
+}
+function snookerUndoMove () {
+    let porno = matchHistory.length;
+    if(porno>1){
+        document.getElementById('snp1score').innerHTML=matchHistory[porno-2][0];
+        document.getElementById('snp2score').innerHTML=matchHistory[porno-2][1];
+        allowColor=matchHistory[porno-2][2];
+        lastBalls=matchHistory[porno-2][3];
+        redNum=matchHistory[porno-2][4];
+        ommitTwo=matchHistory[porno-2][5];
+        balldelcheck=matchHistory[porno-2][6];
+        if(matchHistory[porno-1][3]>2){
+            snookerColorBallsInactive(1);
+        }
+        else if(matchHistory[porno-1][3]==2){
+            snookerColorBallsInactive(2);
+            if(matchHistory[porno-2][4]==-1&lastBalls==2)redNum=matchHistory[porno-2][4]+1;
+            snChangeRedNum();
+        }
+        else if(matchHistory[porno-1][3]==1){
+            snookerColorBallsInactive("allactive");
+            snChangeRedNum();
+        }
+        if(redNum>0)snookerColorBallsInactive("allactive");
+        matchHistory.pop();
+        snookerUndoTextFunc();
+    }
+}
+function snookerColorBallsInactive(how) {
+    if(how==1){
+        //blur all but current color
+        document.querySelectorAll('.colorball').forEach(el => {
+            el.classList.add('unpottable');
+        });
+        //unblur target ball
+        if(lastBalls<8){
+            document.getElementsByClassName('colorball')[lastBalls-1].classList.remove('unpottable');
+        }
+    }
+    else if(how==2||how==3){
+        //unblur all but red
+        document.querySelectorAll('.colorball').forEach(el => {
+            el.classList.remove('unpottable');
+        });
+        //blur target ball
+        document.getElementsByClassName('colorball')[0].classList.add('unpottable');
+    }
+    else if(how=="allactive"){
+        //unblur all
+        document.querySelectorAll('.colorball').forEach(el => {
+            el.classList.remove('unpottable');
+        });
     }
 }
 function playerswitchsnooker() {
     if (activeplayer==1) {
             activeplayer=2;
             document.getElementById('snp2name').style.borderBottom="10px solid white";
+            document.getElementById('snp2name').style.animation="bordersnookerpulse 1s alternate infinite";
             document.getElementById('snp1name').style.borderBottom="10px solid var(--second-color-dark)";
+            document.getElementById('snp1name').style.animation="";
+            
         } else {
             activeplayer=1;
             document.getElementById('snp1name').style.borderBottom="10px solid white";
+            document.getElementById('snp1name').style.animation="bordersnookerpulse 1s alternate infinite";
             document.getElementById('snp2name').style.borderBottom="10px solid var(--second-color-dark)";
+            document.getElementById('snp2name').style.animation="";
         }
 }
 function settingssnooker () {
@@ -581,6 +644,10 @@ function endframesnooker () {
 function snResetScore (typeOfOperation) {
     let p1 = document.getElementById('snp1score');
     let p2 = document.getElementById('snp2score');
+    matchHistory=[];
+    addsnookerpoints(0);
+    snookerUndoTextFunc();
+    snookerColorBallsInactive("allactive");
     if(typeOfOperation==1){
         p1.innerText=0;
         document.getElementById('snp1sets').innerText=0;
@@ -601,6 +668,7 @@ function snResetScore (typeOfOperation) {
             document.getElementById("red").innerHTML=`1 (${redNum})`;
             document.getElementById("red").classList.remove('unpottable');
             balldelcheck = false;
+            ommitTwo = false;
             lastBalls = 1;
             document.querySelectorAll('.colorball').forEach(el => {
                     el.classList.remove('unpottable');
@@ -614,6 +682,7 @@ function snResetScore (typeOfOperation) {
             document.getElementById("red").innerHTML=`1 (${redNum})`;
             document.getElementById("red").classList.remove('unpottable');
             balldelcheck = false;
+            ommitTwo = false;
             lastBalls = 1;
             document.querySelectorAll('.colorball').forEach(el => {
                     el.classList.remove('unpottable');
@@ -631,6 +700,8 @@ function snApplySettings(isFromCookie) {
     let setsnp2name = document.getElementById('snsetplayer2');
     let setsnBestFirst = document.getElementById('snsetBestFirst');
     let setsnfirsttoinfo = Math.ceil(setsnBestFirst.value/2);
+    let setsnnumRed = document.getElementById('snsetnumred');
+
     //get cookie
     let cookieValue = getCookie("snJsonSettings");
 
@@ -643,6 +714,8 @@ function snApplySettings(isFromCookie) {
         //bestofs
         setsnfirsttoinfo=Math.ceil(fetchedSettings.bestofgoto/2);
         setsnBestFirst.value = fetchedSettings.bestofgoto;
+        //rednum
+        setsnnumRed.value = fetchedSettings.numred;
         //snbestofinfo.innerText=`Best of ${fetchedSettings.bestofgoto} / First to ${setsnfirsttoinfo}`;
     }
     else {
@@ -651,12 +724,15 @@ function snApplySettings(isFromCookie) {
     snp1name.innerText=setsnp1name.value;
     snp2name.innerText=setsnp2name.value;
     snbestofinfo.innerText=`Best of ${setsnBestFirst.value} / First to ${setsnfirsttoinfo}`;
+    numberofred = setsnnumRed.value;
+    redNum = numberofred;
 
     //make object with savedata
     const settings = {
         player1: snp1name.innerText.trim(),
         player2: snp2name.innerText.trim(),
-        bestofgoto: setsnBestFirst.value
+        bestofgoto: setsnBestFirst.value,
+        numred: setsnnumRed.value
     };
     // make a json out of savedata
     const jsonSettings = JSON.stringify(settings);

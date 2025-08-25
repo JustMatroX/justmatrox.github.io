@@ -31,6 +31,7 @@
             <div id="snp2name" class="snscoreboarditem">S. Murphy</div>
             <div id="endframe" class="snscoreboarditem" onclick="snResetScore(2)">END FRAME</div>
             <div id="snbestofinfo" class="snscoreboarditem">Unlimited game</div>
+            <div id="snundo" class="snscoreboarditem" onclick="snookerUndoMove()"></div>
         </div>
         
     </div>
@@ -61,6 +62,7 @@
             <button id="foulpointsbutton" onclick="addsnookerpoints(2,true)">ADD</button>
         </div>
     </div>
+    <div id="history"></div>
     <button class="dark-round-btn" onclick="settingssnooker()">
         SETTINGS
     </button>
@@ -69,6 +71,7 @@
         Player 1's name<br/><input type="text" id="snsetplayer1" name="player1" value="p1" placeholder="osullivan"><br/>
         Player 2's name<br/><input type="text" id="snsetplayer2" name="player2" value="p2" placeholder="murphy"><br/>
         Best of #<br/><input type="number" name="bestof" id="snsetBestFirst" value="2" placeholder="2"><br/>
+        How many reds<br/><input type="number" name="bestof" id="snsetnumred" value="15" placeholder="15"><br/>
         <button id="savesettings" class="settingsbutton" onclick="snApplySettings(false)">SAVE</button>
     </div>
     <div id="bottomBar">
