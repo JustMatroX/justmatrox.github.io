@@ -20,13 +20,22 @@ function menuOperate () {
     }
 }
 function openProject(sitenumber) {
-    if(sitenumber==1){
+    if(sitenumber=='cad'){
     window.location.href = "cueanddart/";
     }
-    else if(sitenumber==2){
+    else if(sitenumber=='cadinfo'){
         window.open("https://www.google.pl", "_blank");
     }
-    else if(sitenumber==3){
+    else if(sitenumber=='chpk'){
+        window.location.href = "checkpack/";
+    }
+    else if(sitenumber=='chpkinfo'){
+        window.open("https://www.google.pl", "_blank");
+    }
+    else if(sitenumber=='aicad'){
         window.location.href = "cueanddartAI/";
+    }
+    else if(sitenumber=='aicadinfo'){
+        window.open("https://www.google.pl", "_blank");
     }
 }

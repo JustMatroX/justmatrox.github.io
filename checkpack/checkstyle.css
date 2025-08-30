@@ -1,0 +1,161 @@
+:root {
+    --font-size-px: 18px;
+}
+html,body {
+    background-color: #444;
+    color: white;
+    font-size: var(--font-size-px);
+    margin: 0;
+    padding: 0;
+    font-family: 'DM Sans';
+}
+input::placeholder {
+    color: #08f;
+}
+input{
+    border: none;
+    color: black;
+    background-color: #fff;
+    text-align: center;
+    border-radius: 10px;
+    padding: calc(0.25*var(--font-size-px));
+    margin: calc(0.1*var(--font-size-px));
+}
+button {
+    background-color: #005070;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    margin: calc(0.1*var(--font-size-px));
+}
+button:hover{
+    background-color: #003050;
+}
+.name {
+    margin: 0 auto;
+    font-weight: 1000;
+}
+.topbar {
+    position: relative;
+    background-color: #001020;
+    height: calc(3*(var(--font-size-px)));
+    display: inline-flex;
+    justify-content: end;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+.topbar > .menu {
+  display: inline-flex;
+  cursor: pointer;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+/*MENU STYLE*/
+.menu > a, .menu > div{
+    height: 100%;
+    background-color: rgba(0,40,80,1);
+    margin: 2px 5px 2px 0;
+    border-radius: 1px;
+    padding: calc(0.5*(var(--font-size-px)));
+}
+.menu > div > a  {
+    height: 100%;
+    background-color: rgba(0,30,60,1);
+    margin: 2px 1px 2px 0;
+    border-radius: 1px;
+}
+.menu > a:hover, .menu > a:focus, .menu > div:hover {
+    background-color: #0060bb;
+}
+.dropdownMenu {
+    overflow: hidden;
+}
+.dropdownDiv {
+    display: none;
+    position: absolute;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    background-color: #444;
+    
+}
+.dropdownDiv a {
+  float: none;
+  color: white;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  padding: calc(0.5*(var(--font-size-px)));
+}
+
+.dropdownDiv a:hover {
+  background-color: #ddd;
+}
+.menuvis {
+    display: block;
+}
+
+/*ALL*/
+.mainpage {
+    padding: 0 calc(1*(var(--font-size-px)));
+    background-color: #002545;
+    min-height: 90vh;
+}
+.maincontrol {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    padding-bottom: var(--font-size-px);
+}
+#uncheck {
+    grid-area: 3 / 1 / span 1 / span 2;
+}
+
+.checkListDaily > label {
+    display: grid;
+    align-items: center;
+    text-align: center;
+    grid-template-columns: 5% 65% 15% 15%;
+    background-color: #003355;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    padding: 10px;
+}
+.checkListDaily > label > button{
+    border-radius: 20px;
+    border: none;
+    color: white;
+    background-color: #005070;
+    padding: calc(0.25*var(--font-size-px));
+    margin: calc(0.1*var(--font-size-px));
+}
+.checkListDaily > label > span > input{
+    border-radius: 20px;
+    width: 90%;
+}
+#welcomemessage {
+    grid-area: 1 / 1 / span 1 / span 2;
+    text-align: center;
+    font-size: 200%;
+}
+.checkListDaily{
+    width:100%;
+    left: 0;
+}
+input[type=checkbox] {
+    scale: 3;
+}
+@media only screen and (max-width: 800px) {
+    .checkListDaily > label {
+        grid-template-columns: auto auto;
+    }
+    .checkListDaily > label > span {
+        overflow-x:hidden;
+        overflow-wrap: break-word;
+    }
+
+    input[type=checkbox] {
+        scale: 2;
+    }
+}

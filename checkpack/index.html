@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="checkstyle.css" rel="stylesheet">
+    <script src="checkscripts.js"></script> 
+    <script src="loca.json" type="application/json" id="locaData"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <title>CheckPack - Your checklists</title>
+</head>
+<body onload="createDailyList ()">
+    <div id="topbar" class="topbar">
+        <div id="name" class="name">
+            CheckPack v 0.1
+        </div>
+        <div id="" class="menu">
+            <a href="../" id="menuAbout"></a>
+            <div class="dropdownMenu" onclick="dropdownMenu('sm2')">
+                TBD
+                <div class="dropdownDiv" id="sm2">
+                    <a class="dropdownitem"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainpage" class="mainpage">
+        <div id="maincontrol" class="maincontrol">
+            <p id="welcomemessage"></p>
+            <input type="text" id="itemText" value="Make a breakfast for a family of 4" placeholder="New item">
+            <button onclick="addItem()">Add</button>
+            <button id="uncheck" onclick="uncheckAll()">Uncheck all</button>
+        </div>
+        <div id="checkListDaily" class="checkListDaily">
+
+        </div>
+    </div>
+</body>
