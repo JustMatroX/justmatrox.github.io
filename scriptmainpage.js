@@ -6,7 +6,7 @@ function menuOperate () {
         setTimeout(() => {
                     hamburgerDiv.style.animation="";
                 }, 205);
-        hamburgerDiv.style.left="calc(-250px)";
+        hamburgerDiv.style.left="calc(-300px)";
         
         menustate = false;
     }

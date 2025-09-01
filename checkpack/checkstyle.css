@@ -12,6 +12,11 @@ html,body {
 input::placeholder {
     color: #08f;
 }
+#logo {
+    height:70%;
+    padding: 0;
+    margin-left: 1vw;
+}
 input{
     border: none;
     color: black;
@@ -42,7 +47,6 @@ button:hover{
     display: inline-flex;
     justify-content: end;
     align-items: center;
-    text-align: center;
     width: 100%;
 }
 .topbar > .menu {
