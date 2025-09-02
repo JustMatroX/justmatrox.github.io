@@ -1,5 +1,5 @@
 :root {
-    --font-size-px: 18px;
+    --font-size-px: 17px;
 }
 html,body {
     background-color: #444;
@@ -102,8 +102,56 @@ a {
 }
 
 /*ALL*/
+.categories {
+    display: grid;
+    grid-template-columns: min-content min-content min-content;
+    height: calc(2*var(--font-size-px));
+    background-color: #002545;
+}
+.categories > div {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border-radius: 0 0 calc(1*var(--font-size-px)) 0;
+    transition: all 0.2s ease-in-out;
+}
+.categories > div:hover {
+    border-radius: 0 0 calc(1*var(--font-size-px)) calc(0.5*var(--font-size-px));
+    height: 110%;
+    color: #bbffbb;
+}
+.category1 {
+    position: relative;
+    padding-left: calc(1*var(--font-size-px));
+    padding-right: calc(1*var(--font-size-px));
+}
+.category2plus {
+    padding-left: calc(2*var(--font-size-px));
+    padding-right: calc(1*var(--font-size-px));
+}
+#dateToday {
+    z-index: 5;
+    background-color: #003555;
+}
+#dayToday {
+    transform: translateX(calc(-1*var(--font-size-px)));
+    z-index: 4;
+    background-color: #004565;
+}
+#timeNow {
+    transform: translateX(calc(-2*var(--font-size-px)));
+    z-index: 3;
+    background-color: #005575;
+}
+
+
+
 .mainpage {
     padding: 0 calc(1*(var(--font-size-px)));
+    display: grid;
+    grid-template-columns: 50% 50%;
     background-color: #002545;
     min-height: 90vh;
 }
@@ -115,8 +163,7 @@ a {
 #uncheck {
     grid-area: 3 / 1 / span 1 / span 2;
 }
-
-.checkListDaily > label {
+.checkList > label {
     display: grid;
     align-items: center;
     text-align: center;
@@ -126,7 +173,7 @@ a {
     border-radius: 20px;
     padding: 10px;
 }
-.checkListDaily > label > button{
+.checkList > label > button{
     border-radius: 20px;
     border: none;
     color: white;
@@ -134,11 +181,11 @@ a {
     padding: calc(0.25*var(--font-size-px));
     margin: calc(0.1*var(--font-size-px));
 }
-.checkListDaily > label > span > input{
+.checkList > label > span > input{
     border-radius: 20px;
     width: 90%;
 }
-#welcomemessage {
+#welcomemessageDaily, #welcomemessageWeek {
     grid-area: 1 / 1 / span 1 / span 2;
     text-align: center;
     font-size: 200%;
@@ -147,14 +194,27 @@ a {
     width:100%;
     left: 0;
 }
+.checklistContainer {
+    padding: 0 2%;
+}
 input[type=checkbox] {
     scale: 3;
 }
 @media only screen and (max-width: 800px) {
-    .checkListDaily > label {
+    .mainpage {
+        padding: 0 calc(1*(var(--font-size-px)));
+        display: grid;
+        grid-template-columns: 100%;
+        background-color: #002545;
+        min-height: 90vh;
+    }
+    .checklistContainer {
+        padding: 0;
+    }   
+    .checkList > label {
         grid-template-columns: auto auto;
     }
-    .checkListDaily > label > span {
+    .checkList > label > span {
         overflow-x:hidden;
         overflow-wrap: break-word;
     }

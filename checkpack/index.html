@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
     <title>CheckPack - Your checklists</title>
 </head>
-<body onload="createDailyList ()">
+<body onload="loadingProcedures()">
     <div id="topbar" class="topbar">
         <img id="logo" src="checkpacklogo.png"/>
         <div id="name" class="name">
@@ -27,16 +27,36 @@
             </div>
         </div>
     </div>
+    <div id="categories" class="categories">
+        <div id="dateToday" class="category1">
 
-    <div id="mainpage" class="mainpage">
-        <div id="maincontrol" class="maincontrol">
-            <p id="welcomemessage"></p>
-            <input type="text" id="itemText" value="Make a breakfast for a family of 4" placeholder="New item">
-            <button onclick="addItem()">Add</button>
-            <button id="uncheck" onclick="uncheckAll()">Uncheck all</button>
         </div>
-        <div id="checkListDaily" class="checkListDaily">
+        <div id="dayToday" class="category2plus">
 
+        </div>
+        <div id="timeNow" class="category2plus">
+            
+        </div>
+    </div>
+    <div id="mainpage" class="mainpage">
+        <div id="dailyContainer" class="checklistContainer">
+            <div id="maincontrol" class="maincontrol">
+                <p id="welcomemessageDaily"></p>
+                <input type="text" id="itemTextday" value="" placeholder="New item">
+                <button onclick="AddChecklistItem('day')">Add</button>
+                <button id="uncheck" onclick="UncheckAll('d')">Uncheck all</button>
+            </div>
+            <div id="checkListDaily" class="checkList checkListDaily">
+            </div>
+        </div>
+        <div id="weeklyContainer" class="checklistContainer">
+            <div id="maincontrol" class="maincontrol">
+                <p id="welcomemessageWeek"></p>
+                <input type="text" id="itemTextweek" value="" placeholder="New item">
+                <button onclick="AddChecklistItem('week')">Add</button>
+                <button id="uncheck" onclick="UncheckAll('w')">Uncheck all</button>
+            </div>
+            <div id="checkListWeekly" class="checkList checkListWeekly">
         </div>
     </div>
 </body>

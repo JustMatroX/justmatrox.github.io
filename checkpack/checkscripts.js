@@ -1,5 +1,6 @@
 let langData = {};
 let dailyChecks = [];
+let weeklyChecks = [];
 //COOKIE FUNCTIONS
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
@@ -26,13 +27,6 @@ function getCookie(cname) {
     return "";
 }
 //LANGUAGE LOADING
-fetch("loca.json")
-  .then(response => response.json())
-  .then(data => {
-    langData = data;
-    setLanguage("en"); // initialize after loading
-  })
-  .catch(err => console.error("Error loading languages:", err));
 function dropdownMenu (id) {
     document.getElementById(id).classList.toggle("menuvis")
 }
@@ -44,83 +38,204 @@ window.onclick = function(e) {
     }
   }
 }
+function loadingProcedures () {
+    fetch("loca.json")
+    .then(response => response.json())
+    .then(data => {
+        langData = data;
+        setLanguage("en"); // initialize after loading
+    })
+    .catch(err => console.error("Error loading languages:", err));
+    createList("dailyChecks","checkListDaily");
+    createList("weeklyChecks","checkListWeekly");
+    updateDates ();
+}
+function updateDates () {
+    let daysOfWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    let currenttime = new Date();
+    let dateToday = currenttime.getFullYear()+"."+(1+currenttime.getMonth())+"."+currenttime.getDate();
+    let dayToday = daysOfWeek[currenttime.getDay()];
+    document.getElementById("dayToday").innerText=dayToday;
+    document.getElementById("dateToday").innerText=dateToday;
+    let minutesNow=currenttime.getMinutes();
+    if(minutesNow<10)minutesNow="0"+minutesNow;
+    document.getElementById("timeNow").innerText=currenttime.getHours()+":"+minutesNow
+    setInterval(() => {
+        dateToday = currenttime.getFullYear()+"."+(1+currenttime.getMonth())+"."+currenttime.getDate();
+        dayToday = daysOfWeek[currenttime.getDay()];
+        document.getElementById("dayToday").innerText=dayToday;
+        document.getElementById("dateToday").innerText=dateToday;
+        currenttime = new Date();
+        minutesNow=currenttime.getMinutes();
+        if(minutesNow<10)minutesNow="0"+minutesNow;
+        document.getElementById("timeNow").innerText=currenttime.getHours()+":"+minutesNow
+    }, 1000);
+
+}
+
+function UpdateChecklistTimestamp (updateIndex,cookiet){
+    if(cookiet=="dailyChecks"){
+    dailyChecks[updateIndex][2] = new Date();
+    }
+    else if (cookiet=="weeklyChecks"){
+    weeklyChecks[updateIndex][2] = new Date();
+    }
+}
 function setLanguage(lang) {
-      document.getElementById("welcomemessage").innerText = langData[lang].title;
+      document.getElementById("welcomemessageDaily").innerText = langData[lang].titleToday;
+      document.getElementById("welcomemessageWeek").innerText = langData[lang].titleWeek;
       document.getElementById("menuAbout").innerText = langData[lang].menu.about;
 }
-function addItem() {
-    const text = document.getElementById("itemText").value.trim();
+function AddChecklistItem(type) {
+    const text = document.getElementById("itemText"+type).value.trim();
     if (!text) return; // ignore empty input
-    dailyChecks.push([text,false]);
-    let dailyChecksJSON = JSON.stringify(dailyChecks);
-    setCookie('dailyChecks',dailyChecksJSON,365);
-    createDailyList();
-}
-function removeItem (removedIndex) {
-    if(dailyChecks.length==1){
-        dailyChecks=[];
+    if(type=="day"){
+        dailyChecks.push([text,false,new Date()]);
         let dailyChecksJSON = JSON.stringify(dailyChecks);
         setCookie('dailyChecks',dailyChecksJSON,365);
+        createList("dailyChecks","checkListDaily",type);
     }
-    else{
-        dailyChecks.splice(removedIndex, 1);
-        let dailyChecksJSON = JSON.stringify(dailyChecks);
-        setCookie('dailyChecks',dailyChecksJSON,365);
+    else if(type=="week") {
+        weeklyChecks.push([text,false,new Date()]);
+        let weeklyChecksJSON = JSON.stringify(weeklyChecks);
+        setCookie('weeklyChecks',weeklyChecksJSON,365);
+        createList("weeklyChecks","checkListWeekly",type);
     }
-    createDailyList();
 }
-function editItem(indexEdit) {
-    let text = document.getElementById("taskName"+indexEdit);
-    if(document.getElementById("editbtn"+indexEdit).innerText=="Save"){
+function RemoveChecklistItem (cookiet,containert,removedIndex) {
+    if(cookiet=="dailyChecks"){
+        console.log("dailydel");
+        if(dailyChecks.length==1){
+            dailyChecks=[];
+            let listJSON = JSON.stringify(dailyChecks);
+            setCookie('dailyChecks',listJSON,365);
+        }
+        else{
+            dailyChecks.splice(removedIndex, 1);
+            let listJSON = JSON.stringify(dailyChecks);
+            setCookie('dailyChecks',listJSON,365);
+        }
+    }
+    else if(cookiet=="weeklyChecks"){
+        console.log("weeklydel");
+        if(weeklyChecks.length==1){
+            weeklyChecks=[];
+            let listJSON = JSON.stringify(weeklyChecks);
+            setCookie('weeklyChecks',listJSON,365);
+        }
+        else{
+            weeklyChecks.splice(removedIndex, 1);
+            let listJSON = JSON.stringify(weeklyChecks);
+            setCookie('weeklyChecks',listJSON,365);
+        }
+    }
+    createList(cookiet,containert);
+}
+function EditChecklistItem(abbr,indexEdit,cookiet,containert) {
+    //get text to edit
+    let text = document.getElementById(abbr+"taskName"+indexEdit);
+    //check if save of edit
+    if(document.getElementById(abbr+"editbtn"+indexEdit).innerText=="Save"){
         //EDIT SITE
-        let newVal = document.getElementById('inp'+indexEdit).value;
+        let newVal = document.getElementById(abbr+'inp'+indexEdit).value;
         text.replaceChildren();
-        text.innerText=" "+newVal;
-        document.getElementById("editbtn"+indexEdit).innerText="Edit";
         //edit JSON
-        dailyChecks[indexEdit][0]=newVal;
-        let dailyChecksJSON = JSON.stringify(dailyChecks);
-        setCookie('dailyChecks',dailyChecksJSON,365);
+        if(cookiet=="dailyChecks"){
+            dailyChecks[indexEdit][0]=newVal;
+            let listJSON = JSON.stringify(dailyChecks);
+            setCookie('dailyChecks',listJSON,365);
+        }
+        else if(cookiet=="weeklyChecks"){
+            weeklyChecks[indexEdit][0]=newVal;
+            let listJSON = JSON.stringify(weeklyChecks);
+            setCookie('weeklyChecks',listJSON,365);
+        }
+        UpdateChecklistTimestamp (indexEdit,cookiet);
+        createList(cookiet,containert);
     }
     else{
+    //render input
     let prev = text.innerText;
-    text.innerHTML=`<input id='inp${indexEdit}' type='text' value='${prev}'>`;
-    document.getElementById("editbtn"+indexEdit).innerText="Save";
+    text.innerHTML=`<input id='${abbr}inp${indexEdit}' type='text' value='${prev}'>`;
+    //change button text
+    document.getElementById(abbr+"editbtn"+indexEdit).innerText="Save";
     }
 }
-function uncheckAll () {
-    if(dailyChecks.length>1){
+function UncheckAll (houhou) {
+    if(houhou=='d'&dailyChecks.length>0){
         for (let index = 0; index < dailyChecks.length; index++) {
             dailyChecks[index][1]=false;
+            UpdateChecklistTimestamp (index,"dailyChecks");
         }
         let dailyChecksJSON = JSON.stringify(dailyChecks);
         setCookie('dailyChecks',dailyChecksJSON,365);
-        createDailyList();
+        createList("dailyChecks","checkListDaily");
+    }
+    else if(houhou=='w'&weeklyChecks.length>0){
+        for (let index = 0; index < weeklyChecks.length; index++) {
+            weeklyChecks[index][1]=false;
+            UpdateChecklistTimestamp (index,"weeklyChecks");
+        }
+        let weeklyChecksJSON = JSON.stringify(weeklyChecks);
+        setCookie('weeklyChecks',weeklyChecksJSON,365);
+        createList("weeklyChecks","checkListWeekly");
     }
 }
-function alterItemState (alteredIndex){
-    if(dailyChecks.length>0){
+function AlterItemState (alteredIndex,cookiet,containert){
+    if(cookiet=="dailyChecks"){
         if(dailyChecks[alteredIndex][1]==true){
             dailyChecks[alteredIndex][1]=false;
         }
         else {
             dailyChecks[alteredIndex][1]=true;
         }
+        UpdateChecklistTimestamp (alteredIndex,cookiet);
         let dailyChecksJSON = JSON.stringify(dailyChecks);
         setCookie('dailyChecks',dailyChecksJSON,365);
     }
-    createDailyList();
+    if(cookiet=="weeklyChecks"){
+        if(weeklyChecks[alteredIndex][1]==true){
+            weeklyChecks[alteredIndex][1]=false;
+        }
+        else {
+            weeklyChecks[alteredIndex][1]=true;
+        }
+        UpdateChecklistTimestamp (alteredIndex,cookiet);
+        let weeklyChecksJSON = JSON.stringify(weeklyChecks);
+        setCookie('weeklyChecks',weeklyChecksJSON,365);
+    }
+
+    createList(cookiet,containert);
 }
-function createDailyList () {
-    let dailyCCookie = getCookie('dailyChecks');
-    if(dailyCCookie!=""){dailyChecks = JSON.parse(dailyCCookie)}
-    const container = document.getElementById("checkListDaily");
+function createList (cookietype,listtype,shorttype) {
+    //clear input if added new one
+    if(shorttype=='week'||shorttype=='day'){
+        document.getElementById("itemText"+shorttype).value = "";
+    }
+    //assign cookie to variable
+    let listCookie = getCookie(cookietype);
+    let ChecklistCreation = [];
+    let abbr= "";
+    //check if list exists and parse if yes
+    if(listCookie!=""&cookietype=="dailyChecks"){
+        dailyChecks = JSON.parse(listCookie);
+        ChecklistCreation = dailyChecks;
+        abbr  = "d";
+    } 
+    else if(listCookie!=""&cookietype=="weeklyChecks"){
+        weeklyChecks = JSON.parse(listCookie);
+        ChecklistCreation = weeklyChecks;
+        abbr  = "w";
+    }
+    //select container to edit and clear it
+    let container = document.getElementById(listtype);
     container.innerHTML="";
+
+    //simple variable to track index while creating
     let indexCheck = 0;
-    if(dailyChecks!=""){
-        dailyChecks.forEach(element => {
-            let text = element[0];
-            let container = document.getElementById("checkListDaily");
+    //create list if cookie is not empty
+    if(ChecklistCreation!=""){
+        ChecklistCreation.forEach(element => {
             // create checkbox
             let checkbox = document.createElement("input");
             checkbox.type = "checkbox";
@@ -129,10 +244,10 @@ function createDailyList () {
             let label = document.createElement("label");
             const baton = document.createElement("button");
             const baton2 = document.createElement("button");
-            baton2.id="editbtn"+indexCheck;
+            baton2.id= abbr + "editbtn" + indexCheck;
             const span = document.createElement("span");
-            span.id = "taskName"+indexCheck;
-            span.appendChild(document.createTextNode(" "+text));
+            span.id = abbr + "taskName"+indexCheck;
+            span.appendChild(document.createTextNode(" "+element[0]));
             label.appendChild(checkbox);
             label.appendChild(span);
             label.appendChild(baton);
@@ -141,7 +256,6 @@ function createDailyList () {
             baton2.appendChild(document.createTextNode("Edit"));
             container.appendChild(label);
             // clear input
-            document.getElementById("itemText").value = "";
             indexCheck++;
         });
         let buttons = container.querySelectorAll("button");
@@ -150,7 +264,7 @@ function createDailyList () {
         //add so that json saves the change to all checkboxes
         checkboxes.forEach((checkbox_, index) => {
             checkbox_.addEventListener("click", () => {
-                alterItemState(index);
+                AlterItemState(index,cookietype,listtype);
             });
         });
 
@@ -158,12 +272,12 @@ function createDailyList () {
         buttons.forEach((btn, index) => {
             if(index % 2==0){
                 btn.addEventListener("click", () => {
-                    removeItem(index/2);
+                    RemoveChecklistItem(cookietype,listtype,index/2);
                 });
             }
             else{
                 btn.addEventListener("click", () => {
-                    editItem(Math.floor(index/2));
+                    EditChecklistItem(abbr,Math.floor(index/2),cookietype,listtype);
                 });
             }
         });
@@ -171,4 +285,6 @@ function createDailyList () {
     else{
         container.innerHTML="";
     }
+    console.log("Weekly: "+weeklyChecks);
+    console.log("Daily: "+dailyChecks);
 }

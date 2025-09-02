@@ -1,6 +1,7 @@
 {
   "en": {
-    "title": "Today's Checklist:",
+    "titleToday": "Today's Checklist:",
+    "titleWeek": "Weekly Checklist:",
     "menu": {
         "about": "Back to Menu"
     }
