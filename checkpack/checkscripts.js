@@ -160,7 +160,7 @@ function loadingProcedures () {
         createList("dailyChecks","checkListDaily");
         createList("weeklyChecks","checkListWeekly");
         updateDates();
-    }, 50);
+    }, 300);
     
     
 }
@@ -421,4 +421,5 @@ function createList (cookietype,listtype,shorttype) {
     else{
         container.innerHTML="";
     }
+
 }
