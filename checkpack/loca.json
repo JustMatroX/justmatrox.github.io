@@ -1,9 +1,79 @@
 {
   "en": {
-    "titleToday": "Today's Checklist:",
-    "titleWeek": "Weekly Checklist:",
+    "daysOfWeek":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
     "menu": {
-        "about": "Back to Menu"
+        "about": "Back to Menu",
+        "language": "EN",
+        "dailyList": "Daily List",
+        "weeklyList": "Weekly List"
+    },
+    "checklist": {
+        "titleToday": "Today's Checklist:",
+        "titleWeek": "Weekly Checklist:",
+        "addButton": "Add",
+        "uncheckAllButton": "Uncheck all",
+        "deleteAllButton": "Delete all",
+        "confirmDeletion": "Write \"OK\" to confirm",
+        "infoDeletedAll": "All items were deleted.",
+        "infoDidntDeleteAll": "Nothing was deleted."
+    }
+  },
+
+  "pl": {
+    "daysOfWeek":["Niedziela","Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota"],
+    "menu": {
+        "about": "Wróć do menu",
+        "language": "PL",
+        "dailyList": "Lista dzienna",
+        "weeklyList": "Lista tygodniowa"
+    },
+    "checklist": {
+        "titleToday": "Dzisiejsza lista zadań:",
+        "titleWeek": "Tygodniowa lista zadań:",
+        "addButton": "Dodaj",
+        "uncheckAllButton": "Odznacz wszystkie",
+        "deleteAllButton": "Usuń wszystkie",
+        "confirmDeletion": "Napisz \"OK\", aby potwierdzić",
+        "infoDeletedAll": "Wszystko zostało usunięte.",
+        "infoDidntDeleteAll": "Nic nie zostało usunięte."
+    }
+  },
+  "de": {
+    "daysOfWeek": ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+    "menu": {
+        "about": "Zurück zum Menü",
+        "language": "DE",
+        "dailyList": "Tägliche Liste",
+        "weeklyList": "Wöchentliche Liste"
+    },
+    "checklist": {
+        "titleToday": "Heutige Aufgabenliste:",
+        "titleWeek": "Wöchentliche Aufgabenliste:",
+        "addButton": "Hinzufügen",
+        "uncheckAllButton": "Alle abwählen",
+        "deleteAllButton": "Alle löschen",
+        "confirmDeletion": "Schreiben Sie \"OK\" zur Bestätigung",
+        "infoDeletedAll": "Alles wurde gelöscht.",
+        "infoDidntDeleteAll": "Nichts wurde gelöscht."
+    }
+  },
+  "es": {
+    "daysOfWeek": ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+    "menu": {
+        "about": "Volver al menú",
+        "language": "ES",
+        "dailyList": "Lista diaria",
+        "weeklyList": "Lista semanal"
+    },
+    "checklist": {
+        "titleToday": "Lista de tareas de hoy:",
+        "titleWeek": "Lista de tareas de la semana:",
+        "addButton": "Añadir",
+        "uncheckAllButton": "Deseleccionar todo",
+        "deleteAllButton": "Borrar todo",
+        "confirmDeletion": "Escribe \"OK\" para confirmar",
+        "infoDeletedAll": "Todo fue borrado.",
+        "infoDidntDeleteAll": "No se borró nada."
     }
   }
 }

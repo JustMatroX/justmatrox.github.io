@@ -1,8 +1,8 @@
 :root {
-    --font-size-px: 17px;
+    --font-size-px: 18px;
 }
-html,body {
-    background-color: #444;
+html,body { 
+    background-color: #002545;
     color: white;
     font-size: var(--font-size-px);
     margin: 0;
@@ -36,34 +36,39 @@ button {
 button:hover{
     background-color: #003050;
 }
-.name {
-    margin: 0 auto;
-    font-weight: 1000;
-}
 .topbar {
     position: relative;
     background-color: #001020;
+    white-space: nowrap;
     height: calc(3*(var(--font-size-px)));
     display: inline-flex;
-    justify-content: end;
     align-items: center;
     width: 100%;
 }
 .topbar > .menu {
-  display: inline-flex;
-  cursor: pointer;
+    display: inline-flex;
+    cursor: pointer;
 }
 a {
     text-decoration: none;
     color: inherit;
 }
+.name {
+    margin: 0 auto 0 var(--font-size-px);
+    font-weight: 1000;
+}
 /*MENU STYLE*/
+.menu {
+    position: relative;
+}
 .menu > a, .menu > div{
     height: 100%;
     background-color: rgba(0,40,80,1);
-    margin: 2px 5px 2px 0;
+    margin: 2px 2px 2px 0;
     border-radius: 1px;
-    padding: calc(0.5*(var(--font-size-px)));
+    text-align: center;
+    align-items: center;
+    padding: calc(0.6*(var(--font-size-px)));
 }
 .menu > div > a  {
     height: 100%;
@@ -75,36 +80,43 @@ a {
     background-color: #0060bb;
 }
 .dropdownMenu {
-    overflow: hidden;
+    position: relative;
+    width: 100%;
+    z-index:9999;
+}
+.dropdownMenu > i{
+    padding: 0 calc(0.3*var(--font-size-px));
 }
 .dropdownDiv {
     display: none;
-    position: absolute;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    background-color: #444;
-    
+    border-radius: 0 0 10px 10px;
+    position: absolute;
+    top: 100%;
+    right: 0;
 }
 .dropdownDiv a {
-  float: none;
-  color: white;
-  text-decoration: none;
-  display: block;
-  text-align: left;
-  padding: calc(0.5*(var(--font-size-px)));
+    background-color: #003060;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+    border-top: 2px solid #002040;
+    border-radius: 5px;
+    padding: calc(0.5*(var(--font-size-px)));
 }
-
 .dropdownDiv a:hover {
-  background-color: #ddd;
+  background-color: #005565;
 }
 .menuvis {
     display: block;
 }
-
+.fa-solid{
+    pointer-events: none;
+}
 /*ALL*/
 .categories {
     display: grid;
-    grid-template-columns: min-content min-content min-content;
+    grid-template-columns: repeat(3, min-content);
     height: calc(2*var(--font-size-px));
     background-color: #002545;
 }
@@ -135,33 +147,38 @@ a {
     z-index: 5;
     background-color: #003555;
 }
-#dayToday {
+#timeNow {
     transform: translateX(calc(-1*var(--font-size-px)));
     z-index: 4;
     background-color: #004565;
 }
-#timeNow {
+#dayToday {
     transform: translateX(calc(-2*var(--font-size-px)));
     z-index: 3;
     background-color: #005575;
 }
 
-
-
 .mainpage {
-    padding: 0 calc(1*(var(--font-size-px)));
     display: grid;
-    grid-template-columns: 50% 50%;
     background-color: #002545;
-    min-height: 90vh;
+}
+.split-scr{
+    grid-template-columns: 50% 50%; 
 }
 .maincontrol {
     display: grid;
-    grid-template-columns: 80% 20%;
+    grid-template-columns: 75% 25%;
     padding-bottom: var(--font-size-px);
 }
 #uncheck {
     grid-area: 3 / 1 / span 1 / span 2;
+}
+.removeButton {
+    background-color: rgba(128,0,0,0.5);
+    border: 1px solid rgba(188,0,0,0.5);
+}
+.removeButton:hover {
+    background-color: rgba(128,0,0,0.8);
 }
 .checkList > label {
     display: grid;
@@ -172,12 +189,12 @@ a {
     margin-bottom: 10px;
     border-radius: 20px;
     padding: 10px;
+    box-shadow: 4px 4px 4px #00000030;
 }
 .checkList > label > button{
     border-radius: 20px;
-    border: none;
     color: white;
-    background-color: #005070;
+    box-shadow: 2px 2px 5px #000;
     padding: calc(0.25*var(--font-size-px));
     margin: calc(0.1*var(--font-size-px));
 }
@@ -195,24 +212,32 @@ a {
     left: 0;
 }
 .checklistContainer {
-    padding: 0 2%;
+    display: none;
+    background-color: #001020;
+    border-radius: 20px;
+    padding: calc(1*(var(--font-size-px)));
+    margin: calc(0.5*(var(--font-size-px)));
 }
 input[type=checkbox] {
-    scale: 3;
+    scale: 2;
 }
-@media only screen and (max-width: 800px) {
-    .mainpage {
-        padding: 0 calc(1*(var(--font-size-px)));
-        display: grid;
-        grid-template-columns: 100%;
-        background-color: #002545;
-        min-height: 90vh;
+@media only screen and (max-width: 900px) {
+    :root {
+        --font-size-px: 12px;
     }
-    .checklistContainer {
-        padding: 0;
-    }   
+    .split-scr{
+       grid-template-columns: 100%; 
+    }
+    .mainpage {
+        grid-template-columns: 100%;
+    }
     .checkList > label {
         grid-template-columns: auto auto;
+    }
+    .checkList > label > button {
+        margin: 0 auto;
+        padding: 0 calc(2*var(--font-size-px));
+        
     }
     .checkList > label > span {
         overflow-x:hidden;
@@ -220,6 +245,6 @@ input[type=checkbox] {
     }
 
     input[type=checkbox] {
-        scale: 2;
+        scale: 1.5;
     }
 }

@@ -15,46 +15,58 @@
     <div id="topbar" class="topbar">
         <img id="logo" src="checkpacklogo.png"/>
         <div id="name" class="name">
-            CheckPack v 0.1
+            CheckPack
         </div>
         <div id="" class="menu">
+
+            
             <a href="../" id="menuAbout"></a>
+            
+            <a onclick="changeSettings(0)" id="menuLanguage"></a>
+            
             <div class="dropdownMenu" onclick="dropdownMenu('sm2')">
-                TBD
+                <i class="fa-solid fa-bars fa-1x"></i>
                 <div class="dropdownDiv" id="sm2">
-                    <a class="dropdownitem"></a>
+                    <a class="dropdownitem" onclick="changeSettings(1)" id="menuDailyList">Daily List Toggle</a>
+                    <a class="dropdownitem" onclick="changeSettings(2)" id="menuWeeklyList">Weekly List Toggle</a>
+                    <a class="dropdownitem" onclick="changeSettings(3)" id="menuWeeklyList">Split view Toggle</a>
                 </div>
             </div>
-        </div>
-    </div>
-    <div id="categories" class="categories">
-        <div id="dateToday" class="category1">
 
         </div>
-        <div id="dayToday" class="category2plus">
+    </div>
+
+    <div id="categories" class="categories">
+        <div id="dateToday" class="category1">
 
         </div>
         <div id="timeNow" class="category2plus">
             
         </div>
+        <div id="dayToday" class="category2plus">
+
+        </div>
     </div>
+
     <div id="mainpage" class="mainpage">
         <div id="dailyContainer" class="checklistContainer">
             <div id="maincontrol" class="maincontrol">
-                <p id="welcomemessageDaily"></p>
+                <p id="welcomemessageDaily">Daily</p>
                 <input type="text" id="itemTextday" value="" placeholder="New item">
-                <button onclick="AddChecklistItem('day')">Add</button>
-                <button id="uncheck" onclick="UncheckAll('d')">Uncheck all</button>
+                <button id="addButton" onclick="AddChecklistItem('day')">Add</button>
+                <button id="uncheckallButton" onclick="UncheckAll('d')">Uncheck all</button>
+                <button id="deleteallButton" class="removeButton" onclick="DeleteAll('d')">Delete all</button>
             </div>
             <div id="checkListDaily" class="checkList checkListDaily">
             </div>
         </div>
         <div id="weeklyContainer" class="checklistContainer">
             <div id="maincontrol" class="maincontrol">
-                <p id="welcomemessageWeek"></p>
+                <p id="welcomemessageWeek">Weekly</p>
                 <input type="text" id="itemTextweek" value="" placeholder="New item">
-                <button onclick="AddChecklistItem('week')">Add</button>
-                <button id="uncheck" onclick="UncheckAll('w')">Uncheck all</button>
+                <button id="addButton2" onclick="AddChecklistItem('week')">Add</button>
+                <button id="uncheckallButton2" onclick="UncheckAll('w')">Uncheck all</button>
+                <button id="deleteallButton2" class="removeButton" onclick="DeleteAll('w')">Delete all</button>
             </div>
             <div id="checkListWeekly" class="checkList checkListWeekly">
         </div>

@@ -1,6 +1,9 @@
 let langData = {};
 let dailyChecks = [];
 let weeklyChecks = [];
+let siteSettings = [];
+let locaData = [];
+let availableLanguages=["en","pl","de","es"];
 //COOKIE FUNCTIONS
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
@@ -26,6 +29,112 @@ function getCookie(cname) {
     }
     return "";
 }
+// SETTINGS FUNCTIONS
+function setLanguage(lang) {
+    //menu
+    document.getElementById("menuAbout").innerText = langData[lang].menu.about;
+    document.getElementById("menuLanguage").innerText = "Language: "+langData[lang].menu.language;
+    document.getElementById("menuDailyList").innerText = langData[lang].menu.dailyList;
+    document.getElementById("menuWeeklyList").innerText = langData[lang].menu.weeklyList;
+    //checklist
+    document.getElementById("welcomemessageDaily").innerText = langData[lang].checklist.titleToday;
+    document.getElementById("welcomemessageWeek").innerText = langData[lang].checklist.titleWeek;
+    document.getElementById("addButton").innerText = langData[lang].checklist.addButton;
+    document.getElementById("addButton2").innerText = langData[lang].checklist.addButton;
+    document.getElementById("uncheckallButton").innerText = langData[lang].checklist.uncheckAllButton;
+    document.getElementById("uncheckallButton2").innerText = langData[lang].checklist.uncheckAllButton;
+    document.getElementById("deleteallButton").innerText = langData[lang].checklist.deleteAllButton;
+    document.getElementById("deleteallButton2").innerText = langData[lang].checklist.deleteAllButton;
+}
+function saveSettings () {
+    let JSONsettings = JSON.stringify(siteSettings);
+    setCookie('siteSettings',JSONsettings,365);
+}
+function applySettings () {
+    let settingsSaved = getCookie('siteSettings');
+    if(settingsSaved!=""){
+        settingsSaved = JSON.parse(settingsSaved);
+        //language
+        siteSettings[0]=settingsSaved[0];
+        setLanguage(availableLanguages[siteSettings[0]]);
+        //is dailyopen?
+        siteSettings[1]=settingsSaved[1];
+        if(siteSettings[1]) {
+            document.getElementById("dailyContainer").style.display="block";
+        }
+        else {
+            document.getElementById("dailyContainer").style.display="none";
+        }
+        //is weekly open?
+        siteSettings[2]=settingsSaved[2];
+        if(siteSettings[2]) {
+            document.getElementById("weeklyContainer").style.display="block";
+        }
+        else {
+            document.getElementById("weeklyContainer").style.display="none";
+        }
+        //is split view on?
+        siteSettings[3]=settingsSaved[3];
+        if(siteSettings[3]){
+            document.getElementById("mainpage").classList.add("split-scr");
+        }
+        else{
+            document.getElementById("mainpage").classList.remove("split-scr");
+        }
+    }
+    else {
+        siteSettings[0]=0;
+        siteSettings[1]=true;
+        siteSettings[2]=false;
+        siteSettings[3]=false;
+        saveSettings();
+        applySettings();
+    }
+}
+function changeSettings (which) {
+    switch (which) {
+        case 0:
+            if(siteSettings[0]<availableLanguages.length-1){
+                siteSettings[0]++;
+            }
+            else{
+                siteSettings[0]=0;
+            }
+            break;
+        case 1:
+            if(siteSettings[1]==true){
+                //if(siteSettings[2]==false){siteSettings[2]=true}
+                siteSettings[1]=false;
+            }
+            else{
+                siteSettings[1]=true;
+                //if(siteSettings[2]==true){siteSettings[2]=false}
+            }
+            break;
+        case 2:
+            if(siteSettings[2]==true){
+                //if(siteSettings[1]==false){siteSettings[1]=true}
+                siteSettings[2]=false;
+            }
+            else{
+                siteSettings[2]=true;
+                //if(siteSettings[1]==true){siteSettings[1]=false}
+            }
+            break;
+        case 3:
+            if(siteSettings[3]==true){
+                siteSettings[3]=false;
+            }
+            else{
+                siteSettings[3]=true;
+            }
+            break;
+        default:
+            break;
+    }
+    saveSettings();
+    applySettings();
+}
 //LANGUAGE LOADING
 function dropdownMenu (id) {
     document.getElementById(id).classList.toggle("menuvis")
@@ -43,18 +152,22 @@ function loadingProcedures () {
     .then(response => response.json())
     .then(data => {
         langData = data;
-        setLanguage("en"); // initialize after loading
+        locaData = data;
     })
     .catch(err => console.error("Error loading languages:", err));
-    createList("dailyChecks","checkListDaily");
-    createList("weeklyChecks","checkListWeekly");
-    updateDates ();
+    setTimeout(() => {
+        applySettings();
+        createList("dailyChecks","checkListDaily");
+        createList("weeklyChecks","checkListWeekly");
+        updateDates();
+    }, 50);
+    
+    
 }
 function updateDates () {
-    let daysOfWeek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     let currenttime = new Date();
     let dateToday = currenttime.getFullYear()+"."+(1+currenttime.getMonth())+"."+currenttime.getDate();
-    let dayToday = daysOfWeek[currenttime.getDay()];
+    let dayToday = langData[availableLanguages[siteSettings[0]]].daysOfWeek[currenttime.getDay()];
     document.getElementById("dayToday").innerText=dayToday;
     document.getElementById("dateToday").innerText=dateToday;
     let minutesNow=currenttime.getMinutes();
@@ -62,7 +175,7 @@ function updateDates () {
     document.getElementById("timeNow").innerText=currenttime.getHours()+":"+minutesNow
     setInterval(() => {
         dateToday = currenttime.getFullYear()+"."+(1+currenttime.getMonth())+"."+currenttime.getDate();
-        dayToday = daysOfWeek[currenttime.getDay()];
+        dayToday = langData[availableLanguages[siteSettings[0]]].daysOfWeek[currenttime.getDay()];
         document.getElementById("dayToday").innerText=dayToday;
         document.getElementById("dateToday").innerText=dateToday;
         currenttime = new Date();
@@ -80,11 +193,6 @@ function UpdateChecklistTimestamp (updateIndex,cookiet){
     else if (cookiet=="weeklyChecks"){
     weeklyChecks[updateIndex][2] = new Date();
     }
-}
-function setLanguage(lang) {
-      document.getElementById("welcomemessageDaily").innerText = langData[lang].titleToday;
-      document.getElementById("welcomemessageWeek").innerText = langData[lang].titleWeek;
-      document.getElementById("menuAbout").innerText = langData[lang].menu.about;
 }
 function AddChecklistItem(type) {
     const text = document.getElementById("itemText"+type).value.trim();
@@ -181,6 +289,33 @@ function UncheckAll (houhou) {
         createList("weeklyChecks","checkListWeekly");
     }
 }
+function DeleteAll (houhou) {
+    if(houhou=='d'&dailyChecks.length>0){
+        let confirmDeletion = prompt(locaData[availableLanguages[siteSettings[0]]].checklist.confirmDeletion, "");
+        let text;
+        if (confirmDeletion == "OK") {
+            dailyChecks=[];
+            let dailyChecksJSON = JSON.stringify(dailyChecks);
+            setCookie('dailyChecks',dailyChecksJSON,365);
+            createList("dailyChecks","checkListDaily");
+            alert(locaData[availableLanguages[siteSettings[0]]].checklist.infoDeletedAll);
+        } 
+        else {
+            alert(locaData[availableLanguages[siteSettings[0]]].checklist.infoDidntDeleteAll);
+        }
+    }
+    else if(houhou=='w'&weeklyChecks.length>0){
+        if (confirmDeletion == "OK") {
+            weeklyChecks=[];
+            let weeklyChecksJSON = JSON.stringify(weeklyChecks);
+            setCookie('weeklyChecks',weeklyChecksJSON,365);
+            alert(locaData[availableLanguages[siteSettings[0]]].checklist.infoDeletedAll);
+        } 
+        else {
+            alert(locaData[availableLanguages[siteSettings[0]]].checklist.infoDidntDeleteAll);
+        }
+    }
+}
 function AlterItemState (alteredIndex,cookiet,containert){
     if(cookiet=="dailyChecks"){
         if(dailyChecks[alteredIndex][1]==true){
@@ -243,6 +378,7 @@ function createList (cookietype,listtype,shorttype) {
             // create label
             let label = document.createElement("label");
             const baton = document.createElement("button");
+            baton.classList.add('removeButton');
             const baton2 = document.createElement("button");
             baton2.id= abbr + "editbtn" + indexCheck;
             const span = document.createElement("span");
@@ -252,8 +388,8 @@ function createList (cookietype,listtype,shorttype) {
             label.appendChild(span);
             label.appendChild(baton);
             label.appendChild(baton2);
-            baton.appendChild(document.createTextNode("Remove"));
-            baton2.appendChild(document.createTextNode("Edit"));
+            baton.innerHTML="<i class='fa-solid fa-trash fa-1x'></i>";
+            baton2.innerHTML="<i class='fa-solid fa-pencil fa-1x'></i>";
             container.appendChild(label);
             // clear input
             indexCheck++;
@@ -285,6 +421,4 @@ function createList (cookietype,listtype,shorttype) {
     else{
         container.innerHTML="";
     }
-    console.log("Weekly: "+weeklyChecks);
-    console.log("Daily: "+dailyChecks);
 }
