@@ -162,7 +162,6 @@ function loadingProcedures () {
         updateDates();
     }, 300);
     
-    
 }
 function updateDates () {
     let currenttime = new Date();
@@ -374,6 +373,7 @@ function createList (cookietype,listtype,shorttype) {
             // create checkbox
             let checkbox = document.createElement("input");
             checkbox.type = "checkbox";
+            checkbox.classList.add('cb-List');
             if(element[1]==true){checkbox.checked = true;}
             // create label
             let label = document.createElement("label");
@@ -383,6 +383,7 @@ function createList (cookietype,listtype,shorttype) {
             baton2.id= abbr + "editbtn" + indexCheck;
             const span = document.createElement("span");
             span.id = abbr + "taskName"+indexCheck;
+            span.classList.add("sp-List");
             span.appendChild(document.createTextNode(" "+element[0]));
             label.appendChild(checkbox);
             label.appendChild(span);
@@ -421,5 +422,4 @@ function createList (cookietype,listtype,shorttype) {
     else{
         container.innerHTML="";
     }
-
 }
